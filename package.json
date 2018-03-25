@@ -1,0 +1,37 @@
+{
+  "name": "caster",
+  "version": "0.0.0",
+  "description": "A simple audio podcast manager and hosting",
+  "main": "index.js",
+  "repository": "git@github.com:DaJoker29/caster.git",
+  "author": "Dewitt Buckingham <dj729@comcast.net>",
+  "license": "MIT",
+  "private": true,
+  "engine": {
+    "node": "~8.9.4"
+  },
+  "scripts": {
+    "lint": "yarn eslint .",
+    "fix": "yarn eslint-- fix .",
+    "preversion": "git checkout master && git merge --no-ff develop -m 'Pull changes for release bump'",
+    "postversion": "git push && git push --tags && git checkout develop && git merge --no-ff master -m 'Sync Develop branch' && git push",
+    "start": "yarn run dev",
+    "dev": "",
+    "prod": ""
+  },
+  "dependencies": {
+    "autoprefixer": "8.2.0",
+    "babel-eslint": "8.2.2",
+    "eslint": "4.19.1",
+    "eslint-config-airbnb": "16.1.0",
+    "eslint-config-last": "0.0.5",
+    "eslint-config-prettier": "2.9.0",
+    "eslint-plugin-import": "2.9.0",
+    "eslint-plugin-import-order-autofix": "0.8.3",
+    "eslint-plugin-json": "1.2.0",
+    "eslint-plugin-jsx-a11y": "6.0.3",
+    "eslint-plugin-prettier": "2.6.0",
+    "eslint-plugin-react": "7.7.0",
+    "prettier": "1.11.1"
+  }
+}
