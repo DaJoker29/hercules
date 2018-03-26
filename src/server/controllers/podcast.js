@@ -3,7 +3,11 @@ const debug = require('debug')('caster-podcast');
 const { Podcast } = require('../models');
 
 module.exports.RENDER_HOME = (req, res) => {
-  res.render('home');
+  return Podcast.find({})
+    .then(podcasts => {
+      res.render('home', { podcasts });
+    })
+    .catch(e => next(new VError(e, 'There was a problem fetching podcasts')));
 };
 
 module.exports.CREATE_PODCAST = (req, res, next) => {

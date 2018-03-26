@@ -4,6 +4,13 @@
 }
 
 .podcast {
+  .delete {
+    color: var(--red);
+    &:hover {
+      color: var(--black);
+    }
+  }
+
   ul {
     display: flex;
     flex-flow: row wrap;

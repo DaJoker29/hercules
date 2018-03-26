@@ -13,6 +13,7 @@ const podcastSchema = new Schema({
   description: { type: String, required: true },
   isExplicit: { type: Boolean, default: true },
   isComplete: { type: Boolean, default: false },
+  episodes: [{ type: Schema.Types.ObjectId, ref: 'episode', required: true }],
 });
 
 module.exports = mongoose.model('podcast', podcastSchema);
