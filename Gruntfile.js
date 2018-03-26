@@ -30,6 +30,7 @@ module.exports = function(grunt) {
       dev: {
         options: {
           processors: [
+            require('postcss-normalize')(),
             require('autoprefixer')({ browsers: 'last 2 versions' }),
           ],
         },
@@ -38,6 +39,7 @@ module.exports = function(grunt) {
       prod: {
         options: {
           processors: [
+            require('postcss-normalize')(),
             require('autoprefixer')({ browsers: 'last 2 versions' }),
             require('cssnano')(),
           ],

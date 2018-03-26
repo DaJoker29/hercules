@@ -1,0 +1,45 @@
+extends base
+
+block content
+  .logout
+    a(href="/logout") Log Out Here
+  h3 Podcast Overview
+  .podcasts
+    each podcast in podcasts
+      .podcast
+        .pull-right
+          a.delete(href="/podcast/" + podcast.id + '?action=delete') Delete This
+        a.podcast-title(href="/podcast/" + podcast.id) #{podcast.title}
+        ul.podcast-meta
+          li Episodes: #{podcast.episodes.length}
+          li Last Published: #{moment(podcast.updatedOn).fromNow()}
+          li Created: #{moment(podcast.createdOn).fromNow()}
+          li Author: #{podcast.author}
+  .sep
+  h3 Create New Podcast
+  form.create-podcast(action="/podcast" method="POST")
+    fieldset
+      div
+        label(for="title") title
+        input(type="text" name="title" placeholder="Dummy")
+      div
+        label(for="subtitle") subtitle
+        input(type="text" name="subtitle" placeholder="Dummy")
+      div
+        label(for="website") website
+        input(type="text" name="website" placeholder="Dummy")
+      div
+        label(for="author") author
+        input(type="text" name="author" placeholder="Dummy")
+      div
+        label(for="keywords") keywords
+        input(type="text" name="keywords" placeholder="Dummy")
+      div
+        label(for="description") description
+        textarea(type="text" name="description" row=3 placeholder="Dummy")
+      div
+        label(for="explicit1") Explicit
+        input#explicit1(type="radio" name="explicit" value="yes" placeholder="Dummy" checked)
+        label(for="explicit2") Clean
+        input#explicit2(type="radio" name="explicit" value="no" placeholder="Dummy")
+    button Create
