@@ -1,0 +1,47 @@
+:root {
+  --yellow: #fff200;
+  --black: #000;
+  --red: #ff0909;
+  --gray: #505050;
+  --font-family: 'Amatic SC', cursive;
+}
+
+html {
+  line-height: 1;
+  font-size: 24px;
+  font-family: var(--font-family);
+}
+
+body {
+  background-color: var(--yellow);
+}
+
+fieldset {
+  outline: 0;
+  border: 0;
+}
+
+legend {
+  font-size: 2rem;
+}
+
+label {
+  display: block;
+}
+
+input,
+textarea {
+  display: block;
+  margin-left: 1rem;
+  font-size: 1rem;
+  font-family: var(--font-family);
+  background-color: transparent;
+  border: 0;
+  color: var(--gray);
+  width: 100%;
+}
+
+footer {
+  font-size: 0.75rem;
+  text-align: right;
+}

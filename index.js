@@ -82,7 +82,7 @@ mongoose.connection.on('connected', () => {
   app.set('view engine', 'pug');
   app.set('views', path.join(__dirname, 'src/client/views'));
 
-  app.use('/dist', express.static('assets'));
+  app.use('/assets', express.static('dist'));
   app.use('/.well-known', express.static('.well-known', { dotfiles: 'allow' }));
   app.use(
     morganDebug(
