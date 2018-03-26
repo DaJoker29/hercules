@@ -1,0 +1,83 @@
+:root {
+  --yellow: #fff200;
+  --black: #000;
+  --red: #ff0909;
+  --gray: #505050;
+  --blue: #156855;
+  --font-family: 'Amatic SC', cursive;
+}
+
+html {
+  line-height: 1;
+  font-size: 30px;
+  font-family: var(--font-family);
+}
+
+a {
+  color: var(--blue);
+  font-weight: bold;
+  text-decoration: none;
+  text-shadow: 0 1px 1px var(--gray);
+  transition: .3s;
+  &:hover {
+    color: var(--black);
+  }
+}
+
+body {
+  background-color: var(--yellow);
+  padding: 1rem 2rem;
+}
+
+h2 {
+  font-size: 3rem;
+}
+
+h3 {
+  font-size: 2rem;
+}
+
+fieldset {
+  outline: 0;
+  border: 0;
+}
+
+legend {
+  font-size: 2rem;
+}
+
+label {
+  display: block;
+  font-weight: bold;
+}
+
+input,
+textarea {
+  display: block;
+  margin-left: .5rem;
+  font-size: 1rem;
+  font-family: var(--font-family);
+  background-color: transparent;
+  border: 0;
+  color: var(--gray);
+  width: 100%;
+  resize: none;
+  appearance: none;
+}
+
+footer {
+  font-size: 0.75rem;
+  text-align: right;
+  clear: both;
+}
+
+button {
+  font-size: 1rem;
+  border: 0;
+  border-radius: 0;
+  background-color: var(--blue);
+  color: var(--black);
+  font-family: var(--font-family);
+  padding: .5rem 1rem;
+  font-weight: bold;
+}
