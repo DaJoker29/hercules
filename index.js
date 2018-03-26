@@ -24,6 +24,7 @@ const dbDebug = require('debug')('caster-database');
 const Routes = require('./src/server/routes');
 const Strategies = require('./src/server/strategies');
 const Helpers = require('./src/server/helpers');
+const Middleware = require('./src/server/middleware');
 
 /**
  * Check for envirnment variables
@@ -79,7 +80,7 @@ mongoose.connection.on('connected', () => {
    */
 
   app.set('view engine', 'pug');
-  app.set('views', path.join(__dirname, 'client/views'));
+  app.set('views', path.join(__dirname, 'src/client/views'));
 
   app.use('/dist', express.static('assets'));
   app.use('/.well-known', express.static('.well-known', { dotfiles: 'allow' }));
@@ -104,10 +105,11 @@ mongoose.connection.on('connected', () => {
   passport.serializeUser(Helpers.Auth.SERIALIZE);
   passport.deserializeUser(Helpers.Auth.DESERIALIZE);
 
+  app.use(Middleware.Auth.ENSURE_AUTH);
+
   /**
    * Load express routes
    */
-
   Object.entries(Routes)
     .sort(a => {
       if (a[0] === 'Error') {

@@ -2,9 +2,9 @@ module.exports.SERIALIZE = serializeUser;
 module.exports.DESERIALIZE = deserializeUser;
 
 function serializeUser(user, done) {
-  return done(null, user._id);
+  return done(null, '1234');
 }
 
 function deserializeUser(id, done) {
-  User.findById(id, (err, user) => done(err, user));
+  done(null, { id: '1234' });
 }

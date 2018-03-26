@@ -7,6 +7,7 @@
   "watch": [
     "src/server/**/*",
     "src/client/views",
-    "index.js"
+    "index.js",
+    ".env"
   ]
 }
