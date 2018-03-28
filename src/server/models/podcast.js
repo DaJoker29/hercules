@@ -14,6 +14,7 @@ const podcastSchema = new Schema({
   isExplicit: { type: Boolean, default: true },
   isComplete: { type: Boolean, default: false },
   episodes: [{ type: Schema.Types.ObjectId, ref: 'episode', required: true }],
+  slug: { type: String, required: true },
 });
 
 module.exports = mongoose.model('podcast', podcastSchema);

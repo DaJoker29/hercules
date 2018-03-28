@@ -3,6 +3,7 @@ const dotenv = require('dotenv');
 
 const env = dotenv.config();
 
+// TODO: Add CSRF module (csurf) to secure form submissions
 const express = require('express');
 const mongoose = require('mongoose');
 const morganDebug = require('morgan-debug');
@@ -83,6 +84,7 @@ mongoose.connection.on('connected', () => {
   app.set('views', path.join(__dirname, 'src/client/views'));
 
   app.use('/assets', express.static('dist'));
+  app.use('/media', express.static('content'));
   app.use('/.well-known', express.static('.well-known', { dotfiles: 'allow' }));
   app.use(
     morganDebug(
