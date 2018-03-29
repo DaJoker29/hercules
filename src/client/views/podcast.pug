@@ -1,0 +1,15 @@
+extends base
+
+block content
+  img.cover-art(src="/media/" + podcast.slug + "/cover.png", alt="")
+  h3 #{podcast.title}
+  p #{podcast.subtitle}
+  p #{podcast.description}
+  ul
+    li # of Episodes: #{podcast.episodes.length}
+    li Created On: #{moment(podcast.createdOn).format('MMM do, YYYY')}
+    li Keywords: #{podcast.keywords.join(', ')}
+    li Explicit: #{podcast.isExplicit ? 'Fuck yeah' : 'Fuck no'}
+    li Complete: #{podcast.isComplete ? 'Donezo' : 'Not Donezo'}
+    li Website: #{podcast.website}
+    li Author: #{podcast.author}

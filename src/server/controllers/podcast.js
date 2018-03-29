@@ -11,6 +11,19 @@ module.exports.RENDER_HOME = (req, res, next) => {
     .catch(e => next(new VError(e, 'There was a problem fetching podcasts')));
 };
 
+module.exports.HANDLE_PODCAST = (req, res, next) => {
+  const { slug } = req.params;
+  const { action } = req.query;
+  return Podcast.findOne({ slug })
+    .then(podcast => {
+      if (action) {
+        console.log(`Action: ${action} on ${podcast.slug}`);
+      }
+      res.render('podcast', { podcast });
+    })
+    .catch(e => next(new VError(e, 'Problem fetching that podcast')));
+};
+
 module.exports.CREATE_PODCAST = (req, res, next) => {
   const { file: cover } = req;
   console.log(cover);
