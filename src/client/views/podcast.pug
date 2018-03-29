@@ -13,3 +13,29 @@ block content
     li Complete: #{podcast.isComplete ? 'Donezo' : 'Not Donezo'}
     li Website: #{podcast.website}
     li Author: #{podcast.author}
+  .sep
+  h3 Episodes
+  each episode in podcast.episodes
+    h5 
+      a(href="/media/" + podcast.slug + "/" + podcast.slug + episode.episodeNumber.toString().padStart(3, "0") + '.mp3') #{episode.title} - Episode ##{episode.episodeNumber}
+    p Published On: #{moment(episode.publishedOn).format('MMM, do, YYYY')}
+    p #{episode.description}
+  .sep
+  h3 Add an episode
+  form.add-episode(action="" method="POST" enctype="multipart/form-data")
+    fieldset
+      div
+        label(for="publishedOn") Publish Date
+        input(type="date" name="publishedOn")
+      div
+        label(for="title") title
+        input(type="text" name="title")
+      div
+        label(for="description") description
+        input(type="text" name="description")
+      div
+        label(for="media") media
+        input(type="file" name="media" accept=".mp3")
+      input(type="hidden" name="podcast" value=podcast.id)
+      div
+        button Add
