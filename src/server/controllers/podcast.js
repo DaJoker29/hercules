@@ -16,12 +16,12 @@ module.exports.HANDLE_PODCAST = (req, res, next) => {
   const { action } = req.query;
   return Podcast.findOne({ slug })
     .then(podcast => {
-      if (action) {
-        console.log(`Action: ${action} on ${podcast.slug}`);
+      if ('delete' === action) {
+        return Podcast.findByIdAndRemove(podcast.id).then(res.redirect('/'));
       }
-      res.render('podcast', { podcast });
+      return res.render('podcast', { podcast });
     })
-    .catch(e => next(new VError(e, 'Problem fetching that podcast')));
+    .catch(e => next(new VError(e, 'Problem handling that podcast')));
 };
 
 module.exports.CREATE_PODCAST = (req, res, next) => {
@@ -61,7 +61,7 @@ module.exports.CREATE_PODCAST = (req, res, next) => {
       }
       debug(`Saving cover image to ${dir}`);
 
-      res.redirect(`/podcast/${podcast.id}`);
+      res.redirect(`/podcast/${podcast.slug}`);
       return fs.writeFile(
         `${dir}/cover.${cover.originalname.slice(
           cover.originalname.lastIndexOf('.') + 1,
