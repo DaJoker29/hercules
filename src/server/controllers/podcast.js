@@ -1,5 +1,6 @@
 const VError = require('verror');
 const fs = require('fs-extra');
+const RSS = require('rss');
 const debug = require('debug')('caster-podcast');
 const { Podcast, Episode } = require('../models');
 
@@ -63,10 +64,124 @@ module.exports.CREATE_EPISODE = (req, res, next) => {
     })
     .then(([, podcast]) => {
       debug(`Podcast Updated: ${podcast.id}`);
-      return res.redirect(`/podcast/${podcast.slug}`);
+      res.redirect(`/podcast/${podcast.slug}`);
+      return generateRSS(podcast.slug);
+    })
+    .then(xml => {
+      debug(`RSS Feed regenerated: ${xml}`);
     })
     .catch(e => next(new VError(e, 'Problem creating episode')));
 };
+
+module.exports.GENERATE_RSS = async (req, res, next) => {
+  const { slug } = req.params;
+  return generateRSS(slug)
+    .then(xml => {
+      res.set('Content-Type', 'application/rss+xml');
+      res.send(xml);
+    })
+    .catch(e => next(new VError(e, 'Problem generating the RSS Feed')));
+};
+
+function generateRSS(slug) {
+  return new Promise((resolve, reject) => {
+    Podcast.findOne({ slug })
+      .populate('episodes')
+      .then(async podcast => {
+        const feedURL = `content/${podcast.slug}/rss`;
+
+        const feed = new RSS({
+          title: podcast.title,
+          description: podcast.description,
+          feed_url: feedURL,
+          site_url: podcast.website,
+          image_url: `/media/${podcast.slug}/cover.png`,
+          managingEditor: podcast.author,
+          webMaster: 'Zero Daedalus',
+          copyright: `2018 ${podcast.author}`,
+          pubDate: podcast.createdOn,
+          ttl: '60',
+          language: 'en',
+          custom_namespaces: {
+            itunes: 'http://www.itunes.com/dtds/podcast-1.0.dtd',
+          },
+          custom_elements: [
+            { 'itunes:subtitle': 'A show about everything' },
+            { 'itunes:author': 'John Doe' },
+            {
+              'itunes:summary':
+                'All About Everything is a show about everything. Each week we dive into any subject known to man and talk about it as much as we can. Look for our podcast in the Podcasts app or in the iTunes Store',
+            },
+            {
+              'itunes:owner': [
+                { 'itunes:name': 'John Doe' },
+                { 'itunes:email': 'john.doe@example.com' },
+              ],
+            },
+            {
+              'itunes:image': {
+                _attr: {
+                  href:
+                    'http://example.com/podcasts/everything/AllAboutEverything.jpg',
+                },
+              },
+            },
+            {
+              'itunes:category': [
+                {
+                  _attr: {
+                    text: 'Technology',
+                  },
+                },
+                {
+                  'itunes:category': {
+                    _attr: {
+                      text: 'Gadgets',
+                    },
+                  },
+                },
+              ],
+            },
+          ],
+        });
+
+        podcast.episodes.forEach(episode => {
+          const item = {
+            title: episode.title,
+            description: episode.description,
+            date: episode.publishedOn,
+            url: `/media/${podcast.slug}/${
+              podcast.slug
+            }${episode.episodeNumber.toString().padStart(3, '0')}.mp3`,
+            enclosure: {
+              url: `http://localhost:2001/media/${podcast.slug}/${
+                podcast.slug
+              }${episode.episodeNumber.toString().padStart(3, '0')}.mp3`,
+              type: 'audio/mpeg',
+              size: 12024,
+            },
+            custom_elements: [
+              { 'itunes:author': 'John Doe' },
+              { 'itunes:subtitle': 'A short primer on table spices' },
+              {
+                'itunes:image': {
+                  _attr: {
+                    href:
+                      'http://example.com/podcasts/everything/AllAboutEverything/Episode1.jpg',
+                  },
+                },
+              },
+              { 'itunes:duration': '7:04' },
+            ],
+          };
+          feed.item(item);
+        });
+
+        return resolve(feed.xml({ indent: true }));
+      })
+      .catch(e => reject(e));
+  });
+}
 
 module.exports.CREATE_PODCAST = (req, res, next) => {
   const { file: cover } = req;
