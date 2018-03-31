@@ -13,6 +13,8 @@ block content
     li Complete: #{podcast.isComplete ? 'Donezo' : 'Not Donezo'}
     li Website: #{podcast.website}
     li Author: #{podcast.author}
+    li
+      a(href="/podcast/" + podcast.slug + "/rss") RSS
   .sep
   h3 Episodes
   each episode in podcast.episodes
