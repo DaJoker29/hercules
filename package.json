@@ -1,6 +1,6 @@
 {
   "name": "caster",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "A simple audio podcast manager and hosting",
   "main": "index.js",
   "repository": "git@github.com:DaJoker29/caster.git",
