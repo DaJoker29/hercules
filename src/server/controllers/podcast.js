@@ -2,12 +2,12 @@ const VError = require('verror');
 const fs = require('fs-extra');
 const RSS = require('rss');
 const debug = require('debug')('caster-podcast');
-const { Podcast, Episode } = require('../models');
+const { Podcast, Episode, Post } = require('../models');
 
 module.exports.RENDER_HOME = (req, res, next) => {
-  return Podcast.find({})
-    .then(podcasts => {
-      res.render('home', { podcasts });
+  return Promise.all([Podcast.find({}), Post.find()])
+    .then(([podcasts, posts]) => {
+      res.render('home', { podcasts, posts });
     })
     .catch(e => next(new VError(e, 'There was a problem fetching podcasts')));
 };
