@@ -1,18 +1,23 @@
+const { Router } = require('express');
+const multer = require('multer');
 const VError = require('verror');
 const fs = require('fs-extra');
 const RSS = require('rss');
 const debug = require('debug')('caster-podcast');
-const { Podcast, Episode, Post } = require('../models');
+const { Podcast, Episode } = require('../models');
 
-module.exports.RENDER_HOME = (req, res, next) => {
-  return Promise.all([Podcast.find({}), Post.find()])
-    .then(([podcasts, posts]) => {
-      res.render('home', { podcasts, posts });
-    })
-    .catch(e => next(new VError(e, 'There was a problem fetching podcasts')));
-};
+const upload = multer();
 
-module.exports.HANDLE_PODCAST = (req, res, next) => {
+const router = Router();
+
+router.post('/podcast', upload.single('cover'), createPodcast);
+router.get('/podcast/:slug', handlePodcast);
+router.get('/podcast/:slug/rss', renderRSS);
+router.post('/podcast/:slug', upload.single('media'), createEpisode);
+
+module.exports = router;
+
+function handlePodcast(req, res, next) {
   const { slug } = req.params;
   const { action } = req.query;
   return Podcast.findOne({ slug })
@@ -24,9 +29,9 @@ module.exports.HANDLE_PODCAST = (req, res, next) => {
       return res.render('podcast', { podcast });
     })
     .catch(e => next(new VError(e, 'Problem handling that podcast')));
-};
+}
 
-module.exports.CREATE_EPISODE = (req, res, next) => {
+function createPodcast(req, res, next) {
   const { slug } = req.params;
   const { file } = req;
   const { publishedOn, title, description, podcast } = req.body;
@@ -46,7 +51,7 @@ module.exports.CREATE_EPISODE = (req, res, next) => {
     .then(episode => {
       debug(`New Episode Saved: ${episode.id}`);
 
-      const dir = `content/${slug}`;
+      const dir = `media/${slug}`;
 
       return Promise.all([
         fs.writeFile(
@@ -71,9 +76,9 @@ module.exports.CREATE_EPISODE = (req, res, next) => {
       debug(`RSS Feed regenerated: ${xml}`);
     })
     .catch(e => next(new VError(e, 'Problem creating episode')));
-};
+}
 
-module.exports.GENERATE_RSS = async (req, res, next) => {
+function renderRSS(req, res, next) {
   const { slug } = req.params;
   return generateRSS(slug)
     .then(xml => {
@@ -81,14 +86,14 @@ module.exports.GENERATE_RSS = async (req, res, next) => {
       res.send(xml);
     })
     .catch(e => next(new VError(e, 'Problem generating the RSS Feed')));
-};
+}
 
 function generateRSS(slug) {
   return new Promise((resolve, reject) => {
     Podcast.findOne({ slug })
       .populate('episodes')
       .then(async podcast => {
-        const feedURL = `content/${podcast.slug}/rss`;
+        const feedURL = `media/${podcast.slug}/rss`;
 
         const feed = new RSS({
           title: podcast.title,
@@ -183,7 +188,7 @@ function generateRSS(slug) {
   });
 }
 
-module.exports.CREATE_PODCAST = (req, res, next) => {
+function createEpisode(req, res, next) {
   const { file: cover } = req;
   const {
     title,
@@ -211,7 +216,7 @@ module.exports.CREATE_PODCAST = (req, res, next) => {
     .then(podcast => {
       debug(`New Podcast Created: ${podcast.id}`);
 
-      const dir = `content/${podcast.slug}`;
+      const dir = `media/${podcast.slug}`;
       try {
         fs.statSync(dir);
       } catch (e) {
@@ -230,4 +235,4 @@ module.exports.CREATE_PODCAST = (req, res, next) => {
     .catch(e =>
       next(new VError(e, 'There was a problem creating a new podcast')),
     );
-};
+}

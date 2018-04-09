@@ -22,10 +22,9 @@ const envDebug = require('debug')('caster-env');
 const routeDebug = require('debug')('caster-routes');
 const dbDebug = require('debug')('caster-database');
 
-const Routes = require('./src/server/routes');
-const Strategies = require('./src/server/strategies');
-const Helpers = require('./src/server/helpers');
-const Middleware = require('./src/server/middleware');
+const Routes = require('./src/routes');
+const Strategies = require('./src/strategies');
+const Middleware = require('./src/middleware');
 
 /**
  * Check for envirnment variables
@@ -45,11 +44,10 @@ if (env.error) {
 
 const app = express();
 
-const { NODE_ENV } = process.env;
+const isProduction = process.env.NODE_ENV === 'production';
 
-const port =
-  NODE_ENV === 'production' ? process.env.PORT : process.env.TEST_PORT;
-const db = NODE_ENV === 'production' ? process.env.DB : process.env.TEST_DB;
+const port = isProduction ? process.env.PORT : process.env.TEST_PORT;
+const db = isProduction ? process.env.DB : process.env.TEST_DB;
 
 /**
  * Database Connection Handlers
@@ -81,17 +79,12 @@ mongoose.connection.on('connected', () => {
    */
 
   app.set('view engine', 'pug');
-  app.set('views', path.join(__dirname, 'src/client/views'));
+  app.set('views', path.join(__dirname, 'src/views'));
 
   app.use('/assets', express.static('dist'));
-  app.use('/media', express.static('content'));
+  app.use('/media', express.static('media'));
   app.use('/.well-known', express.static('.well-known', { dotfiles: 'allow' }));
-  app.use(
-    morganDebug(
-      'caster-morgan',
-      NODE_ENV === 'development' ? 'dev' : 'combined',
-    ),
-  );
+  app.use(morganDebug('caster-morgan', isProduction ? 'combined' : 'dev'));
   app.use(bodyParser.urlencoded({ extended: 'true' }));
   app.use(bodyParser.json());
   app.use(methodOverride());
@@ -104,8 +97,8 @@ mongoose.connection.on('connected', () => {
   app.locals.numeral = numeral;
 
   passport.use(Strategies.Local);
-  passport.serializeUser(Helpers.Auth.SERIALIZE);
-  passport.deserializeUser(Helpers.Auth.DESERIALIZE);
+  passport.serializeUser(serializeUser);
+  passport.deserializeUser(deserializeUser);
 
   app.use(Middleware.Auth.ENSURE_AUTH);
 
@@ -151,16 +144,24 @@ process.on('SIGTERM', gracefulExit);
 process.on('uncaughtException', err => {
   console.error(err.stack);
   debug('Caster has CRASHED in a whirl of fire...');
-  gracefulExit();
+  gracefulExit(1);
 });
 
-function gracefulExit() {
+function gracefulExit(code = 0) {
   debug(`Caster is settling DOWN`);
   if (mongoose.connection.readyState === 1) {
     mongoose.connection.close(() => {
-      process.exit(0);
+      process.exit(code);
     });
   } else {
-    process.exit(0);
+    process.exit(code);
   }
+}
+
+function serializeUser(user, done) {
+  return done(null, '1234');
+}
+
+function deserializeUser(id, done) {
+  done(null, { id: '1234' });
 }
