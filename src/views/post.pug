@@ -1,0 +1,10 @@
+extends base
+
+block meta
+  title= post.seoTitle
+  meta(name="description" content=post.seoDesc)
+
+block content
+  h3= post.title
+  small Posted #{moment(post.created).format('MMM d, YYYY')}
+  div= post.content

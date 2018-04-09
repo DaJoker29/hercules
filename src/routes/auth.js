@@ -1,11 +1,10 @@
 const { Router } = require('express');
 const passport = require('passport');
-const { Auth } = require('../controllers');
 
 const router = Router();
 
-router.get('/login', Auth.RENDER_LOGIN);
-router.get('/logout', Auth.LOGOUT);
+router.get('/login', renderLogin);
+router.get('/logout', logout);
 
 router.post(
   '/login',
@@ -16,3 +15,12 @@ router.post(
 );
 
 module.exports = router;
+
+function renderLogin(req, res) {
+  res.render('login');
+}
+
+function logout(req, res) {
+  req.logout();
+  res.redirect('/login');
+}
