@@ -12,25 +12,7 @@ block content
         span &nbsp;-&nbsp;
         |
         span #{moment(post.created).fromNow()}
-  h3 Create New Post
-  form.create-post(action="/blog" method="POST")
-    fieldset
-      div
-        label(for="title") title
-        input(type="text" name="title" placeholder="Dummy Data")
-      div
-        label(for="content") content
-        textarea(name="content", cols="30", rows="5" placeholder="Dummy Data")
-      div
-        label(for="tags") tags
-        input(type="text" name="tags" placeholder="Dummy Data")
-      div
-        label(for="seoTitle") Meta Title (for SEO)
-        input(type="text" name="seoTitle" placeholder="Dummy Data")
-      div
-        label(for="seoDesc") Meta Description (for SEO)
-        textarea(name="seoDesc", cols="30", rows="3" placeholder="Dummy Data")
-    button Create
+
   h3 Podcast Overview
   .podcasts
     each podcast in podcasts
