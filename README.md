@@ -1,2 +1,2 @@
-# caster
-Simple audio podcast manager and hosting
+# Herc
+Very Simple Modular CMS Platform.

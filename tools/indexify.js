@@ -4,7 +4,7 @@ const path = require('path');
 const callsite = require('callsite');
 
 function indexify(namespace) {
-  const debug = require('debug')(`caster-indexify`);
+  const debug = require('debug')(`herc-indexify`);
   const stack = callsite();
   const dir = path.dirname(stack[1].getFileName());
   const files = fs.readdirSync(dir);

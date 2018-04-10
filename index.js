@@ -17,14 +17,15 @@ const moment = require('moment');
 const numeral = require('numeral');
 const VError = require('verror');
 
-const debug = require('debug')('caster-init');
-const envDebug = require('debug')('caster-env');
-const routeDebug = require('debug')('caster-routes');
-const dbDebug = require('debug')('caster-database');
+const debug = require('debug')('herc-init');
+const envDebug = require('debug')('herc-env');
+const routeDebug = require('debug')('herc-routes');
+const dbDebug = require('debug')('herc-database');
 
-const Routes = require('./src/routes');
-const Strategies = require('./src/strategies');
-const Middleware = require('./src/middleware');
+const Routes = require('@herc/routes');
+const Strategies = require('@herc/strategies');
+const Middleware = require('@herc/middleware');
+const { User } = require('@herc/models');
 
 /**
  * Check for envirnment variables
@@ -48,6 +49,8 @@ const isProduction = process.env.NODE_ENV === 'production';
 
 const port = isProduction ? process.env.PORT : process.env.TEST_PORT;
 const db = isProduction ? process.env.DB : process.env.TEST_DB;
+
+const pkg = require('./package.json');
 
 /**
  * Database Connection Handlers
@@ -84,7 +87,7 @@ mongoose.connection.on('connected', () => {
   app.use('/assets', express.static('dist'));
   app.use('/media', express.static('media'));
   app.use('/.well-known', express.static('.well-known', { dotfiles: 'allow' }));
-  app.use(morganDebug('caster-morgan', isProduction ? 'combined' : 'dev'));
+  app.use(morganDebug('herc-morgan', isProduction ? 'combined' : 'dev'));
   app.use(bodyParser.urlencoded({ extended: 'true' }));
   app.use(bodyParser.json());
   app.use(methodOverride());
@@ -95,6 +98,7 @@ mongoose.connection.on('connected', () => {
 
   app.locals.moment = moment;
   app.locals.numeral = numeral;
+  app.locals.pkg = pkg;
 
   passport.use(Strategies.Local);
   passport.serializeUser(serializeUser);
@@ -124,7 +128,9 @@ mongoose.connection.on('connected', () => {
 
   app.listen(port, err => {
     if (err) throw new VError(err, 'Problem launching express server');
-    debug(`Caster is spinning UP... => http://localhost:${port}`);
+    debug(
+      `${pkg.name.toUpperCase()} is spinning UP... => http://localhost:${port}`,
+    );
   });
 });
 
@@ -143,12 +149,12 @@ process.on('SIGINT', gracefulExit);
 process.on('SIGTERM', gracefulExit);
 process.on('uncaughtException', err => {
   console.error(err.stack);
-  debug('Caster has CRASHED in a whirl of fire...');
+  debug(`${pkg.name.toUpperCase()} has CRASHED in a whirl of fire...`);
   gracefulExit(1);
 });
 
 function gracefulExit(code = 0) {
-  debug(`Caster is settling DOWN`);
+  debug(`${pkg.name.toUpperCase()} is settling DOWN`);
   if (mongoose.connection.readyState === 1) {
     mongoose.connection.close(() => {
       process.exit(code);
@@ -159,9 +165,13 @@ function gracefulExit(code = 0) {
 }
 
 function serializeUser(user, done) {
-  return done(null, '1234');
+  return done(null, user.id);
 }
 
 function deserializeUser(id, done) {
-  done(null, { id: '1234' });
+  User.findById(id)
+    .then(user => {
+      done(null, user);
+    })
+    .catch(e => done(e));
 }

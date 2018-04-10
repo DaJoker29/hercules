@@ -1,3 +1,3 @@
-const { indexify } = require('@caster-tools/indexify');
+const { indexify } = require('@herc-tools/indexify');
 
 module.exports = indexify('middleware');

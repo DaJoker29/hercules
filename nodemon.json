@@ -5,8 +5,7 @@
   },
   "ext": "js json",
   "watch": [
-    "src/server/**/*",
-    "src/client/views",
+    "src/**/*.js",
     "index.js",
     ".env"
   ]
