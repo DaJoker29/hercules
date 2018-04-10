@@ -5,8 +5,8 @@ const fs = require('fs-extra');
 console.log('\nStart of PREINSTALL\n');
 
 const symlinks = [
-  resolve(__dirname, '../node_modules/@caster'),
-  resolve(__dirname, '../node_modules/@caster-tools'),
+  resolve(__dirname, '../node_modules/@herc'),
+  resolve(__dirname, '../node_modules/@herc-tools'),
 ];
 
 console.log(`--Removing ${symlinks.length} symlinks from node_modules...`);

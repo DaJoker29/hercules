@@ -1,6 +1,6 @@
 {
   "apps": [{
-    "name": "caster",
+    "name": "herc",
     "script": "./index.js",
     "watch": false,
     "env": {

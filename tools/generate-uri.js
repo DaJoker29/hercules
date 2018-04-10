@@ -10,7 +10,7 @@ const encoded = base32.encode(key);
 
 const forGoogle = encoded.toString().replace(/=/g, '');
 
-const uri = `otpauth://totp/Caster?secret=${forGoogle}`;
+const uri = `otpauth://totp/Herc?secret=${forGoogle}`;
 console.log(
   `Link: https://chart.googleapis.com/chart?chs=166x166&chld=L|0&cht=qr&chl=${uri}`,
 );
