@@ -20,13 +20,15 @@
     "start": "nodemon index.js --config nodemon.json & grunt",
     "dev": "grunt dev & pm2 start test-process.json",
     "prod": "grunt prod & pm2 start process.json",
-    "access": "node tools/show-access-code"
+    "access": "node tools/show-access-code",
+    "cli": "node tools/cli"
   },
   "dependencies": {
     "autoprefixer": "8.2.0",
     "babel-eslint": "8.2.2",
     "body-parser": "1.18.2",
     "callsite": "1.0.0",
+    "commander": "2.15.1",
     "concurrently": "3.5.1",
     "connect-redis": "3.3.3",
     "cssnano": "3.10.0",
@@ -69,6 +71,7 @@
     "postcss-normalize": "4.0.0",
     "prettier": "1.11.1",
     "pug": "2.0.3",
+    "random-token": "0.0.8",
     "rss": "1.2.2",
     "shortid": "2.2.8",
     "supports-color": "5.3.0",
