@@ -4,6 +4,7 @@ const program = require('commander');
 const { User } = require('@herc/models');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
+const base32 = require('thirty-two');
 const pkg = require('../package.json');
 
 dotenv.config();
@@ -33,6 +34,38 @@ program
       await User.create({ username, email, displayName })
         .then(doc => {
           console.log(doc);
+        })
+        .catch(e => console.error(e.message));
+    }
+
+    // Generate QR Code for Authenticator
+    if ('qr' === cmd) {
+      const { username } = options;
+
+      await User.findOne({ username })
+        .then(user => {
+          const uri = `otpauth://totp/Herc?secret=${base32
+            .encode(user.token)
+            .toString()
+            .replace(/=/g, '')}`;
+
+          console.log(
+            `QR Code: https://chart.googleapis.com/chart?chs=166x166&chld=L|0&cht=qr&chl=${uri}`,
+          );
+        })
+        .catch(e => console.error(e.message));
+    }
+
+    // Print totp
+    if ('totp' === cmd) {
+      const { username } = options;
+
+      await User.findOne({ username })
+        .then(user => {
+          const notp = require('notp');
+          console.log(
+            `Access Code (valid for 30sec): ${notp.totp.gen(user.token)}`,
+          );
         })
         .catch(e => console.error(e.message));
     }
