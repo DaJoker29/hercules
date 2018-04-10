@@ -22,9 +22,10 @@ const envDebug = require('debug')('herc-env');
 const routeDebug = require('debug')('herc-routes');
 const dbDebug = require('debug')('herc-database');
 
-const Routes = require('./src/routes');
-const Strategies = require('./src/strategies');
-const Middleware = require('./src/middleware');
+const Routes = require('@herc/routes');
+const Strategies = require('@herc/strategies');
+const Middleware = require('@herc/middleware');
+const { User } = require('@herc/models');
 
 /**
  * Check for envirnment variables
@@ -164,9 +165,13 @@ function gracefulExit(code = 0) {
 }
 
 function serializeUser(user, done) {
-  return done(null, '1234');
+  return done(null, user.id);
 }
 
 function deserializeUser(id, done) {
-  done(null, { id: '1234' });
+  User.findById(id)
+    .then(user => {
+      done(null, user);
+    })
+    .catch(e => done(e));
 }

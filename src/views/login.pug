@@ -3,10 +3,11 @@ extends base
 block content
   form(method="POST")
     fieldset
-      legend Please enter the access code
 
       div
-        label(for="accessCode") Access Code
-        input(type="text" name="password" placeholder="Type Access Code Here and press enter")
+        label(for="username") Username
+        input(type="text" name="username" placeholder="Username")
       div
-        input(type="hidden" name="username" value="username")
+        label(for="password") Access Code
+        input(type="text" name="password" placeholder="Type Access Code Here and press enter")
+    button Login

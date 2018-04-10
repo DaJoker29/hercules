@@ -44,7 +44,7 @@ program
 
       await User.findOne({ username })
         .then(user => {
-          const uri = `otpauth://totp/Herc?secret=${base32
+          const uri = `otpauth://totp/Herc:${user.username}?secret=${base32
             .encode(user.token)
             .toString()
             .replace(/=/g, '')}`;
