@@ -15,7 +15,7 @@ program
   .version(pkg.version);
 
 program
-  .command('user <cmd>')
+  .command('user [cmd]')
   .description('Handle User Data')
   .alias('u')
   .option('-u, --username <username>', 'Username')
@@ -66,6 +66,21 @@ program
           console.log(
             `Access Code (valid for 30sec): ${notp.totp.gen(user.token)}`,
           );
+        })
+        .catch(e => console.error(e.message));
+    }
+
+    if (!cmd || 'list' === cmd) {
+      await User.find({})
+        .then(users => {
+          const notp = require('notp');
+          users.forEach(user => {
+            console.log(
+              `${user.username} - ${user.email}\n Access Code: ${notp.totp.gen(
+                user.token,
+              )}\n`,
+            );
+          });
         })
         .catch(e => console.error(e.message));
     }
