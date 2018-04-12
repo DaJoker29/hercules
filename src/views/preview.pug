@@ -11,7 +11,6 @@ block content
   form(action="/blog" method="POST")
     input(type="hidden" name="title" value=preview.title)
     input(type="hidden" name="content" value=preview.content)
-    input(type="hidden" name="tags" value=preview.tags.split(', '))
     input(type="hidden" name="seoTitle" value=preview.seoTitle)
     input(type="hidden" name="seoDesc" value=preview.seoDesc)
     input(type="hidden" name="author" value=user.id)

@@ -8,7 +8,7 @@ const postSchema = new Schema({
   postID: {
     type: String,
     required: true,
-    default: shortid.generate(),
+    default: shortid.generate,
     unique: true,
   },
   created: { type: Date, required: true, default: Date.now() },

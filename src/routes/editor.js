@@ -12,5 +12,8 @@ function renderEditor(req, res) {
 }
 
 function preview(req, res) {
+  if (!req.body.seoTitle) {
+    req.body.seoTitle = req.body.title;
+  }
   res.render('preview', { preview: req.body });
 }

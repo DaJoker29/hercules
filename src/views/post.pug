@@ -3,6 +3,7 @@ extends base
 block meta
   title= post.seoTitle
   meta(name="description" content=post.seoDesc)
+  meta(name="tags" content=post.tags.join())
 
 block content
   h3= post.title
