@@ -4,14 +4,21 @@ const { Podcast, Post } = require('../models');
 
 const router = Router();
 
-router.get('/', renderHome);
+router.get('/admin', renderAdmin);
+router.get('/admin/blog', renderBlogAdmin);
 
 module.exports = router;
 
-function renderHome(req, res, next) {
+function renderAdmin(req, res, next) {
   return Promise.all([Podcast.find({}), Post.find()])
     .then(([podcasts, posts]) => {
-      res.render('home', { podcasts, posts });
+      res.render('admin', { podcasts, posts });
     })
-    .catch(e => next(new VError(e, 'There was a problem fetching podcasts')));
+    .catch(e =>
+      next(new VError(e, 'There was a problem creating main admin page.')),
+    );
+}
+
+function renderBlogAdmin(req, res) {
+  res.render('admin-blog');
 }

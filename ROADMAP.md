@@ -1,8 +1,5 @@
 *Last Updated: 4/10/18*
 # Milestones
-## Basic User System
-- Registration
-- Authentication (Email/TOTP)
 
 ## Basic Blogging
 - Markdown Editor => HTML Output

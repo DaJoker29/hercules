@@ -1,0 +1,17 @@
+extend base
+
+block meta
+  title #{preview.seoTitle + ' - '} #{pkg.name.toUpperCase()}
+  meta(name="description" content=preview.seoDesc)
+
+block content
+  small #{ user.displayName ? user.displayName : user.username} &bull; #{moment().format('MMM d, YYYY')}
+  h3 #{preview.title}
+  p #{preview.content}
+  form(action="/blog" method="POST")
+    input(type="hidden" name="title" value=preview.title)
+    input(type="hidden" name="content" value=preview.content)
+    input(type="hidden" name="seoTitle" value=preview.seoTitle)
+    input(type="hidden" name="seoDesc" value=preview.seoDesc)
+    input(type="hidden" name="author" value=user.id)
+    button Publish
