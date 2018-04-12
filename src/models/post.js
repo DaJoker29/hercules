@@ -8,7 +8,7 @@ const postSchema = new Schema({
   postID: {
     type: String,
     required: true,
-    default: shortid.generate(),
+    default: shortid.generate,
     unique: true,
   },
   created: { type: Date, required: true, default: Date.now() },
@@ -17,6 +17,7 @@ const postSchema = new Schema({
   tags: [{ type: String }],
   seoTitle: { type: String, default: this.title },
   seoDesc: { type: String },
+  author: { type: Schema.Types.ObjectId, ref: 'User', required: true },
 });
 
 postSchema.plugin(uniqueValidator);
