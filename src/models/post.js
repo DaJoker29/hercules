@@ -17,6 +17,7 @@ const postSchema = new Schema({
   tags: [{ type: String }],
   seoTitle: { type: String, default: this.title },
   seoDesc: { type: String },
+  author: { type: Schema.Types.ObjectId, ref: 'User', required: true },
 });
 
 postSchema.plugin(uniqueValidator);

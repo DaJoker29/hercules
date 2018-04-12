@@ -12,5 +12,5 @@ function renderEditor(req, res) {
 }
 
 function preview(req, res) {
-  res.render('preview', { preview: req.body, user: req.user });
+  res.render('preview', { preview: req.body });
 }

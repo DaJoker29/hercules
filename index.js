@@ -105,6 +105,7 @@ mongoose.connection.on('connected', () => {
   passport.deserializeUser(deserializeUser);
 
   app.use(Middleware.Auth.ENSURE_AUTH);
+  app.use(passUserToLocal);
 
   /**
    * Load express routes
@@ -174,4 +175,9 @@ function deserializeUser(id, done) {
       done(null, user);
     })
     .catch(e => done(e));
+}
+
+function passUserToLocal(req, res, next) {
+  res.locals.user = req.user;
+  next();
 }
