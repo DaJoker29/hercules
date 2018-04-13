@@ -1,0 +1,9 @@
+extends base
+
+block content
+  each post in posts
+    div
+      a(href="/blog/" + post.postID)
+        h3 #{post.title}
+      small #{ user.displayName ? user.displayName : user.username} &bull; #{moment(post.created).format('MMM d, YYYY')}
+      p #{post.seoDesc}
