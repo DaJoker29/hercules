@@ -10,5 +10,16 @@ html
   body
     h2 
       a(href="/") #{pkg.name}
+    if user
+      p Logged in as #{user.displayName || user.username}&nbsp;-&nbsp;
+        a(href="/logout") (Logout)
+        |
+        span &nbsp;=>&nbsp;
+        |
+        a(href="/admin") Admin
+        |
+        span &nbsp;=>&nbsp;
+        |
+        a(href="/editor") Blog Editor
     block content
     footer Crafted by Zero Daedalus &copy; 2018

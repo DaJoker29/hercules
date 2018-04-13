@@ -1,21 +1,23 @@
 extends base
 
 block content
-  .logout
-    a(href="/logout") Log Out Here
   h3 Blog Overview
-  .posts
-    each post in posts
-      .post
-        a(href="/blog/" + post.postID) #{post.title}
+  each post in posts
+    div
+      a(href="/blog/" + post.postID) #{post.title}
+      |
+      span &nbsp;--&nbsp;
+      |
+      span #{moment(post.created).fromNow()}
+      |
+      span &nbsp;--&nbsp;
+      |
+      span
+        em #{post.content.split(' ').length} words
         |
-        span &nbsp;-&nbsp;
+        span &nbsp;--&nbsp;
         |
-        span #{moment(post.created).fromNow()}
-        small
-          ul
-            each tag in post.tags
-              li #{tag}
+        em #{post.tags.length} tags
 
   h3 Podcast Overview
   .podcasts
