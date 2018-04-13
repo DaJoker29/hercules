@@ -23,3 +23,8 @@ html
         a(href="/editor") Blog Editor
     block content
     footer Crafted by Zero Daedalus &copy; 2018
+      unless user
+        |
+        span &nbsp;&bull;&nbsp;
+        |
+        a(href="/login") Log in

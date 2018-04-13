@@ -1,9 +1,10 @@
 const { Router } = require('express');
+const { ENSURE_AUTH } = require('@herc/middleware').Auth;
 
 const router = Router();
 
-router.get('/editor', renderEditor);
-router.post('/editor/preview', preview);
+router.get('/editor', ENSURE_AUTH, renderEditor);
+router.post('/editor/preview', ENSURE_AUTH, preview);
 
 module.exports = router;
 

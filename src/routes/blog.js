@@ -15,6 +15,7 @@ module.exports = router;
 
 function renderBlog(req, res, next) {
   return Post.find()
+    .populate('author')
     .then(posts => {
       res.render('blog', { posts });
     })

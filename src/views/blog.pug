@@ -5,6 +5,6 @@ block content
     div
       a(href="/blog/" + post.postID)
         h3 #{post.title}
-      small #{ user.displayName ? user.displayName : user.username} &bull; #{moment(post.created).format('MMM d, YYYY')}
+      small #{ post.author.displayName ? post.author.displayName : post.author.username} &bull; #{moment(post.created).format('MMMM d, YYYY')}
       p #{post.seoDesc}
       hr
