@@ -24,7 +24,6 @@ const dbDebug = require('debug')('herc-database');
 
 const Routes = require('@herc/routes');
 const Strategies = require('@herc/strategies');
-const Middleware = require('@herc/middleware');
 const { User } = require('@herc/models');
 
 /**
@@ -104,7 +103,6 @@ mongoose.connection.on('connected', () => {
   passport.serializeUser(serializeUser);
   passport.deserializeUser(deserializeUser);
 
-  app.use(Middleware.Auth.ENSURE_AUTH);
   app.use(passUserToLocal);
 
   /**

@@ -4,13 +4,14 @@ const VError = require('verror');
 const fs = require('fs-extra');
 const RSS = require('rss');
 const debug = require('debug')('caster-podcast');
+const { ENSURE_AUTH } = require('@herc/middleware').Auth;
 const { Podcast, Episode } = require('../models');
 
 const upload = multer();
 
 const router = Router();
 
-router.post('/podcast', upload.single('cover'), createPodcast);
+router.post('/podcast', ENSURE_AUTH, upload.single('cover'), createPodcast);
 router.get('/podcast/:slug', handlePodcast);
 router.get('/podcast/:slug/rss', renderRSS);
 router.post('/podcast/:slug', upload.single('media'), createEpisode);

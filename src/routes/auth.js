@@ -9,7 +9,7 @@ router.get('/logout', logout);
 router.post(
   '/login',
   passport.authenticate('local', {
-    successRedirect: '/admin',
+    successRedirect: '/',
     failureRedirect: '/login',
   }),
 );
