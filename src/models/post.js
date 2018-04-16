@@ -15,8 +15,7 @@ const postSchema = new Schema({
   title: { type: String, required: true },
   content: { type: String, required: true },
   tags: [{ type: String }],
-  seoTitle: { type: String, default: this.title },
-  seoDesc: { type: String },
+  excerpt: { type: String },
   author: { type: Schema.Types.ObjectId, ref: 'User', required: true },
 });
 

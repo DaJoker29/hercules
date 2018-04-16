@@ -6,5 +6,5 @@ block content
       a(href="/blog/" + post.postID)
         div
           h3.title #{post.title}
-          p.excerpt #{post.seoDesc}
-          p.post-date #{moment(post.created).format('MMMM d, YYYY')}
+          p.excerpt #{post.excerpt}
+          p.post-date #{moment(post.created).format('MMMM D, YYYY')}

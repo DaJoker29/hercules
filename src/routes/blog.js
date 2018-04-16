@@ -15,6 +15,7 @@ module.exports = router;
 
 function renderBlog(req, res, next) {
   return Post.find()
+    .sort({ created: -1 })
     .populate('author')
     .then(posts => {
       res.render('blog', { posts });
@@ -23,7 +24,7 @@ function renderBlog(req, res, next) {
 }
 
 function createPost(req, res, next) {
-  const { content, title, seoTitle, seoDesc } = req.body;
+  const { content, title, excerpt } = req.body;
   const tags = extractor.extract(content, {
     language: 'english',
     remove_digits: true,
@@ -33,8 +34,7 @@ function createPost(req, res, next) {
   const result = {
     content,
     title,
-    seoTitle,
-    seoDesc,
+    excerpt,
     author: req.user.id,
     tags,
   };
