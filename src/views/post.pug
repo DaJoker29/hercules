@@ -1,11 +1,13 @@
 extends base
 
 block meta
-  title= post.seoTitle
-  meta(name="description" content=post.seoDesc)
+  title #{post.title} - #{blog.name} - #{blog.tagline}
+  meta(name="description" content=post.excerpt)
   meta(name="tags" content=post.tags.join())
 
 block content
-  h3= post.title
-  small Posted #{moment(post.created).format('MMM d, YYYY')}
-  div= post.content
+  h3 #{post.title}
+  p.post-date Posted #{moment(post.created).format('MMMM D, YYYY')}
+  p #{post.content}
+  p.return
+    a(href="/") &laquo;&nbsp;Back to Home Page

@@ -1,8 +1,9 @@
 // Imports goe here
-@import-normalize;
+@import 'reset';
 
 @import 'core';
 @import 'util';
+@import 'blog';
 @import 'overview';
 
 @import 'media-queries';

@@ -13,8 +13,8 @@ function renderEditor(req, res) {
 }
 
 function preview(req, res) {
-  if (!req.body.seoTitle) {
-    req.body.seoTitle = req.body.title;
+  if (!req.body.excerpt) {
+    req.body.excerpt = req.body.content.substr(0, 257) + '...';
   }
   res.render('preview', { preview: req.body });
 }

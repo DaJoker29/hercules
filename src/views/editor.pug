@@ -5,15 +5,13 @@ block content
   form.create-post(action="/editor/preview" method="POST")
     fieldset
       div
-        label(for="title") title
-        input(type="text" name="title" placeholder="Dummy Data")
+        label(for="title") Title
+        input(type="text" name="title" placeholder="Enter title here")
       div
-        label(for="content") content
-        textarea(name="content", cols="30", rows="5" placeholder="Dummy Data")
+        label(for="content") Post
+        textarea(name="content", cols="30", rows="5" placeholder="Enter your post here")
       div
-        label(for="seoTitle") Meta Title (optional)
-        input(type="text" name="seoTitle" placeholder="Dummy Data")
-      div
-        label(for="seoDesc") Meta Description (optional)
-        textarea(name="seoDesc", cols="30", rows="3" placeholder="Dummy Data")
+        label(for="excerpt") Excerpt (optional)
+        textarea(name="excerpt", cols="30", rows="3" placeholder="Enter excerpt here")
+      input(type="hidden" name="_csrf" value=csrfToken)
     button Preview

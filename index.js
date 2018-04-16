@@ -3,7 +3,6 @@ const dotenv = require('dotenv');
 
 const env = dotenv.config();
 
-// TODO: Add CSRF module (csurf) to secure form submissions
 const express = require('express');
 const mongoose = require('mongoose');
 const morganDebug = require('morgan-debug');
@@ -16,15 +15,17 @@ const RedisStore = require('connect-redis')(session);
 const moment = require('moment');
 const numeral = require('numeral');
 const VError = require('verror');
+const csrf = require('csurf');
 
 const debug = require('debug')('herc-init');
 const envDebug = require('debug')('herc-env');
-const routeDebug = require('debug')('herc-routes');
 const dbDebug = require('debug')('herc-database');
+const errDebug = require('debug')('herc-error');
 
 const Routes = require('@herc/routes');
 const Strategies = require('@herc/strategies');
 const { User } = require('@herc/models');
+const Config = require('@herc/config');
 
 /**
  * Check for envirnment variables
@@ -92,6 +93,7 @@ mongoose.connection.on('connected', () => {
   app.use(methodOverride());
   app.use(helmet());
   app.use(session(sessionSettings));
+  app.use(csrf());
   app.use(passport.initialize());
   app.use(passport.session());
 
@@ -104,22 +106,34 @@ mongoose.connection.on('connected', () => {
   passport.deserializeUser(deserializeUser);
 
   app.use(passUserToLocal);
+  app.use(csrfToken);
 
   /**
-   * Load express routes
+   * Load required routes
    */
-  Object.entries(Routes)
-    .sort(a => {
-      if (a[0] === 'Error') {
-        // Error routes must be loaded last.
-        return 1;
-      }
-      return 0;
-    })
-    .forEach(route => {
-      routeDebug(`${route[0]} routes - Loaded`);
-      app.use(route[1]);
-    });
+
+  debug('Loading Auth/Admin modules');
+  app.use(Routes.Admin);
+  app.use(Routes.Auth);
+
+  /**
+   * Configure Modules
+   */
+  if (Config.Blog.active) {
+    debug('Loading Blog module');
+    app.locals.blog = Config.Blog;
+    app.use(Routes.Blog);
+    app.use(Routes.Editor);
+  }
+
+  /**
+   * Error Handling Routes
+   */
+
+  // For Testing Purposes
+  app.use('/fail', forceFailure);
+  app.use('*', pageNotFound);
+  app.use(serverError);
 
   /**
    * Launch Server
@@ -177,5 +191,36 @@ function deserializeUser(id, done) {
 
 function passUserToLocal(req, res, next) {
   res.locals.user = req.user;
+  next();
+}
+
+function forceFailure(req, res, next) {
+  const error = new VError('Intentionally Triggered Error');
+  next(error);
+}
+
+/* eslint-disable no-unused-vars */
+
+function pageNotFound(req, res, next) {
+  errDebug(`Page not found: ${req.path}`);
+  return res.status(404).render('error', {
+    title: 'Page Not Found',
+    message: 'Can not find that page',
+  });
+}
+
+function serverError(err, req, res, next) {
+  const error = new VError(err, 'Unhandled Server Error');
+  errDebug(error.stack);
+  return res.status(500).render('error', {
+    title: 'Server Error',
+    message: 'Looks like something broke.',
+    error: isProduction ? null : error,
+  });
+}
+/* eslint-enable no-unused-vars */
+
+function csrfToken(req, res, next) {
+  res.locals.csrfToken = req.csrfToken();
   next();
 }
