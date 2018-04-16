@@ -5,11 +5,11 @@ html
     link(rel="stylesheet", href="https://fonts.googleapis.com/css?family=Alfa+Slab+One|Roboto")
     link(rel="stylesheet", href="/assets/style.css")
     block meta
-      title #{ pkg.name}
+      title #{blog.name} - #{blog.tagline}
       meta(name="description" content="A super awesome modular CMS for specialized content publishing.")
   body
     h2 
-      a(href="/") #{pkg.name}
+      a(href="/") #{blog.name}
     if user
       nav
         p

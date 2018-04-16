@@ -1,7 +1,7 @@
 extends base
 
 block meta
-  title= post.seoTitle
+  title #{post.seoTitle} - #{blog.tagline}
   meta(name="description" content=post.seoDesc)
   meta(name="tags" content=post.tags.join())
 

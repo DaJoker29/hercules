@@ -19,12 +19,12 @@ const VError = require('verror');
 
 const debug = require('debug')('herc-init');
 const envDebug = require('debug')('herc-env');
-const routeDebug = require('debug')('herc-routes');
 const dbDebug = require('debug')('herc-database');
 
 const Routes = require('@herc/routes');
 const Strategies = require('@herc/strategies');
 const { User } = require('@herc/models');
+const Config = require('@herc/config');
 
 /**
  * Check for envirnment variables
@@ -106,20 +106,22 @@ mongoose.connection.on('connected', () => {
   app.use(passUserToLocal);
 
   /**
-   * Load express routes
+   * Load required routes
    */
-  Object.entries(Routes)
-    .sort(a => {
-      if (a[0] === 'Error') {
-        // Error routes must be loaded last.
-        return 1;
-      }
-      return 0;
-    })
-    .forEach(route => {
-      routeDebug(`${route[0]} routes - Loaded`);
-      app.use(route[1]);
-    });
+
+  debug('Loading Auth/Admin modules');
+  app.use(Routes.Admin);
+  app.use(Routes.Auth);
+
+  /**
+   * Configure Modules
+   */
+  if (Config.Blog.active) {
+    debug('Loading Blog module');
+    app.locals.blog = Config.Blog;
+    app.use(Routes.Blog);
+    app.use(Routes.Editor);
+  }
 
   /**
    * Launch Server
