@@ -3,7 +3,6 @@ const dotenv = require('dotenv');
 
 const env = dotenv.config();
 
-// TODO: Add CSRF module (csurf) to secure form submissions
 const express = require('express');
 const mongoose = require('mongoose');
 const morganDebug = require('morgan-debug');
@@ -16,6 +15,7 @@ const RedisStore = require('connect-redis')(session);
 const moment = require('moment');
 const numeral = require('numeral');
 const VError = require('verror');
+const csrf = require('csurf');
 
 const debug = require('debug')('herc-init');
 const envDebug = require('debug')('herc-env');
@@ -93,6 +93,7 @@ mongoose.connection.on('connected', () => {
   app.use(methodOverride());
   app.use(helmet());
   app.use(session(sessionSettings));
+  app.use(csrf());
   app.use(passport.initialize());
   app.use(passport.session());
 
@@ -105,6 +106,7 @@ mongoose.connection.on('connected', () => {
   passport.deserializeUser(deserializeUser);
 
   app.use(passUserToLocal);
+  app.use(csrfToken);
 
   /**
    * Load required routes
@@ -217,3 +219,8 @@ function serverError(err, req, res, next) {
   });
 }
 /* eslint-enable no-unused-vars */
+
+function csrfToken(req, res, next) {
+  res.locals.csrfToken = req.csrfToken();
+  next();
+}

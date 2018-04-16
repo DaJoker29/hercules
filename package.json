@@ -32,6 +32,7 @@
     "concurrently": "3.5.1",
     "connect-redis": "3.3.3",
     "cssnano": "3.10.0",
+    "csurf": "1.9.0",
     "debug": "3.1.0",
     "dotenv": "5.0.1",
     "eslint": "4.19.1",
