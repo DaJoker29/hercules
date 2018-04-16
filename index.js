@@ -20,6 +20,7 @@ const VError = require('verror');
 const debug = require('debug')('herc-init');
 const envDebug = require('debug')('herc-env');
 const dbDebug = require('debug')('herc-database');
+const errDebug = require('debug')('herc-error');
 
 const Routes = require('@herc/routes');
 const Strategies = require('@herc/strategies');
@@ -124,6 +125,15 @@ mongoose.connection.on('connected', () => {
   }
 
   /**
+   * Error Handling Routes
+   */
+
+  // For Testing Purposes
+  app.use('/fail', forceFailure);
+  app.use('*', pageNotFound);
+  app.use(serverError);
+
+  /**
    * Launch Server
    */
 
@@ -181,3 +191,29 @@ function passUserToLocal(req, res, next) {
   res.locals.user = req.user;
   next();
 }
+
+function forceFailure(req, res, next) {
+  const error = new VError('Intentionally Triggered Error');
+  next(error);
+}
+
+/* eslint-disable no-unused-vars */
+
+function pageNotFound(req, res, next) {
+  errDebug(`Page not found: ${req.path}`);
+  return res.status(404).render('error', {
+    title: 'Page Not Found',
+    message: 'Can not find that page',
+  });
+}
+
+function serverError(err, req, res, next) {
+  const error = new VError(err, 'Unhandled Server Error');
+  errDebug(error.stack);
+  return res.status(500).render('error', {
+    title: 'Server Error',
+    message: 'Looks like something broke.',
+    error: isProduction ? null : error,
+  });
+}
+/* eslint-enable no-unused-vars */
