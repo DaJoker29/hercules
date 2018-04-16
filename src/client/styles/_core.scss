@@ -1,32 +1,43 @@
 :root {
-  --yellow: #fff200;
   --black: #000;
-  --red: #ff0909;
+  --white: #fff;
   --gray: #505050;
-  --blue: #156855;
-  --font-family: 'Amatic SC', cursive;
+  --blue: #00958c;
+  --font-cursive: 'Alfa Slab One', cursive;
+  --font-sans: 'Roboto', sans-serif;
+  --transition: .2s;
 }
 
 html {
   line-height: 1;
   font-size: 30px;
-  font-family: var(--font-family);
+  font-family: var(--font-sans);
 }
 
 a {
   color: var(--blue);
-  font-weight: bold;
   text-decoration: none;
-  text-shadow: 0 1px 1px var(--gray);
-  transition: .3s;
+  transition: var(--transition);
   &:hover {
-    color: var(--black);
+    color: var(--white);
   }
+}
+p + p {
+  margin-top: .5rem;
 }
 
 body {
-  background-color: var(--yellow);
+  background-color: var(--black);
+  color: var(--white);
   padding: 1rem 2rem;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-cursive);
+  margin: 1rem 0;
 }
 
 h2 {
@@ -40,15 +51,14 @@ h3 {
 fieldset {
   outline: 0;
   border: 0;
+  div {
+    margin: .5rem 0;
+  }
 }
 
 legend {
   font-size: 2rem;
-}
-
-label {
-  display: block;
-  font-weight: bold;
+  margin: .5rem 0;
 }
 
 input,
@@ -66,9 +76,10 @@ textarea {
 }
 
 footer {
-  font-size: 0.75rem;
-  text-align: right;
+  font-size: 0.5rem;
   clear: both;
+  margin: 1rem 0;
+  color: var(--gray);
 }
 
 button {
@@ -79,5 +90,15 @@ button {
   color: var(--black);
   font-family: var(--font-family);
   padding: .5rem 1rem;
+  font-weight: bold;
+}
+
+nav {
+  color: var(--gray);
+  font-size: .5rem;
+  margin: .5rem;
+}
+
+strong {
   font-weight: bold;
 }

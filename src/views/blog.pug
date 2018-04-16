@@ -2,9 +2,9 @@ extends base
 
 block content
   each post in posts
-    div
+    .blog-entry
       a(href="/blog/" + post.postID)
-        h3 #{post.title}
-      small #{ post.author.displayName ? post.author.displayName : post.author.username} &bull; #{moment(post.created).format('MMMM d, YYYY')}
-      p #{post.seoDesc}
-      hr
+        div
+          h3.title #{post.title}
+          p.excerpt #{post.seoDesc}
+          p.post-date #{moment(post.created).format('MMMM d, YYYY')}
