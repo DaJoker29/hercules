@@ -1,0 +1,24 @@
+.blog-entry {
+  padding: 1rem;
+  transition: var(--transition);
+  &:hover,
+  &:active {
+    background-color: var(--blue);
+    .post-date {
+      color: var(--black);
+    }
+  }
+  a {
+    color: var(--white);
+  }
+}
+
+.post-date {
+  text-align: right;
+  color: var(--gray);
+  font-size: .75rem;
+}
+
+.return {
+  text-align: right;
+}

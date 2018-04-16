@@ -2,25 +2,26 @@ html
   head
     meta(name="viewport" content="width=device-width, initial-scale=1")
     meta(name="theme-color" content="#fff020")
-    link(rel="stylesheet", href="https://fonts.googleapis.com/css?family=Amatic+SC")
+    link(rel="stylesheet", href="https://fonts.googleapis.com/css?family=Alfa+Slab+One|Roboto")
     link(rel="stylesheet", href="/assets/style.css")
     block meta
-      title #{pkg.name}
+      title #{ pkg.name}
       meta(name="description" content="A super awesome modular CMS for specialized content publishing.")
   body
     h2 
       a(href="/") #{pkg.name}
     if user
-      p Logged in as #{user.displayName || user.username}&nbsp;-&nbsp;
-        a(href="/logout") (Logout)
-        |
-        span &nbsp;=>&nbsp;
-        |
-        a(href="/admin") Admin
-        |
-        span &nbsp;=>&nbsp;
-        |
-        a(href="/editor") Blog Editor
+      nav
+        p
+          strong #{user.displayName || user.username}
+          a(href="/logout")
+            span  (Logout)
+        p
+          a(href="/admin") Admin
+          |
+          span &nbsp;&bull;&nbsp;
+          |
+          a(href="/editor") Blog Editor
     block content
     footer Crafted by Zero Daedalus &copy; 2018
       unless user
