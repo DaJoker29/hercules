@@ -70,6 +70,7 @@
     "keyword-extractor": "0.0.15",
     "lint-staged": "7.0.4",
     "load-grunt-tasks": "3.5.2",
+    "marked": "0.3.19",
     "method-override": "2.3.10",
     "moment": "2.21.0",
     "mongoose": "5.0.11",

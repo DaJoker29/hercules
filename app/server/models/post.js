@@ -11,7 +11,7 @@ const postSchema = new Schema({
     default: shortid.generate,
     unique: true,
   },
-  created: { type: Date, required: true, default: Date.now() },
+  created: { type: Date, required: true, default: Date.now },
   title: { type: String, required: true },
   content: { type: String, required: true },
   tags: [{ type: String }],
