@@ -12,7 +12,7 @@
   },
   "scripts": {
     "lint": "yarn eslint . && yarn stylelint app/**/*.scss",
-    "fix": "yarn eslint --fix .",
+    "fix": "yarn eslint --fix . && yarn stylelint --fix app/**/*.scss",
     "preversion": "git checkout master && git merge --no-ff develop -m 'Pull changes for release bump'",
     "postversion": "git push && git push --tags && git checkout develop && git merge --no-ff master -m 'Sync Develop branch' && git push",
     "preinstall": "node tools/pre-install",
@@ -24,10 +24,8 @@
     "cli": "node tools/cli"
   },
   "lint-staged": {
-    "*.js": [
-      "eslint --fix",
-      "git add"
-    ]
+    "*.js": ["eslint --fix","git add"],
+    "*.scss": [ "stylelint --fix", "git add"]
   },
   "dependencies": {
     "autoprefixer": "8.2.0",

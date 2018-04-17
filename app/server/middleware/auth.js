@@ -6,5 +6,5 @@ module.exports.ENSURE_AUTH = (req, res, next) => {
   ) {
     return next();
   }
-  res.redirect('/login');
+  return res.redirect('/login');
 };
