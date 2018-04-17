@@ -5,14 +5,11 @@ html
     link(rel="stylesheet", href="https://fonts.googleapis.com/css?family=Alfa+Slab+One|Roboto")
     link(rel="stylesheet", href="/assets/style.css")
     block meta
-      if config.Blog.active
-        title #{blog.name} - #{blog.tagline}
-      else
-        title #{pkg.name} - #{pkg.description}
-      meta(name="description" content="A super awesome modular CMS for specialized content publishing.")
+      title #{config.name} - #{config.tagline}
+      meta(name="description" content=config.description)
   body
     h2 
-      a(href="/") #{config.Blog.active ? blog.name : pkg.name}
+      a(href="/") #{config.name}
     if user
       nav
         p
@@ -21,7 +18,7 @@ html
             span  (Logout)
         p
           a(href="/admin") Admin
-          if config.Blog.active
+          if config.modules.blog
             |
             span &nbsp;&bull;&nbsp;
             |

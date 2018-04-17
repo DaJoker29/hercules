@@ -25,7 +25,10 @@ const errDebug = require('debug')('herc-error');
 const Routes = require('@herc/routes');
 const Strategies = require('@herc/strategies');
 const { User, Post } = require('@herc/models');
-const Config = require('@herc/config');
+const { Config, Defaults } = require('@herc/config');
+
+const config = Object.assign({}, Defaults, Config);
+debug(config);
 
 /**
  * Check for envirnment variables
@@ -97,10 +100,12 @@ mongoose.connection.on('connected', () => {
   app.use(passport.initialize());
   app.use(passport.session());
 
-  app.locals.moment = moment;
-  app.locals.numeral = numeral;
-  app.locals.pkg = pkg;
-  app.locals.config = Config;
+  app.locals = {
+    moment,
+    numeral,
+    pkg,
+    config,
+  };
 
   passport.use(Strategies.Local);
   passport.serializeUser(serializeUser);
@@ -121,14 +126,14 @@ mongoose.connection.on('connected', () => {
   /**
    * Configure Modules
    */
-  if (Config.Blog.active) {
+  if (config.modules.blog) {
     debug('Loading Blog module');
     app.locals.blog = Config.Blog;
     app.use(Routes.Blog);
     app.use(Routes.Editor);
   }
 
-  if (Config.Podcast.active) {
+  if (config.modules.podcast) {
     debug('Loading Podcast module');
     app.locals.podcast = Config.Podcast;
     app.use(Routes.Podcast);
@@ -234,7 +239,7 @@ function csrfToken(req, res, next) {
 }
 
 function renderIndex(req, res, next) {
-  if (Config.Blog.active) {
+  if (config.modules.blog) {
     return Post.find()
       .sort({ created: -1 })
       .populate('author')
