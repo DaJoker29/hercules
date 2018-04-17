@@ -24,7 +24,7 @@ const errDebug = require('debug')('herc-error');
 
 const Routes = require('@herc/routes');
 const Strategies = require('@herc/strategies');
-const { User } = require('@herc/models');
+const { User, Post } = require('@herc/models');
 const Config = require('@herc/config');
 
 /**
@@ -100,6 +100,7 @@ mongoose.connection.on('connected', () => {
   app.locals.moment = moment;
   app.locals.numeral = numeral;
   app.locals.pkg = pkg;
+  app.locals.config = Config;
 
   passport.use(Strategies.Local);
   passport.serializeUser(serializeUser);
@@ -115,6 +116,7 @@ mongoose.connection.on('connected', () => {
   debug('Loading Auth/Admin modules');
   app.use(Routes.Admin);
   app.use(Routes.Auth);
+  app.get('/', renderIndex);
 
   /**
    * Configure Modules
@@ -124,6 +126,12 @@ mongoose.connection.on('connected', () => {
     app.locals.blog = Config.Blog;
     app.use(Routes.Blog);
     app.use(Routes.Editor);
+  }
+
+  if (Config.Podcast.active) {
+    debug('Loading Podcast module');
+    app.locals.podcast = Config.Podcast;
+    app.use(Routes.Podcast);
   }
 
   /**
@@ -223,4 +231,21 @@ function serverError(err, req, res, next) {
 function csrfToken(req, res, next) {
   res.locals.csrfToken = req.csrfToken();
   next();
+}
+
+function renderIndex(req, res, next) {
+  if (Config.Blog.active) {
+    return Post.find()
+      .sort({ created: -1 })
+      .populate('author')
+      .then(posts => {
+        res.render('blog', { posts });
+      })
+      .catch(e => next(new VError(e, 'Problem rendering blog')));
+  } else {
+    return res.render('error', {
+      title: 'No Blog Found',
+      message: 'Not a whole lot to show here.',
+    });
+  }
 }

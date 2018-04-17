@@ -9,19 +9,8 @@ const router = new Router();
 
 router.post('/blog', ENSURE_AUTH, createPost);
 router.get('/blog/:slug', renderPost);
-router.get('/', renderBlog);
 
 module.exports = router;
-
-function renderBlog(req, res, next) {
-  return Post.find()
-    .sort({ created: -1 })
-    .populate('author')
-    .then(posts => {
-      res.render('blog', { posts });
-    })
-    .catch(e => next(new VError(e, 'Problem rendering blog')));
-}
 
 function createPost(req, res, next) {
   const { content, title, excerpt } = req.body;
