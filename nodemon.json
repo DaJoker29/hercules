@@ -8,5 +8,6 @@
     "app/**/*.js",
     "index.js",
     ".env"
-  ]
+  ],
+  "ignore": ["app/public"]
 }
