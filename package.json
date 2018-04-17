@@ -1,6 +1,6 @@
 {
   "name": "herc",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "description": "Modular CMS Platform",
   "main": "index.js",
   "repository": "git@github.com:DaJoker29/herc.git",
@@ -24,8 +24,14 @@
     "cli": "node tools/cli"
   },
   "lint-staged": {
-    "*.js": ["eslint --fix","git add"],
-    "*.scss": [ "stylelint --fix", "git add"]
+    "*.js": [
+      "eslint --fix",
+      "git add"
+    ],
+    "*.scss": [
+      "stylelint --fix",
+      "git add"
+    ]
   },
   "dependencies": {
     "autoprefixer": "8.2.0",
