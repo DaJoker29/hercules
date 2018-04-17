@@ -11,7 +11,7 @@
     "node": "~8.9.4"
   },
   "scripts": {
-    "lint": "yarn eslint .",
+    "lint": "yarn eslint . && yarn stylelint app/**/*.scss",
     "fix": "yarn eslint --fix .",
     "preversion": "git checkout master && git merge --no-ff develop -m 'Pull changes for release bump'",
     "postversion": "git push && git push --tags && git checkout develop && git merge --no-ff master -m 'Sync Develop branch' && git push",
@@ -24,7 +24,10 @@
     "cli": "node tools/cli"
   },
   "lint-staged": {
-    "*.js": ["eslint --fix", "git add"]
+    "*.js": [
+      "eslint --fix",
+      "git add"
+    ]
   },
   "dependencies": {
     "autoprefixer": "8.2.0",
@@ -80,6 +83,9 @@
     "random-token": "0.0.8",
     "rss": "1.2.2",
     "shortid": "2.2.8",
+    "stylelint": "9.2.0",
+    "stylelint-config-recommended-scss": "3.2.0",
+    "stylelint-scss": "3.0.0",
     "supports-color": "5.3.0",
     "thirty-two": "1.0.2",
     "verror": "1.10.0"
