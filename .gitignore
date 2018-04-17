@@ -62,3 +62,6 @@ dist
 
 # Directory with podcast media
 media
+
+# Site Specific configuration
+*/config/config.js
