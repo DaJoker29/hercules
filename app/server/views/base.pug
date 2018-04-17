@@ -3,13 +3,13 @@ html
     meta(name="viewport" content="width=device-width, initial-scale=1")
     meta(name="theme-color" content="#fff020")
     link(rel="stylesheet", href="https://fonts.googleapis.com/css?family=Alfa+Slab+One|Roboto")
-    link(rel="stylesheet", href="/assets/style.css")
+    link(rel="stylesheet", href="/css/style.css")
     block meta
-      title #{blog.name} - #{blog.tagline}
-      meta(name="description" content="A super awesome modular CMS for specialized content publishing.")
+      title #{config.name} - #{config.tagline}
+      meta(name="description" content=config.description)
   body
     h2 
-      a(href="/") #{blog.name}
+      a(href="/") #{config.name}
     if user
       nav
         p
@@ -18,10 +18,11 @@ html
             span  (Logout)
         p
           a(href="/admin") Admin
-          |
-          span &nbsp;&bull;&nbsp;
-          |
-          a(href="/editor") Blog Editor
+          if config.modules.blog
+            |
+            span &nbsp;&bull;&nbsp;
+            |
+            a(href="/editor") Blog Editor
     block content
     footer Crafted by Zero Daedalus &copy; 2018
       unless user

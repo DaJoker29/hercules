@@ -1,3 +1,9 @@
+.post-date {
+  text-align: right;
+  color: var(--gray);
+  font-size: .75rem;
+}
+
 .blog-entry {
   padding: 1rem;
   transition: var(--transition);
@@ -11,12 +17,6 @@
   a {
     color: var(--white);
   }
-}
-
-.post-date {
-  text-align: right;
-  color: var(--gray);
-  font-size: .75rem;
 }
 
 .return {

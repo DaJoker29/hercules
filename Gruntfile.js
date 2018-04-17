@@ -11,7 +11,7 @@ module.exports = function(grunt) {
           outputStyle: 'expanded',
         },
         files: {
-          'dist/style.css': ['src/client/styles/style.scss'],
+          'app/public/css/style.css': ['app/client/styles/style.scss'],
         },
       },
       prod: {
@@ -19,7 +19,7 @@ module.exports = function(grunt) {
           outputStyle: 'compressed',
         },
         files: {
-          'dist/style.css': ['src/client/styles/style.scss'],
+          'app/public/css/style.css': ['app/client/styles/style.scss'],
         },
       },
     },
@@ -34,7 +34,7 @@ module.exports = function(grunt) {
             require('autoprefixer')({ browsers: 'last 2 versions' }),
           ],
         },
-        src: 'dist/style.css',
+        src: 'app/public/css/style.css',
       },
       prod: {
         options: {
@@ -44,16 +44,16 @@ module.exports = function(grunt) {
             require('cssnano')(),
           ],
         },
-        src: 'dist/style.css',
+        src: 'app/public/css/style.css',
       },
     },
     eslint: {
-      target: ['src/client/scripts/**/*.js'],
+      target: ['app/client/scripts/**/*.js'],
     },
     uglify: {
       options: {
         sourceMap: true,
-        sourceMapName: 'dist/scripts.js.map',
+        sourceMapName: 'app/public/js/scripts.js.map',
       },
       dev: {
         options: {
@@ -62,7 +62,7 @@ module.exports = function(grunt) {
           beautify: true,
         },
         files: {
-          'dist/scripts.js': ['src/client/scripts/**/*.js'],
+          'app/public/js/scripts.js': ['app/client/scripts/**/*.js'],
         },
       },
       prod: {
@@ -71,7 +71,7 @@ module.exports = function(grunt) {
           mangle: true,
         },
         files: {
-          'dist/scripts.js': ['src/client/scripts/**/*.js'],
+          'app/public/js/scripts.js': ['app/client/scripts/**/*.js'],
         },
       },
     },
@@ -80,25 +80,25 @@ module.exports = function(grunt) {
         files: [
           {
             expand: true,
-            cwd: 'src/client/images/',
+            cwd: 'app/client/images/',
             src: '**',
-            dest: 'dist/images/',
+            dest: 'app/public/img/',
             flatten: true,
           },
         ],
       },
     },
-    clean: ['dist'],
+    clean: ['app/public'],
     watch: {
       options: {
         livereload: true,
       },
       css: {
-        files: 'src/client/styles/**/*.scss',
+        files: 'app/client/styles/**/*.scss',
         tasks: ['sass:dev', 'postcss'],
       },
       js: {
-        files: 'src/client/scripts/*.js',
+        files: 'app/client/scripts/*.js',
         tasks: ['eslint', 'uglify:dev'],
       },
     },

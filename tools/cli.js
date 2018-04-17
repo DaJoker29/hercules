@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 const program = require('commander');
-const { User } = require('@herc/models');
+const { User } = require('@herc/server/models');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const base32 = require('thirty-two');
