@@ -23,6 +23,9 @@
     "access": "node tools/show-access-code",
     "cli": "node tools/cli"
   },
+  "lint-staged": {
+    "*.js": ["eslint --fix", "git add"]
+  },
   "dependencies": {
     "autoprefixer": "8.2.0",
     "babel-eslint": "8.2.2",
@@ -58,6 +61,7 @@
     "grunt-sass": "2.1.0",
     "helmet": "3.12.0",
     "keyword-extractor": "0.0.15",
+    "lint-staged": "7.0.4",
     "load-grunt-tasks": "3.5.2",
     "method-override": "2.3.10",
     "moment": "2.21.0",
