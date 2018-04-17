@@ -102,3 +102,14 @@ nav {
 strong {
   font-weight: bold;
 }
+
+em {
+  font-style: italic;
+}
+
+blockquote {
+  margin: 1rem;
+  padding-left: 1rem;
+  border-left: .5rem solid var(--gray);
+  color: var(--gray);
+}

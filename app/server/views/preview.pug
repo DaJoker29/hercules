@@ -9,7 +9,7 @@ block content
   h4 Excerpt
   p #{preview.excerpt}
   h3 #{preview.title}
-  p #{preview.content}
+  p !{marked(preview.content)}
   p
     form(action="/blog" method="POST")
       input(type="hidden" name="title" value=preview.title)

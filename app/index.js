@@ -11,6 +11,7 @@ const moment = require('moment');
 const numeral = require('numeral');
 const VError = require('verror');
 const csrf = require('csurf');
+const marked = require('marked');
 
 const debug = require('debug')('herc-init');
 const errDebug = require('debug')('herc-error');
@@ -60,6 +61,7 @@ app.locals = {
   moment,
   numeral,
   config,
+  marked,
 };
 
 passport.use(Strategies.Local);
