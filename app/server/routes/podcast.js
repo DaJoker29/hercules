@@ -4,7 +4,7 @@ const VError = require('verror');
 const fs = require('fs-extra');
 const RSS = require('rss');
 const debug = require('debug')('caster-podcast');
-const { ENSURE_AUTH } = require('@herc/middleware').Auth;
+const { ENSURE_AUTH } = require('@herc/server/middleware').Auth;
 const { Podcast, Episode } = require('../models');
 
 const upload = multer();

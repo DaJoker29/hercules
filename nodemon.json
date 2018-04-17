@@ -5,7 +5,7 @@
   },
   "ext": "js json",
   "watch": [
-    "src/**/*.js",
+    "app/**/*.js",
     "index.js",
     ".env"
   ]

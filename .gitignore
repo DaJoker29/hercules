@@ -65,3 +65,6 @@ media
 
 # Site Specific configuration
 */config/config.js
+
+# Compiled assets
+public

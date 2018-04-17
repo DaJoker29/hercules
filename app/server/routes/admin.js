@@ -1,6 +1,6 @@
 const { Router } = require('express');
 const VError = require('verror');
-const { ENSURE_AUTH } = require('@herc/middleware').Auth;
+const { ENSURE_AUTH } = require('@herc/server/middleware').Auth;
 const { Podcast, Post } = require('../models');
 
 const router = Router();

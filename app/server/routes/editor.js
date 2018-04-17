@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const { ENSURE_AUTH } = require('@herc/middleware').Auth;
+const { ENSURE_AUTH } = require('@herc/server/middleware').Auth;
 
 const router = Router();
 
