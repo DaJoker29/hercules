@@ -2,17 +2,13 @@
 
 const program = require('commander');
 const { User } = require('@herc/server/models');
-const mongoose = require('mongoose');
-const dotenv = require('dotenv');
 const base32 = require('thirty-two');
-const pkg = require('../package.json');
-
-dotenv.config();
+const config = require('@herc/config');
+const db = require('@herc/db_connect');
 
 program
-  .description(`CLI tool for the ${pkg.name.toUpperCase()} app`)
-  .option('-d, --dev', 'Launch in dev mode')
-  .version(pkg.version);
+  .description(`CLI tool for the ${config.pkg.name.toUpperCase()} app`)
+  .version(config.pkg.version);
 
 program
   .command('user [cmd]')
@@ -25,7 +21,6 @@ program
     /////////////////////////
     // Connect to database //
     /////////////////////////
-    mongoose.connect(program.dev ? process.env.TEST_DB : process.env.DB);
 
     // Create User
     if ('create' === cmd) {
@@ -44,7 +39,9 @@ program
 
       await User.findOne({ username })
         .then(user => {
-          const uri = `otpauth://totp/Herc:${user.username}?secret=${base32
+          const uri = `otpauth://totp/${config.name.replace(/ /g, '')}${
+            config.env === 'production' ? '' : '-' + config.env
+          }:${user.username}?secret=${base32
             .encode(user.token)
             .toString()
             .replace(/=/g, '')}`;
@@ -88,7 +85,7 @@ program
     //////////////////////////////
     // Disconnect from Database //
     //////////////////////////////
-    mongoose.connection.close();
+    db.close();
   });
 
 program.parse(process.argv);
