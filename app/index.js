@@ -85,6 +85,7 @@ app.get('/', renderIndex);
  */
 if (config.modules.blog) {
   debug('Loading Blog module');
+  app.use(Routes.Search);
   app.use(Routes.Blog);
   app.use(Routes.Editor);
 }
@@ -160,7 +161,10 @@ function renderIndex(req, res, next) {
         const tags = [];
         posts.forEach(post => {
           post.tags.forEach(tag => {
-            if (tags.indexOf(tag) === -1) {
+            if (
+              tags.indexOf(tag) === -1 &&
+              !/[#<>*.+\\[\]|]|^h[0-9]$/gi.test(tag)
+            ) {
               tags.push(tag);
             }
           });
