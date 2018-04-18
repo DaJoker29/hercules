@@ -25,8 +25,8 @@ const { User, Post } = require('@herc/server/models');
  * Variables and Constants
  */
 
+const isProd = config.env === 'production';
 const app = (module.exports = express());
-const isProduction = process.env.NODE_ENV === 'production';
 const sessionSettings = {
   resave: false,
   secret: process.env.SESSION_SECRET || 'howsekritisit',
@@ -47,7 +47,7 @@ app.set('views', path.join(__dirname, 'server/views'));
 app.use(express.static('app/public'));
 // app.use('/media', express.static('media'));
 // app.use('/.well-known', express.static('.well-known', { dotfiles: 'allow' }));
-app.use(morganDebug('herc-morgan', isProduction ? 'combined' : 'dev'));
+app.use(morganDebug('herc-morgan', isProd ? 'combined' : 'dev'));
 app.use(bodyParser.urlencoded({ extended: 'true' }));
 app.use(bodyParser.json());
 app.use(methodOverride());
@@ -141,7 +141,7 @@ function serverError(err, req, res, next) {
   return res.status(500).render('error', {
     title: 'Server Error',
     message: 'Looks like something broke.',
-    error: isProduction ? null : error,
+    error: isProd ? null : error,
   });
 }
 /* eslint-enable no-unused-vars */
