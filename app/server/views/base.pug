@@ -4,12 +4,20 @@ html
     meta(name="theme-color" content="#fff020")
     link(rel="stylesheet", href="https://fonts.googleapis.com/css?family=Alfa+Slab+One|Roboto")
     link(rel="stylesheet", href="/css/style.css")
+    script(src="https://code.jquery.com/jquery-1.12.4.js")
+    script(src="https://code.jquery.com/ui/1.12.1/jquery-ui.js")
+    script(src="/js/scripts.js")
     block meta
       title #{config.name} - #{config.tagline}
       meta(name="description" content=config.description)
   body
     h2 
       a(href="/") #{config.name}
+    form(action="/search")
+      label(for="search") Search
+      input.search(type="text" name="query")
+      input(type="hidden" name="_csrf" value=csrfToken)
+      button Search
     if user
       nav
         p

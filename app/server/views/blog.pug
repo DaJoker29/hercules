@@ -1,6 +1,7 @@
 extends base
 
 block content
+  div.tags(data-tags=tags.join(','))
   each post in posts
     .blog-entry
       a(href="/blog/" + post.postID)

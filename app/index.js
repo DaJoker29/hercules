@@ -157,7 +157,15 @@ function renderIndex(req, res, next) {
       .sort({ created: -1 })
       .populate('author')
       .then(posts => {
-        res.render('blog', { posts });
+        const tags = [];
+        posts.forEach(post => {
+          post.tags.forEach(tag => {
+            if (tags.indexOf(tag) === -1) {
+              tags.push(tag);
+            }
+          });
+        });
+        res.render('blog', { posts, tags });
       })
       .catch(e => next(new VError(e, 'Problem rendering blog')));
   } else {
