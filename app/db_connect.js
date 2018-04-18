@@ -1,9 +1,7 @@
 const mongoose = require('mongoose');
 const debug = require('debug')('herc-database');
 const VError = require('verror');
-
-const isProduction = process.env.NODE_ENV === 'production';
-const db = isProduction ? process.env.DB : process.env.TEST_DB;
+const { db } = require('@herc/config');
 
 debug(`Connecting to database: ${db}`);
 mongoose.connect(db);

@@ -1,23 +1,25 @@
 const http = require('http');
 const dotenv = require('dotenv').config();
 const debug = require('debug')('herc-launch');
-const env = require('debug')('herc-env');
 const VError = require('verror');
-const config = require('@herc/config');
-const db = require('@herc/db_connect');
-const app = require('./app');
 
 /**
- * Check for envirnment variables
+ * Check for env variables
  */
 
 if (dotenv.error) {
   throw new VError(dotenv.error, 'Could not load environment variables');
 } else {
-  Object.entries(dotenv.parsed).forEach(rule => {
-    env(`${rule[0]} = ${rule[1]}`);
-  });
+  debug('Environment variables loaded from .env');
 }
+
+/**
+ * Load config and app
+ */
+
+const config = require('@herc/config');
+const db = require('@herc/db_connect');
+const app = require('./app');
 
 /**
  * Create/Launch Server
@@ -35,8 +37,8 @@ db.on('connected', launchServer);
  */
 
 function launchServer() {
-  debug('Launching server');
-  server.listen(process.env.PORT);
+  debug(`Launching server in ${config.env} mode`);
+  server.listen(config.port);
 }
 
 function onError(e) {
@@ -44,11 +46,7 @@ function onError(e) {
 }
 
 function onListen() {
-  debug(
-    `${config.name} has spun up @ http://${process.env.HOST}:${
-      process.env.PORT
-    }`,
-  );
+  debug(`${config.name} has spun up @ http://localhost:${config.port}`);
 }
 
 /**

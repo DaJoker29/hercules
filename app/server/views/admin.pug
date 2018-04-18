@@ -1,7 +1,8 @@
 extends base
 
 block content
-  if (posts)
+  h2 Admin
+  if (posts && posts.length)
     h3 Blog Overview
     each post in posts
       div
@@ -19,8 +20,11 @@ block content
           span &nbsp;--&nbsp;
           |
           em #{post.tags.length} tags
+  else if posts
+    h3 No posts found
+    p You should start writing.
 
-  if (podcasts)
+  if (podcasts && podcasts.length)
     h3 Podcast Overview
     .podcasts
       each podcast in podcasts
@@ -71,3 +75,6 @@ block content
           label(for="explicit2") Clean
           input#explicit2(type="radio" name="explicit" value="no" placeholder="Dummy")
       button Create
+  else if podcasts
+    h3 No podcasts found
+    p You should start casting.
