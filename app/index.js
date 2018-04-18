@@ -129,7 +129,6 @@ function forceFailure(req, res, next) {
 /* eslint-disable no-unused-vars */
 
 function pageNotFound(req, res, next) {
-  errDebug(`Page not found: ${req.path}`);
   return res.status(404).render('error', {
     title: 'Page Not Found',
     message: 'Can not find that page',
