@@ -173,8 +173,9 @@ function renderIndex(req, res, next) {
       .catch(e => next(new VError(e, 'Problem rendering blog')));
   } else {
     return res.render('error', {
-      title: 'No Blog Found',
-      message: 'Not a whole lot to show here.',
+      title: 'Uhhh...',
+      message: "These are not the droids you're looking for.",
+      error: 'Error: No modules loaded, genius!',
     });
   }
 }

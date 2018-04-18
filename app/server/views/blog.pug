@@ -1,7 +1,8 @@
 extends base
 
 block content
-  if posts.length > 0
+  h2 Blog
+  if (posts && posts.length)
     div.tags(data-tags=tags.join(','))
     form(action="/search")
       label(for="search") Search
@@ -14,5 +15,5 @@ block content
             h3.title #{post.title}
             p.excerpt #{post.excerpt}
             p.post-date #{moment(post.created).format('MMMM D, YYYY')}
-  else
-    h4 Not a lot to see here.
+  else if posts
+    h4 Not a lot to see yet.

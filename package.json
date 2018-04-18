@@ -48,6 +48,7 @@
     "cssnano": "3.10.0",
     "csurf": "1.9.0",
     "debug": "3.1.0",
+    "deepmerge": "2.1.0",
     "dotenv": "5.0.1",
     "eslint": "4.19.1",
     "eslint-config-airbnb": "16.1.0",
