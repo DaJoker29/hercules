@@ -38,6 +38,21 @@ function createPost(req, res, next) {
 
 function renderPost(req, res, next) {
   const { slug } = req.params;
+  const { action } = req.query;
+
+  if (action) {
+    switch (action) {
+      case 'delete': {
+        return Post.findOneAndRemove({ postID: slug })
+          .then(post => {
+            debug(`Deleted post: ${post.title} (${post.postID})`);
+            return res.redirect('/admin');
+          })
+          .catch(e => next(new VError(e, 'Problem deleting post ${slug}')));
+      }
+    }
+  }
+
   return Post.findOne({ postID: slug })
     .then(post => {
       res.render('post', { post });

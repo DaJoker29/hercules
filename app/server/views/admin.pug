@@ -10,7 +10,7 @@ block content
         |
         span &nbsp;--&nbsp;
         |
-        span #{moment(post.created).format('MMMM D, YYYY hh:mm:ssa')}
+        span #{moment(post.created).format('MMM Do, Y')}
         |
         span &nbsp;--&nbsp;
         |
@@ -20,6 +20,10 @@ block content
           span &nbsp;--&nbsp;
           |
           em #{post.tags.length} tags
+        |
+        span &nbsp;--&nbsp;
+        |
+        a(href="/blog/" + post.postID + "?action=delete") Delete
   else if posts
     h3 No posts found
     p You should start writing.

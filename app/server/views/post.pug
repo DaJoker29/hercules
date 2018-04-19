@@ -11,3 +11,6 @@ block content
   p !{marked(post.content)}
   p.return
     a(href="/") &laquo;&nbsp;Back to Home Page
+    if user
+      p
+        a(href="?action=delete") Delete this post
