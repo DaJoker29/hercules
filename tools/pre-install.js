@@ -6,10 +6,10 @@ console.log('\nStart of PREINSTALL\n');
 
 const symlinks = [
   resolve(__dirname, '../node_modules/@herc'),
-  resolve(__dirname, '../node_modules/@herc-tools'),
+  resolve(__dirname, '../node_modules/@tools'),
 ];
 
-console.log(`--Removing ${symlinks.length} symlinks from node_modules...`);
+console.log(`-Removing ${symlinks.length} symlinks from node_modules...`);
 
 symlinks.forEach(symlink => {
   if (fs.existsSync(symlink)) {
