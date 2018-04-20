@@ -7,7 +7,8 @@ block meta
 
 block content
   h3 #{post.title}
-  p.post-date Posted #{moment(post.created).format('MMMM D, YYYY')}
+  p.post-date #{moment(post.created).format('MMM D, YYYY')} by 
+    strong #{post.author.displayName || post.author.username}
   p !{marked(post.content)}
   p.return
     a(href="/") &laquo;&nbsp;Back to Home Page

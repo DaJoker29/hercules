@@ -78,6 +78,7 @@ function renderPost(req, res, next) {
   }
 
   return Post.findOne({ postID: slug })
+    .populate('author')
     .then(post => {
       res.render('post', { post });
     })

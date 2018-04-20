@@ -5,29 +5,32 @@ block content
   if (posts && posts.length)
     h3 Blog Overview
     each post in posts
-      div
-        a(href="/blog/" + post.postID) #{post.title}
-        |
-        span &nbsp;--&nbsp;
-        |
-        span #{moment(post.created).format('MMM Do, Y')}
-        |
-        span &nbsp;--&nbsp;
-        |
-        span
-          em #{post.content.split(' ').length} words
+      p
+        p
+          a(href="/blog/" + post.postID) #{post.title}
+        small
+          span #{moment(post.created).format('M/D/YY, h:mma')}
           |
-          span &nbsp;--&nbsp;
+          span &nbsp;&bull;&nbsp;
           |
-          em #{post.tags.length} tags
-        |
-        span &nbsp;--&nbsp;
-        |
-        a(href="/blog/" + post.postID + "?action=edit") Edit
-        |
-        span &nbsp;--&nbsp;
-        |
-        a(href="/blog/" + post.postID + "?action=delete") Delete
+          span #{post.author.displayName || post.author.username}
+          |
+          span &nbsp;&bull;&nbsp;
+          |
+          span
+            em #{post.content.split(' ').length} words
+            |
+            span &nbsp;&bull;&nbsp;
+            |
+            em #{post.tags.length} keyword(s)
+          |
+          span &nbsp;&bull;&nbsp;
+          |
+          a(href="/blog/" + post.postID + "?action=edit") Edit
+          |
+          span &nbsp;&bull;&nbsp;
+          |
+          a(href="/blog/" + post.postID + "?action=delete") Delete
   else if posts
     h3 No posts found
     p You should start writing.
