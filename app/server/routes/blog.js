@@ -15,6 +15,7 @@ module.exports = router;
 function createPost(req, res, next) {
   const { content, title, excerpt } = req.body;
   // Filter out weird characters before tagging
+  // TODO: Tagging doesn't work well with apostrophes
   const tags = extractor.extract(content.replace(/[^A-Za-z0-9 ]/g, ' '), {
     language: 'english',
     remove_digits: true,
