@@ -29,7 +29,6 @@ p + p {
 body {
   background-color: var(--black);
   color: var(--white);
-  padding: 1rem 2rem;
 }
 
 h1,
@@ -37,7 +36,7 @@ h2,
 h3,
 h4 {
   font-family: var(--font-cursive);
-  margin: 1rem 0;
+  margin: 1rem .5rem;
 }
 
 h2 {
@@ -69,17 +68,21 @@ textarea {
   font-family: var(--font-family);
   background-color: transparent;
   border: 0;
-  color: var(--gray);
+  color: var(--white);
   width: 100%;
   resize: none;
   appearance: none;
 }
 
 footer {
-  font-size: 0.5rem;
   clear: both;
   margin: 1rem 0;
+}
+
+footer,
+small {
   color: var(--gray);
+  font-size: 0.5rem;
 }
 
 button {

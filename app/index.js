@@ -157,18 +157,13 @@ function renderIndex(req, res, next) {
       .sort({ created: -1 })
       .populate('author')
       .then(posts => {
-        const tags = [];
-        posts.forEach(post => {
-          post.tags.forEach(tag => {
-            if (
-              tags.indexOf(tag) === -1 &&
-              !/[#<>*.+\\[\]|]|^h[0-9]$/gi.test(tag)
-            ) {
-              tags.push(tag);
-            }
-          });
+        // Filtering Keywords
+        let result = [];
+        posts.forEach(post => (result = [...result, ...fetchKeywords(post)]));
+        return res.render('blog', {
+          posts,
+          keywords: Array.from(new Set(result)),
         });
-        res.render('blog', { posts, tags });
       })
       .catch(e => next(new VError(e, 'Problem rendering blog')));
   } else {
@@ -178,4 +173,21 @@ function renderIndex(req, res, next) {
       error: 'Error: No modules loaded, genius!',
     });
   }
+}
+
+function fetchKeywords(post) {
+  const { title, excerpt, tags } = post;
+  return [
+    ...sanitize(title.split(' ')),
+    ...sanitize(excerpt.split(' ')),
+    ...sanitize(tags),
+  ];
+}
+
+function sanitize(arr) {
+  return arr.map(filtered);
+}
+
+function filtered(str) {
+  return str.toLowerCase().replace(/[^A-Za-z0-9 ]/g, '');
 }

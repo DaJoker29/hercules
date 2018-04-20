@@ -3,11 +3,9 @@ extends base
 block content
   h2 Blog
   if (posts && posts.length)
-    div.tags(data-tags=tags.join(','))
+    div.keywords(data-keywords=keywords.join(','))
     form(action="/search")
-      label(for="search") Search
-      input.search(type="text" name="term")
-      button Search
+      input.search(type="text" name="term" placeholder="Search...")
     each post in posts
       .blog-entry
         a(href="/blog/" + post.postID)

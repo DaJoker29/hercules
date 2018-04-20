@@ -6,4 +6,7 @@ module.exports = {
     blog: true,
     podcast: false,
   },
+  blog: {
+    wordTarget: 1000,
+  },
 };
