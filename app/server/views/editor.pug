@@ -1,17 +1,19 @@
 extends base
 
 block content
-  h2 Editor
+  small.word-counter
+    span.word-count
+    |
+    span /
+    |
+    span.word-target #{config.blog.wordTarget}
   form.create-post(action="/editor/preview" method="POST")
     fieldset
       div
-        label(for="title") Title
-        input(type="text" name="title" placeholder="Enter title here")
+        input.editor-title(type="text" name="title" placeholder="Title" value="Title Goes Here")
       div
-        label(for="content") Post
-        textarea(name="content", cols="30", rows="15" placeholder="Enter your post here")
+        textarea.editor-content(name="content", cols="30", rows="12" placeholder="Text") Text Goes Here
       div
-        label(for="excerpt") Excerpt (optional)
-        textarea(name="excerpt", cols="30", rows="3" placeholder="Enter excerpt here")
+        textarea.editor-excerpt(name="excerpt", cols="30", rows="3" placeholder="Excerpt/Summary (optional)")
       input(type="hidden" name="_csrf" value=csrfToken)
     button Preview

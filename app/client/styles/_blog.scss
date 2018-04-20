@@ -22,3 +22,17 @@
 .return {
   text-align: right;
 }
+
+.word-counter {
+  display: block;
+  text-align: right;
+}
+
+.editor-title {
+  font-weight: bold;
+  font-size: 1.25em;
+}
+
+.target-hit {
+  color: var(--blue);
+}
