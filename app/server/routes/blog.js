@@ -13,7 +13,7 @@ router.get('/blog/:slug', renderPost);
 module.exports = router;
 
 function createPost(req, res, next) {
-  const { content, title, excerpt } = req.body;
+  const { id, content, title, excerpt } = req.body;
   // Filter out weird characters before tagging
   // TODO: Tagging doesn't work well with apostrophes
   const tags = extractor.extract(content.replace(/[^A-Za-z0-9 ]/g, ' '), {
@@ -22,20 +22,37 @@ function createPost(req, res, next) {
     return_changed_case: true,
     remove_duplicates: true,
   });
-  const result = {
-    content,
-    title,
-    excerpt,
-    author: req.user.id,
-    tags,
-  };
 
-  return Post.create(result)
-    .then(post => {
-      debug(`Post created: ${post.postID}`);
-      res.redirect(`/blog/${post.postID}`);
-    })
-    .catch(e => next(new VError(e, 'Problem creating new post')));
+  // If post ID exists, update Post instead of creating one
+  if (id) {
+    const update = {
+      content,
+      title,
+      excerpt,
+      tags,
+    };
+    return Post.findOneAndUpdate({ _id: id }, update, { new: true })
+      .then(post => {
+        debug(`Post updated: ${post.postID}`);
+        res.redirect(`/blog/${post.postID}`);
+      })
+      .catch(e => next(new VError(e, 'Problem editing post')));
+  } else {
+    const result = {
+      content,
+      title,
+      excerpt,
+      author: req.user.id,
+      tags,
+    };
+
+    return Post.create(result)
+      .then(post => {
+        debug(`Post created: ${post.postID}`);
+        res.redirect(`/blog/${post.postID}`);
+      })
+      .catch(e => next(new VError(e, 'Problem creating new post')));
+  }
 }
 
 function renderPost(req, res, next) {
@@ -44,14 +61,19 @@ function renderPost(req, res, next) {
 
   if (action) {
     switch (action) {
-      case 'delete': {
+      case 'delete':
         return Post.findOneAndRemove({ postID: slug })
           .then(post => {
             debug(`Deleted post: ${post.title} (${post.postID})`);
             return res.redirect('/admin');
           })
-          .catch(e => next(new VError(e, 'Problem deleting post ${slug}')));
-      }
+          .catch(e => next(new VError(e, `Problem deleting post ${slug}`)));
+      case 'edit':
+        return Post.findOne({ postID: slug })
+          .then(post => {
+            return res.render('editor', { post });
+          })
+          .catch(e => next(new VError(e, `Problem editing post ${slug}`)));
     }
   }
 
