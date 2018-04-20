@@ -1,15 +1,17 @@
 extends base
 
 block content
-  div.tags(data-tags=tags.join(','))
-  form(action="/search")
-    label(for="search") Search
-    input.search(type="text" name="term")
-    button Search
-  each post in posts
-    .blog-entry
-      a(href="/blog/" + post.postID)
-        div
-          h3.title #{post.title}
-          p.excerpt #{post.excerpt}
-          p.post-date #{moment(post.created).format('MMMM D, YYYY')}
+  h2 Blog
+  if (posts && posts.length)
+    div.keywords(data-keywords=keywords.join(','))
+    form(action="/search")
+      input.search(type="text" name="term" placeholder="Search...")
+    each post in posts
+      .blog-entry
+        a(href="/blog/" + post.postID)
+          div
+            h3.title #{post.title}
+            p.excerpt #{post.excerpt}
+            p.post-date #{moment(post.created).format('MMMM D, YYYY')}
+  else if posts
+    h4 Not a lot to see yet.

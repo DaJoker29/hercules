@@ -1,11 +1,8 @@
 $(function() {
   if ($('.search').length) {
-    var tags = $('.tags')
-      .data('tags')
+    var keywords = $('.keywords')
+      .data('keywords')
       .split(',');
-    console.log(tags);
-    $('.search').autocomplete({
-      source: tags,
-    });
+    $('.search').autocomplete({ source: keywords });
   }
 });

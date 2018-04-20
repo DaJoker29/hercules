@@ -25,8 +25,8 @@ const { User, Post } = require('@herc/server/models');
  * Variables and Constants
  */
 
+const isProd = config.env === 'production';
 const app = (module.exports = express());
-const isProduction = process.env.NODE_ENV === 'production';
 const sessionSettings = {
   resave: false,
   secret: process.env.SESSION_SECRET || 'howsekritisit',
@@ -47,7 +47,7 @@ app.set('views', path.join(__dirname, 'server/views'));
 app.use(express.static('app/public'));
 // app.use('/media', express.static('media'));
 // app.use('/.well-known', express.static('.well-known', { dotfiles: 'allow' }));
-app.use(morganDebug('herc-morgan', isProduction ? 'combined' : 'dev'));
+app.use(morganDebug('herc-morgan', isProd ? 'combined' : 'dev'));
 app.use(bodyParser.urlencoded({ extended: 'true' }));
 app.use(bodyParser.json());
 app.use(methodOverride());
@@ -129,7 +129,6 @@ function forceFailure(req, res, next) {
 /* eslint-disable no-unused-vars */
 
 function pageNotFound(req, res, next) {
-  errDebug(`Page not found: ${req.path}`);
   return res.status(404).render('error', {
     title: 'Page Not Found',
     message: 'Can not find that page',
@@ -142,7 +141,7 @@ function serverError(err, req, res, next) {
   return res.status(500).render('error', {
     title: 'Server Error',
     message: 'Looks like something broke.',
-    error: isProduction ? null : error,
+    error: isProd ? null : error,
   });
 }
 /* eslint-enable no-unused-vars */
@@ -158,24 +157,37 @@ function renderIndex(req, res, next) {
       .sort({ created: -1 })
       .populate('author')
       .then(posts => {
-        const tags = [];
-        posts.forEach(post => {
-          post.tags.forEach(tag => {
-            if (
-              tags.indexOf(tag) === -1 &&
-              !/[#<>*.+\\[\]|]|^h[0-9]$/gi.test(tag)
-            ) {
-              tags.push(tag);
-            }
-          });
+        // Filtering Keywords
+        let result = [];
+        posts.forEach(post => (result = [...result, ...fetchKeywords(post)]));
+        return res.render('blog', {
+          posts,
+          keywords: Array.from(new Set(result)),
         });
-        res.render('blog', { posts, tags });
       })
       .catch(e => next(new VError(e, 'Problem rendering blog')));
   } else {
     return res.render('error', {
-      title: 'No Blog Found',
-      message: 'Not a whole lot to show here.',
+      title: 'Uhhh...',
+      message: "These are not the droids you're looking for.",
+      error: 'Error: No modules loaded, genius!',
     });
   }
+}
+
+function fetchKeywords(post) {
+  const { title, excerpt, tags } = post;
+  return [
+    ...sanitize(title.split(' ')),
+    ...sanitize(excerpt.split(' ')),
+    ...sanitize(tags),
+  ];
+}
+
+function sanitize(arr) {
+  return arr.map(filtered);
+}
+
+function filtered(str) {
+  return str.toLowerCase().replace(/[^A-Za-z0-9 ]/g, '');
 }
