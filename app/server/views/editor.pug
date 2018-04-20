@@ -10,10 +10,11 @@ block content
   form.create-post(action="/editor/preview" method="POST")
     fieldset
       div
-        input.editor-title(type="text" name="title" placeholder="Title" value="Title Goes Here")
+        input.editor-title(type="text" name="title" placeholder="Title" value=post ? post.title : "Title Goes Here")
       div
-        textarea.editor-content(name="content", cols="30", rows="12" placeholder="Text") Text Goes Here
+        textarea.editor-content(name="content", cols="30", rows="12" placeholder="Text") #{post ? post.content : 'Text Goes Here'}
       div
-        textarea.editor-excerpt(name="excerpt", cols="30", rows="3" placeholder="Excerpt/Summary (optional)")
+        textarea.editor-excerpt(name="excerpt", cols="30", rows="3" placeholder="Excerpt/Summary (optional)") #{post ? post.excerpt : ''}
       input(type="hidden" name="_csrf" value=csrfToken)
+      input(type="hidden" name="id" value=post ? post.id : '')
     button Preview
