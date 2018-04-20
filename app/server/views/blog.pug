@@ -1,7 +1,6 @@
 extends base
 
 block content
-  h2 Blog
   if (posts && posts.length)
     div.keywords(data-keywords=keywords.join(','))
     form(action="/search")

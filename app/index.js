@@ -153,7 +153,7 @@ function csrfToken(req, res, next) {
 
 function renderIndex(req, res, next) {
   if (config.modules.blog) {
-    return Post.find()
+    return Post.find({})
       .sort({ created: -1 })
       .populate('author')
       .then(posts => {

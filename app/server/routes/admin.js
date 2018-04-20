@@ -13,7 +13,11 @@ function renderAdmin(req, res, next) {
   const { config } = req.app.locals;
   return Promise.all([
     config.modules.podcast ? Podcast.find() : null,
-    config.modules.blog ? Post.find() : null,
+    config.modules.blog
+      ? Post.find()
+          .sort({ created: -1 })
+          .populate('author')
+      : null,
   ])
     .then(([podcasts, posts]) => {
       res.render('admin', { podcasts, posts });
