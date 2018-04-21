@@ -1,3 +1,3 @@
-const { indexify } = require('@herc-tools/indexify');
+const { indexify } = require('@tools/indexify');
 
 module.exports = indexify('models');

@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
-const debug = require('debug')('herc-database');
+const log = require('@tools/log')();
 const VError = require('verror');
 const { db } = require('@herc/config');
 
-debug(`Connecting to database: ${db}`);
+log(`Connecting to database: ${db}`);
 mongoose.connect(db);
 
 mongoose.connection.on('error', err => {
@@ -11,11 +11,11 @@ mongoose.connection.on('error', err => {
 });
 
 mongoose.connection.on('disconnected', () => {
-  debug('Disconnected from database.');
+  log('Disconnected from database.');
 });
 
 mongoose.connection.on('connected', () => {
-  debug('Successfully connected to database.');
+  log('Successfully connected to database.');
 });
 
 module.exports = mongoose.connection;

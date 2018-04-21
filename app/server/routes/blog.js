@@ -1,7 +1,7 @@
 const { Router } = require('express');
 const VError = require('verror');
 const extractor = require('keyword-extractor');
-const debug = require('debug')('herc-blog');
+const log = require('@tools/log')();
 const { ENSURE_AUTH } = require('../middleware').Auth;
 const { Post } = require('../models');
 
@@ -33,7 +33,7 @@ function createPost(req, res, next) {
     };
     return Post.findOneAndUpdate({ _id: id }, update, { new: true })
       .then(post => {
-        debug(`Post updated: ${post.postID}`);
+        log(`Post updated: ${post.postID}`);
         res.redirect(`/blog/${post.postID}`);
       })
       .catch(e => next(new VError(e, 'Problem editing post')));
@@ -48,7 +48,7 @@ function createPost(req, res, next) {
 
     return Post.create(result)
       .then(post => {
-        debug(`Post created: ${post.postID}`);
+        log(`Post created: ${post.postID}`);
         res.redirect(`/blog/${post.postID}`);
       })
       .catch(e => next(new VError(e, 'Problem creating new post')));
@@ -64,7 +64,7 @@ function renderPost(req, res, next) {
       case 'delete':
         return Post.findOneAndRemove({ postID: slug })
           .then(post => {
-            debug(`Deleted post: ${post.title} (${post.postID})`);
+            log(`Deleted post: ${post.title} (${post.postID})`);
             return res.redirect('/admin');
           })
           .catch(e => next(new VError(e, `Problem deleting post ${slug}`)));

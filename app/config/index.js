@@ -1,4 +1,4 @@
-const debug = require('debug')('herc-config');
+const log = require('@tools/log')();
 
 const merge = require('deepmerge');
 const pkg = require('../../package.json');
@@ -14,11 +14,11 @@ const config = (module.exports = merge.all([
   JSON.parse(JSON.stringify(site)),
 ]));
 
-debug(`Configuring ${config.name.toUpperCase()}(${config.env} mode)`);
-debug(
+log(`Configuring ${config.name.toUpperCase()}(${config.env} mode)`);
+log(
   `Built using ${config.pkg.name.charAt(0).toUpperCase() +
     config.pkg.name.slice(1)}`,
 );
-debug(`Version ${config.pkg.version}`);
-debug(`Crafted by ${config.pkg.author}`);
-debug(`Repository: ${config.pkg.repository}`);
+log(`Version ${config.pkg.version}`);
+log(`Crafted by ${config.pkg.author}`);
+log(`Repository: ${config.pkg.repository}`);

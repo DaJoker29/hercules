@@ -1,6 +1,6 @@
 const http = require('http');
 const dotenv = require('dotenv').config();
-const debug = require('debug')('herc-launch');
+const log = require('@tools/log')();
 const VError = require('verror');
 
 /**
@@ -10,7 +10,7 @@ const VError = require('verror');
 if (dotenv.error) {
   throw new VError(dotenv.error, 'Could not load environment variables');
 } else {
-  debug('Environment variables loaded from .env');
+  log('Environment variables loaded from .env');
 }
 
 /**
@@ -37,7 +37,7 @@ db.on('connected', launchServer);
  */
 
 function launchServer() {
-  debug(`Launching server in ${config.env} mode`);
+  log(`Launching server in ${config.env} mode`);
   server.listen(config.port);
 }
 
@@ -46,7 +46,7 @@ function onError(e) {
 }
 
 function onListen() {
-  debug(`${config.name} has spun up @ http://localhost:${config.port}`);
+  log(`${config.name} has spun up @ http://localhost:${config.port}`);
 }
 
 /**
@@ -57,12 +57,12 @@ process.on('SIGINT', gracefulExit);
 process.on('SIGTERM', gracefulExit);
 process.on('uncaughtException', err => {
   console.error(err.stack);
-  debug(`${config.name} has CRASHED in a whirl of fire...`);
+  log(`${config.name} has CRASHED in a whirl of fire...`);
   gracefulExit(1);
 });
 
 function gracefulExit(code = 0) {
-  debug(`${config.name} is settling DOWN`);
+  log(`${config.name} is settling DOWN`);
   if (db.readyState === 1) {
     db.close(() => {
       process.exit(code);

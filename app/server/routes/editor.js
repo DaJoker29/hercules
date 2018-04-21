@@ -14,7 +14,11 @@ function renderEditor(req, res) {
 
 function preview(req, res) {
   if (!req.body.excerpt) {
-    req.body.excerpt = req.body.content.substr(0, 257) + '...';
+    req.body.excerpt =
+      req.body.content
+        .replace(/\[\S+\]|\(\S+\)|[^A-Za-z0-9,;.'"\s()[\]{}]/g, '')
+        .substr(0, 257)
+        .replace(/[.|,|;|?|!]+$/g, '') + '...';
   }
   res.render('preview', { preview: req.body });
 }
