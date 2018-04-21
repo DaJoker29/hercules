@@ -4,7 +4,7 @@ const path = require('path');
 const callsite = require('callsite');
 
 function indexify(namespace) {
-  const debug = require('debug')(`herc-indexify`);
+  const log = require('@tools/log')();
   const stack = callsite();
   const dir = path.dirname(stack[1].getFileName());
   const files = fs.readdirSync(dir);
@@ -19,7 +19,7 @@ function indexify(namespace) {
   });
 
   Object.getOwnPropertyNames(result).forEach(prop => {
-    debug(`${namespace}:${prop}`);
+    log(`${namespace}: ${prop}`);
   });
   return result;
 }
