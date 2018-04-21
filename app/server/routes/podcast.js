@@ -3,7 +3,7 @@ const multer = require('multer');
 const VError = require('verror');
 const fs = require('fs-extra');
 const RSS = require('rss');
-const debug = require('debug')('caster-podcast');
+const log = require('@tools/log')();
 const { ENSURE_AUTH } = require('@herc/server/middleware').Auth;
 const { Podcast, Episode } = require('../models');
 
@@ -50,7 +50,7 @@ function createPodcast(req, res, next) {
       return Episode.create(submit);
     })
     .then(episode => {
-      debug(`New Episode Saved: ${episode.id}`);
+      log(`New Episode Saved: ${episode.id}`);
 
       const dir = `media/${slug}`;
 
@@ -69,12 +69,12 @@ function createPodcast(req, res, next) {
       ]);
     })
     .then(([, podcast]) => {
-      debug(`Podcast Updated: ${podcast.id}`);
+      log(`Podcast Updated: ${podcast.id}`);
       res.redirect(`/podcast/${podcast.slug}`);
       return generateRSS(podcast.slug);
     })
     .then(xml => {
-      debug(`RSS Feed regenerated: ${xml}`);
+      log(`RSS Feed regenerated: ${xml}`);
     })
     .catch(e => next(new VError(e, 'Problem creating episode')));
 }
@@ -215,7 +215,7 @@ function createEpisode(req, res, next) {
 
   return Podcast.create(submit)
     .then(podcast => {
-      debug(`New Podcast Created: ${podcast.id}`);
+      log(`New Podcast Created: ${podcast.id}`);
 
       const dir = `media/${podcast.slug}`;
       try {
@@ -223,7 +223,7 @@ function createEpisode(req, res, next) {
       } catch (e) {
         fs.mkdirSync(dir);
       }
-      debug(`Saving cover image to ${dir}`);
+      log(`Saving cover image to ${dir}`);
 
       res.redirect(`/podcast/${podcast.slug}`);
       return fs.writeFile(

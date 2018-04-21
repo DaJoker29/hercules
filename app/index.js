@@ -13,8 +13,8 @@ const VError = require('verror');
 const csrf = require('csurf');
 const marked = require('marked');
 
-const debug = require('debug')('herc-init');
-const errDebug = require('debug')('herc-error');
+const log = require('@tools/log')();
+const errLog = require('@tools/log')('error');
 
 const config = require('@herc/config');
 const Routes = require('@herc/server/routes');
@@ -47,7 +47,7 @@ app.set('views', path.join(__dirname, 'server/views'));
 app.use(express.static('app/public'));
 // app.use('/media', express.static('media'));
 // app.use('/.well-known', express.static('.well-known', { dotfiles: 'allow' }));
-app.use(morganDebug('herc-morgan', isProd ? 'combined' : 'dev'));
+app.use(morganDebug(`${config.pkg.name}-morgan`, isProd ? 'combined' : 'dev'));
 app.use(bodyParser.urlencoded({ extended: 'true' }));
 app.use(bodyParser.json());
 app.use(methodOverride());
@@ -75,7 +75,7 @@ app.use(csrfToken);
  * Load required routes
  */
 
-debug('Loading Auth/Admin modules');
+log('Loading Auth/Admin modules');
 app.use(Routes.Admin);
 app.use(Routes.Auth);
 app.get('/', renderIndex);
@@ -84,14 +84,14 @@ app.get('/', renderIndex);
  * Configure Modules
  */
 if (config.modules.blog) {
-  debug('Loading Blog module');
+  log('Loading Blog module');
   app.use(Routes.Search);
   app.use(Routes.Blog);
   app.use(Routes.Editor);
 }
 
 if (config.modules.podcast) {
-  debug('Loading Podcast module');
+  log('Loading Podcast module');
   app.use(Routes.Podcast);
 }
 
@@ -137,7 +137,7 @@ function pageNotFound(req, res, next) {
 
 function serverError(err, req, res, next) {
   const error = new VError(err, 'Unhandled Server Error');
-  errDebug(error.stack);
+  errLog(error.stack);
   return res.status(500).render('error', {
     title: 'Server Error',
     message: 'Looks like something broke.',
