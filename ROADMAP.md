@@ -1,32 +1,55 @@
-*Last Updated: 4/10/18*
+*Last Updated: 4/22/18*
 # Milestones
-
-## Basic Blogging
-- Markdown Editor => HTML Output
-- Basic SEO (Meta Descriptions/Title)
-- Auto-Generated Tags for SEO
-
 ## Basic Podcast
-- Auto-Generate RSS Feed
-- Auto-Naming and Organization of Media
+- Multiple Podcasts
+- Auto-Generated RSS Feed
+- Media Validation/Organization
 
-### Advanced Blogging
-- Social Sharing
-- Individual Blogs/Feeds
-- Schedule Posts for future publishing
-- Saved Revisions
-- Categories => Filtering
+## REST API/Client-Side Rendering
+- Migrate to REST API with Client-Side Rendering
 
-## Advanced User System
-- Email Confirmation
-- Social Media Integration
-- Permissions/Groups
+## E2E/Unit Testing
+- Setup Test Framework
+- Add Continuous Deployment
+
+## Organizations/Groups
+- Create/Manage Groups
+- Group and User Permissions
+
+## Scheduling
+- Saved Drafts
+- Set Future Publish Date
+
+## Email Integration
+- Registration Confirmation
+- Authentication Key
+- Adminstrative Alerts
+  - New Users
+  - Multiple Failed Authentications
+  - Administrative Log ins
+  
+## Social Media
+- Sharing
+- Social Sign-In/OAuth (for commenting/feedback)
+
+## Advanced Blogging
+- Individual Feeds
+- Previous Revisions
+- Search Engine (ElasticSearch, maybe??)
+- Filtering
+  - By Author
+  - By Date
 
 ## Media Library
-TBD
-## eCommerce
-TBD
-## Event Organization
-TBD
-## Creative Portfolio
-TBD
+- Upload Content UI
+- Mark Private (Only visible to certain users/groups)
+
+## Portfolio
+- Custom Portfolio Templates
+
+# Past Milestones
+## ~~Basic Blogging~~
+- ~~Markdown Editor => HTML Output~~
+- ~~Basic SEO (Meta Descriptions/Title)~~
+- ~~Auto-Generated Tags for SEO~~
+- ~~Basic Search~~
