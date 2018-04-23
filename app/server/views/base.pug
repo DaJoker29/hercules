@@ -25,7 +25,12 @@ html
             |
             span &nbsp;&bull;&nbsp;
             |
-            a(href="/editor") Blog Editor
+            a(href="/editor") New Post
+          if config.modules.podcast
+            |
+            span &nbsp;&bull;&nbsp;
+            |
+            a(href="/podcast/new") Create Podcast
     block content
     footer Crafted by Zero Daedalus &copy; 2018
       unless user

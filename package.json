@@ -95,6 +95,7 @@
     "random-token": "0.0.8",
     "rss": "1.2.2",
     "shortid": "2.2.8",
+    "slugify": "1.2.9",
     "stylelint": "9.2.0",
     "stylelint-config-recommended-scss": "3.2.0",
     "stylelint-scss": "3.0.0",

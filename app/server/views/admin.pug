@@ -52,40 +52,6 @@ block content
             li Last Published: #{moment(podcast.updatedOn).fromNow()}
             li Created: #{moment(podcast.createdOn).fromNow()}
             li Author: #{podcast.author}
-    .sep
-    h3 Create New Podcast
-    form.create-podcast(action="/podcast" method="POST" enctype="multipart/form-data")
-      fieldset
-        div
-          label(for="title") title
-          input(type="text" name="title" placeholder="Dummy")
-        div
-          label(for="subtitle") subtitle
-          input(type="text" name="subtitle" placeholder="Dummy")
-        div
-          label(for="website") website
-          input(type="text" name="website" placeholder="Dummy")
-        div
-          label(for="author") author
-          input(type="text" name="author" placeholder="Dummy")
-        div
-          label(for="keywords") keywords
-          input(type="text" name="keywords" placeholder="Dummy")
-        div
-          label(for="slug") slug
-          input(type="text" name="slug" placeholder="Dummy")
-        div
-          label(for="description") description
-          textarea(type="text" name="description" row=3 placeholder="Dummy")
-        div
-          label(for="cover") cover img
-          input(type="file" name="cover" accept=".jpg, .jpeg, .png")
-        div
-          label(for="explicit1") Explicit
-          input#explicit1(type="radio" name="explicit" value="yes" placeholder="Dummy" checked)
-          label(for="explicit2") Clean
-          input#explicit2(type="radio" name="explicit" value="no" placeholder="Dummy")
-      button Create
   else if podcasts
     h3 No podcasts found
     p You should start casting.
