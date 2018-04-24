@@ -60,18 +60,34 @@ legend {
   margin: .5rem 0;
 }
 
+label {
+  display: inline-block;
+  margin: .5rem;
+}
+
 input,
 textarea {
   display: block;
   margin-left: .5rem;
   font-size: 1rem;
-  font-family: var(--font-family);
+  font-family: var(--font-sans);
   background-color: transparent;
   border: 0;
   color: var(--white);
   width: 100%;
   resize: none;
   appearance: none;
+}
+
+input[type=radio] {
+  border: 1px solid var(--gray);
+  width: 1rem;
+  height: 1rem;
+  transition: var(--transition);
+  &:checked {
+    background-color: var(--blue);
+    color: var(--yellow);
+  }
 }
 
 footer {
@@ -91,7 +107,7 @@ button {
   border-radius: 0;
   background-color: var(--blue);
   color: var(--black);
-  font-family: var(--font-family);
+  font-family: var(--font-sans);
   padding: .5rem 1rem;
   font-weight: bold;
 }

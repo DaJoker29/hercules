@@ -28,23 +28,3 @@
   }
 }
 
-.create-podcast {
-  fieldset {
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: space-between;
-  }
-  div {
-    flex: 30%;
-  }
-  input[type=radio] {
-    border: 1px solid var(--gray);
-    width: 1rem;
-    height: 1rem;
-    transition: .3s;
-    &:checked {
-      background-color: var(--black);
-      color: var(--yellow);
-    }
-  }
-}
