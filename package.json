@@ -1,6 +1,6 @@
 {
   "name": "hercules",
-  "version": "0.10.3",
+  "version": "0.11.0",
   "description": "Modular CMS Platform",
   "main": "index.js",
   "repository": "git@github.com:DaJoker29/herc.git",
