@@ -6,22 +6,37 @@ const fs = require('fs-extra');
 const RSS = require('podcast');
 const log = require('@tools/log')();
 const { ENSURE_AUTH } = require('@herc/server/middleware').Auth;
-const { Podcast } = require('../models');
+const { Podcast, Episode } = require('../models');
 
 const upload = multer();
 const router = Router();
 
 router.get('/podcast/new', ENSURE_AUTH, renderNewPodcast);
-router.post('/podcast/new', upload.single('cover'), ENSURE_AUTH, createPodcast);
+router.post('/podcast/new', ENSURE_AUTH, upload.single('cover'), createPodcast);
 router.get('/podcast/:slug/rss', renderRSS);
+router.get('/podcast/:slug/new', ENSURE_AUTH, renderNewEpisode);
+router.post(
+  '/podcast/:slug',
+  ENSURE_AUTH,
+  upload.single('media'),
+  createEpisode,
+);
 
 // router.get('/podcast/:slug', handlePodcast);
-// router.post('/podcast/:slug', upload.single('media'), createEpisode);
 
 module.exports = router;
 
 function renderNewPodcast(req, res) {
   res.render('new-podcast');
+}
+
+function renderNewEpisode(req, res, next) {
+  const { slug } = req.params;
+  return Podcast.findOne({ slug })
+    .then(podcast => {
+      res.render('new-episode', { podcast });
+    })
+    .catch(e => next(new VError(e, 'Problem fetching podcast')));
 }
 
 // function handlePodcast(req, res, next) {
@@ -38,52 +53,39 @@ function renderNewPodcast(req, res) {
 //     .catch(e => next(new VError(e, 'Problem handling that podcast')));
 // }
 
-// function createPodcast(req, res, next) {
-//   const { slug } = req.params;
-//   const { file } = req;
-//   const { publishedOn, title, description, podcast } = req.body;
+async function createEpisode(req, res, next) {
+  const { slug } = req.params;
+  const { file } = req;
+  const { title, description, podcast } = req.body;
 
-//   return Episode.find({ podcast })
-//     .then(episodes => {
-//       const episodeNumber = episodes.length + 1;
-//       const submit = {
-//         publishedOn,
-//         title,
-//         description,
-//         podcast,
-//         episodeNumber,
-//       };
-//       return Episode.create(submit);
-//     })
-//     .then(episode => {
-//       log(`New Episode Saved: ${episode.id}`);
+  const episodes = await Episode.find({ podcast });
+  const episodeNumber = episodes.length + 1;
+  const dir = `media/${slug}/`;
+  const filename = `${slug}${episodeNumber.toString().padStart(3, '0')}.mp3`;
 
-//       const dir = `media/${slug}`;
+  try {
+    await fs.writeFile(`${dir}${filename}`, file.buffer);
+  } catch (e) {
+    return next(new VError(e, 'Problem saving media file'));
+  }
 
-//       return Promise.all([
-//         fs.writeFile(
-//           `${dir}/${slug}${episode.episodeNumber
-//             .toString()
-//             .padStart(3, '0')}.mp3`,
-//           file.buffer,
-//         ),
-//         Podcast.findOneAndUpdate(
-//           { _id: episode.podcast },
-//           { $push: { episodes: episode.id } },
-//           { new: true },
-//         ),
-//       ]);
-//     })
-//     .then(([, podcast]) => {
-//       log(`Podcast Updated: ${podcast.id}`);
-//       res.redirect(`/podcast/${podcast.slug}`);
-//       return generateRSS(podcast.slug);
-//     })
-//     .then(xml => {
-//       log(`RSS Feed regenerated: ${xml}`);
-//     })
-//     .catch(e => next(new VError(e, 'Problem creating episode')));
-// }
+  const submit = {
+    title,
+    podcast,
+    episodeNumber,
+    description: description.length > 0 ? description : 'Yadda yadda yadda',
+  };
+
+  const newEpisode = await Episode.create(submit);
+  const updatedPodcast = await Podcast.findOneAndUpdate(
+    { _id: newEpisode.podcast },
+    { $push: { episodes: newEpisode.id } },
+    { new: true },
+  );
+
+  log(`New Episode Saved: ${newEpisode.id} to Podcast: ${updatedPodcast.id}`);
+  return res.redirect(`/podcast/${updatedPodcast.slug}/rss`);
+}
 
 function renderRSS(req, res, next) {
   const { slug } = req.params;
@@ -99,7 +101,7 @@ function generateRSS(slug) {
   return new Promise((resolve, reject) => {
     Podcast.findOne({ slug })
       .populate('episodes')
-      .then(async podcast => {
+      .then(podcast => {
         const feedURL = `media/${podcast.slug}/rss`;
 
         const feed = new RSS({
@@ -186,10 +188,10 @@ function generateRSS(slug) {
               { 'itunes:duration': '7:04' },
             ],
           };
-          feed.item(item);
+          feed.addItem(item);
         });
 
-        return resolve(feed.xml({ indent: true }));
+        return resolve(feed.buildXml({ indent: true }));
       })
       .catch(e => reject(e));
   });
