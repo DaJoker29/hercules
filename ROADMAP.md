@@ -1,9 +1,5 @@
-*Last Updated: 4/22/18*
+*Last Updated: 4/23/18*
 # Milestones
-## Basic Podcast
-- Multiple Podcasts
-- Auto-Generated RSS Feed
-- Media Validation/Organization
 
 ## REST API/Client-Side Rendering
 - Migrate to REST API with Client-Side Rendering
@@ -53,3 +49,8 @@
 - ~~Basic SEO (Meta Descriptions/Title)~~
 - ~~Auto-Generated Tags for SEO~~
 - ~~Basic Search~~
+
+## ~~Basic Podcast~~
+- ~~Multiple Podcasts~~
+- ~~Auto-Generated RSS Feed~~
+- ~~Media Validation/Organization~~
