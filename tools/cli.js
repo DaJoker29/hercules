@@ -3,6 +3,7 @@
 const program = require('commander');
 const { User } = require('@app/server/models');
 const base32 = require('thirty-two');
+require('@app/utils');
 const config = require('@app/config');
 const db = require('@app/db_connect');
 
