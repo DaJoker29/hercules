@@ -1,7 +1,9 @@
 const http = require('http');
 const dotenv = require('dotenv').config();
 const log = require('@tools/log')();
+const error = require('@tools/log')('error');
 const VError = require('verror');
+require('@app/utils');
 
 /**
  * Check for env variables
@@ -14,11 +16,23 @@ if (dotenv.error) {
 }
 
 /**
+ * Termination and Exit handling
+ */
+
+process.on('SIGINT', gracefulExit);
+process.on('SIGTERM', gracefulExit);
+process.on('SIGUSR2', gracefulExit);
+process.on('uncaughtException', err => {
+  error(`Error: ${err.message}`);
+  gracefulExit(1);
+});
+
+/**
  * Load config and app
  */
 
-const config = require('@herc/config');
-const db = require('@herc/db_connect');
+const config = require('@app/config');
+const db = require('@app/db_connect');
 const app = require('./app');
 
 /**
@@ -29,7 +43,6 @@ const server = http.createServer(app);
 
 server.on('error', onError);
 server.on('listening', onListen);
-
 db.on('connected', launchServer);
 
 /**
@@ -49,25 +62,21 @@ function onListen() {
   log(`${config.name} has spun up @ http://localhost:${config.port}`);
 }
 
-/**
- * Termination and Exit handling
- */
-
-process.on('SIGINT', gracefulExit);
-process.on('SIGTERM', gracefulExit);
-process.on('uncaughtException', err => {
-  console.error(err.stack);
-  log(`${config.name} has CRASHED in a whirl of fire...`);
-  gracefulExit(1);
-});
-
 function gracefulExit(code = 0) {
-  log(`${config.name} is settling DOWN`);
-  if (db.readyState === 1) {
-    db.close(() => {
-      process.exit(code);
-    });
-  } else {
+  log(
+    code === 0
+      ? `App is settling DOWN`
+      : `App has CRASHED in a whirl of fire...`,
+  );
+
+  try {
+    typeof db;
+    log('Disconnecting from database');
+  } catch (e) {
     process.exit(code);
   }
+
+  return db.close(() => {
+    process.exit(code);
+  });
 }

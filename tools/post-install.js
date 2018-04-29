@@ -5,7 +5,7 @@ const { resolve } = require('path');
 console.log('\nStart of POSTINSTALL\n');
 
 const symlinks = [
-  [resolve(__dirname, '../app/'), resolve(__dirname, '../node_modules/@herc')],
+  [resolve(__dirname, '../app/'), resolve(__dirname, '../node_modules/@app')],
   [resolve(__dirname), resolve(__dirname, '../node_modules/@tools')],
   [
     resolve(__dirname, 'pre-commit.sh'),

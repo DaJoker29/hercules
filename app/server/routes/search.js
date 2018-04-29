@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const { Post } = require('@herc/server/models');
+const { Post } = require('@app/server/models');
 const VError = require('verror');
 
 const router = (module.exports = Router());

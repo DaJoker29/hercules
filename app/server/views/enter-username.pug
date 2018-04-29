@@ -3,12 +3,8 @@ extends base
 block content
   form(method="POST")
     fieldset
-      legend Sign In Here
+      legend Sign In
       div
-        label(for="username") Username
         input(type="text" name="username" placeholder="Enter username here")
-      div
-        label(for="password") Access Code
-        input(type="text" name="password" placeholder="Enter access code here")
       input(type="hidden" name="_csrf" value=csrfToken)
     button Login
