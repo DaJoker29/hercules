@@ -64,7 +64,7 @@ dist
 media
 
 # Site Specific configuration
-*/config/config.js
+config.js
 
 # Compiled assets
 public

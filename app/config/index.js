@@ -1,10 +1,19 @@
+const { existsSync } = require('fs');
+const { resolve } = require('path');
 const log = require('@tools/log')();
 
 const merge = require('deepmerge');
+const VError = require('verror');
 const pkg = require('../../package.json');
-const site = require('./config');
 const defaults = require('./defaults');
 
+const configPath = resolve(__dirname, '../../config.js');
+
+if (!existsSync(configPath)) {
+  throw new VError('No site configuration found');
+}
+
+const site = require(configPath);
 const env = require(`./${process.env.NODE_ENV || 'development'}`);
 
 const config = (module.exports = merge.all([
@@ -14,7 +23,7 @@ const config = (module.exports = merge.all([
   JSON.parse(JSON.stringify(site)),
 ]));
 
-log(`Configuring ${config.name.toUpperCase()}(${config.env} mode)`);
+log(`Configuring ${config.name.toUpperCase()} (${config.env} mode)`);
 log(
   `Built using ${config.pkg.name.charAt(0).toUpperCase() +
     config.pkg.name.slice(1)}`,
