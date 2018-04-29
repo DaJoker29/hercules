@@ -5,7 +5,7 @@ const fs = require('fs-extra');
 console.log('\nStart of PREINSTALL\n');
 
 const symlinks = [
-  resolve(__dirname, '../node_modules/@herc'),
+  resolve(__dirname, '../node_modules/@app'),
   resolve(__dirname, '../node_modules/@tools'),
 ];
 

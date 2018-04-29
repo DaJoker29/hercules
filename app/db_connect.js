@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const log = require('@tools/log')();
 const VError = require('verror');
-const { db } = require('@herc/config');
+const { db } = require('@app/config');
 
 log(`Connecting to database: ${db}`);
 mongoose.connect(db);

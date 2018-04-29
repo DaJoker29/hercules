@@ -16,10 +16,10 @@ const marked = require('marked');
 const log = require('@tools/log')();
 const errLog = require('@tools/log')('error');
 
-const config = require('@herc/config');
-const Routes = require('@herc/server/routes');
-const Strategies = require('@herc/server/strategies');
-const { User, Post } = require('@herc/server/models');
+const config = require('@app/config');
+const Routes = require('@app/server/routes');
+const Strategies = require('@app/server/strategies');
+const { User, Post } = require('@app/server/models');
 
 /**
  * Variables and Constants

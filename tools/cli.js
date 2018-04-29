@@ -1,10 +1,11 @@
 #!/usr/bin/env node
 
 const program = require('commander');
-const { User } = require('@herc/server/models');
+const { User } = require('@app/server/models');
 const base32 = require('thirty-two');
-const config = require('@herc/config');
-const db = require('@herc/db_connect');
+require('@app/utils');
+const config = require('@app/config');
+const db = require('@app/db_connect');
 
 program
   .description(`CLI tool for the ${config.pkg.name.toUpperCase()} app`)

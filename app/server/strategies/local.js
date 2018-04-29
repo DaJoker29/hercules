@@ -1,6 +1,6 @@
 const { Strategy } = require('passport-local');
 const VError = require('verror');
-const { User } = require('@herc/server/models');
+const { User } = require('@app/server/models');
 const notp = require('notp');
 
 module.exports = new Strategy((username, password, done) => {
