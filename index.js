@@ -3,6 +3,7 @@ const dotenv = require('dotenv').config();
 const log = require('@tools/log')();
 const error = require('@tools/log')('error');
 const VError = require('verror');
+require('@app/utils');
 
 /**
  * Check for env variables
@@ -30,8 +31,8 @@ process.on('uncaughtException', err => {
  * Load config and app
  */
 
-const config = require('@herc/config');
-const db = require('@herc/db_connect');
+const config = require('@app/config');
+const db = require('@app/db_connect');
 const app = require('./app');
 
 /**

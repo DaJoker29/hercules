@@ -11,7 +11,6 @@ module.exports = {
     'plugin:import/errors',
     'plugin:import/warnings',
     'prettier/react',
-    'last',
   ],
   rules: {
     'no-console': 0,

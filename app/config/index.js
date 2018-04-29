@@ -23,10 +23,9 @@ const config = (module.exports = merge.all([
   JSON.parse(JSON.stringify(site)),
 ]));
 
-log(`Configuring ${config.name.toUpperCase()} (${config.env} mode)`);
+log(`Configuring ${config.name.toTitleCase()} (${config.env.toTitleCase()} mode)`);
 log(
-  `Built using ${config.pkg.name.charAt(0).toUpperCase() +
-    config.pkg.name.slice(1)}`,
+  `Built using ${config.pkg.name.toTitleCase()}`,
 );
 log(`Version ${config.pkg.version}`);
 log(`Crafted by ${config.pkg.author}`);
