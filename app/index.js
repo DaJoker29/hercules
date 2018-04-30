@@ -46,7 +46,7 @@ app.set('views', path.join(__dirname, 'server/views'));
 
 app.use(express.static('app/public'));
 app.use('/media', express.static(path.join(__dirname, '..', 'media')));
-app.use('/.well-known', express.static('.well-known', { dotfiles: 'allow' }));
+app.use('/.well-known', express.static(path.join(__dirname, '.well-known'), { dotfiles: 'allow' }));
 app.use(morganDebug(`${config.pkg.name}-morgan`, isProd ? 'combined' : 'dev'));
 app.use(bodyParser.urlencoded({ extended: 'true' }));
 app.use(bodyParser.json());
