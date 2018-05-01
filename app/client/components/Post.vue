@@ -2,9 +2,9 @@
   <div class="post">
     <h2>{{ post.title }}</h2>
     <div class="post-content">
-      <p>{{ post.content }}</p>
+      <p>{{ post.excerpt }}</p>
     </div>
-    <p class="meta">{{ formatDate(post.createdAt) }} by <a>{{ post.author }}</a></p>
+    <p class="meta">{{ formatDate(post.created) }} by <a>{{ post.author.displayName || post.author.username }}</a></p>
   </div>
 </template>
 

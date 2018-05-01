@@ -1,6 +1,11 @@
 <template>
   <body>
     <SiteHeader :title="config.name" />
+    <div 
+      v-if="loading" 
+      class="loading">
+      Loading...
+    </div>
     <main class="main-container">
       <div class="sidebar">
         <CategoryCloud />
@@ -16,47 +21,13 @@
 </template>
 
 <script>
+import axios from 'axios';
 import SiteHeader from './components/SiteHeader';
 import CategoryCloud from './components/CategoryCloud';
 import SearchBox from './components/SearchBox';
 import AuthorList from './components/AuthorList';
 import SiteFooter from './components/SiteFooter';
 import PostList from './components/PostList';
-
-const posts = [
-  {
-    id: 1,
-    title: 'Title One',
-    content:
-      'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Odit voluptatibus similique placeat, asperiores nobis accusamus obcaecati ab consectetur rerum, sequi modi, delectus minus reiciendis velit illo sint in. Beatae, quaerat?',
-    createdAt: Date.now(),
-    author: 'John Smith'
-  },
-  {
-    id: 2,
-    title: 'Title One',
-    content:
-      'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Odit voluptatibus similique placeat, asperiores nobis accusamus obcaecati ab consectetur rerum, sequi modi, delectus minus reiciendis velit illo sint in. Beatae, quaerat?',
-    createdAt: Date.now(),
-    author: 'John Smith'
-  },
-  {
-    id: 3,
-    title: 'Title One',
-    content:
-      'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Odit voluptatibus similique placeat, asperiores nobis accusamus obcaecati ab consectetur rerum, sequi modi, delectus minus reiciendis velit illo sint in. Beatae, quaerat?',
-    createdAt: Date.now(),
-    author: 'John Smith'
-  },
-  {
-    id: 4,
-    title: 'Title One',
-    content:
-      'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Odit voluptatibus similique placeat, asperiores nobis accusamus obcaecati ab consectetur rerum, sequi modi, delectus minus reiciendis velit illo sint in. Beatae, quaerat?',
-    createdAt: Date.now(),
-    author: 'John Smith'
-  }
-];
 
 export default {
   components: {
@@ -69,10 +40,28 @@ export default {
   },
   data() {
     return {
-      posts,
+      loading: false,
+      posts: [],
       msg: 'Howdy',
       config: process.env.SITE_CONFIG
     };
+  },
+  mounted() {
+    this.fetchPosts();
+  },
+  methods: {
+    fetchPosts() {
+      this.loading = true;
+      axios
+        .get('/api/posts')
+        .then(response => {
+          this.posts = response.data;
+          this.loading = false;
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    }
   }
 };
 </script>

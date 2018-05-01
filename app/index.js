@@ -10,6 +10,7 @@ const VError = require('verror');
 const errLog = require('@tools/log')('error');
 
 const config = require('@app/config');
+const Routes = require('@app/server/routes');
 
 const webpackConfig = require(`@app/config/webpack.${config.env ||
   'development'}`);
@@ -53,6 +54,9 @@ if (!isProd) {
 } else {
   app.get('/', landing);
 }
+
+// Load API Routes
+app.use('/api', Routes.Posts);
 
 /**
  * Error Handling Routes
