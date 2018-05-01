@@ -66,7 +66,7 @@ function gracefulExit(code = 0) {
   log(
     code === 0
       ? `App is settling DOWN`
-      : `App has CRASHED in a whirl of fire...`,
+      : `App has CRASHED in a whirl of fire...`
   );
 
   try {

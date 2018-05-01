@@ -15,18 +15,23 @@ if (!existsSync(configPath)) {
 
 const site = require(configPath);
 const env = require(`./${process.env.NODE_ENV || 'development'}`);
+const webpack = require(`./webpack.${process.env.NODE_ENV || 'development'}`);
 
-const config = (module.exports = merge.all([
-  { pkg },
+const configuration = merge.all([
   env,
   JSON.parse(JSON.stringify(defaults)),
-  JSON.parse(JSON.stringify(site)),
-]));
+  JSON.parse(JSON.stringify(site))
+]);
 
-log(`Configuring ${config.name.toTitleCase()} (${config.env.toTitleCase()} mode)`);
+const config = (module.exports = Object.assign(
+  { pkg, webpack },
+  configuration
+));
+
 log(
-  `Built using ${config.pkg.name.toTitleCase()}`,
+  `Configuring ${config.name.toTitleCase()} (${config.env.toTitleCase()} mode)`
 );
+log(`Built using ${config.pkg.name.toTitleCase()}`);
 log(`Version ${config.pkg.version}`);
 log(`Crafted by ${config.pkg.author}`);
 log(`Repository: ${config.pkg.repository}`);
