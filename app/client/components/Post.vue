@@ -1,18 +1,35 @@
 <template>
   <div class="post">
-    <h2>Love Today Has Gone Digital</h2>
+    <h2>{{ post.title }}</h2>
     <div class="post-content">
-      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-      tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-      quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-      consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-      cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-      proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-      </p>
+      <p>{{ post.excerpt }}</p>
     </div>
-    <p class="meta">April 28, 2018 by <a>John Smith</a></p>
+    <p class="meta">{{ formatDate(post.created) }} by <a>{{ post.author.displayName || post.author.username }}</a></p>
   </div>
 </template>
+
+<script>
+import moment from 'moment';
+
+export default {
+  props: {
+    post: {
+      type: Object,
+      required: true
+    }
+  },
+  data() {
+    return {
+      moment
+    };
+  },
+  methods: {
+    formatDate: function(date, format = 'MMMM do YYYY') {
+      return moment(date).format(format);
+    }
+  }
+};
+</script>
 
 <style scoped>
 .post {

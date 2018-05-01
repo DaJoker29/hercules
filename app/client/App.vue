@@ -1,6 +1,11 @@
 <template>
   <body>
     <SiteHeader :title="config.name" />
+    <div 
+      v-if="loading" 
+      class="loading">
+      Loading...
+    </div>
     <main class="main-container">
       <div class="sidebar">
         <CategoryCloud />
@@ -9,20 +14,20 @@
         <SiteFooter />
       </div>
       <div class="main-feed">
-        <Post />
-        <Post />
+        <PostList :posts="posts"/>
       </div>
     </main>
   </body>
 </template>
 
 <script>
+import axios from 'axios';
 import SiteHeader from './components/SiteHeader';
 import CategoryCloud from './components/CategoryCloud';
 import SearchBox from './components/SearchBox';
 import AuthorList from './components/AuthorList';
 import SiteFooter from './components/SiteFooter';
-import Post from './components/Post';
+import PostList from './components/PostList';
 
 export default {
   components: {
@@ -31,13 +36,32 @@ export default {
     SearchBox,
     AuthorList,
     SiteFooter,
-    Post
+    PostList
   },
   data() {
     return {
+      loading: false,
+      posts: [],
       msg: 'Howdy',
       config: process.env.SITE_CONFIG
     };
+  },
+  mounted() {
+    this.fetchPosts();
+  },
+  methods: {
+    fetchPosts() {
+      this.loading = true;
+      axios
+        .get('/api/posts')
+        .then(response => {
+          this.posts = response.data;
+          this.loading = false;
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    }
   }
 };
 </script>

@@ -35,5 +35,8 @@ module.exports = {
     }
   },
   parser: 'vue-eslint-parser',
+  parserOptions: {
+    'ecmaVersion': 2017
+  },
   plugins: ['vue', 'json', 'import', 'import-order-autofix'],
 };
