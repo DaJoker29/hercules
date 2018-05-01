@@ -20,7 +20,7 @@
     "start": "nodemon index.js --config nodemon.json",
     "build": "webpack --config app/config/webpack.config.js",
     "dev": "grunt dev & pm2 start test-process.json",
-    "prod": "grunt prod & pm2 start process.json",
+    "prod": "yarn run build && pm2 start process.json",
     "access": "node tools/show-access-code",
     "cli": "node tools/cli",
     "test": "NODE_ENV=test mocha",
