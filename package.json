@@ -27,7 +27,11 @@
     "test-coverage": "NODE_ENV=test istanbul cover _mocha -- -R spec"
   },
   "lint-staged": {
-    "*.js,*.vue": [
+    "*.js": [
+      "eslint --fix",
+      "git add"
+    ],
+    "*.vue": [
       "eslint --fix",
       "git add"
     ],
@@ -110,6 +114,7 @@
     "rss": "1.2.2",
     "shortid": "2.2.8",
     "slugify": "1.2.9",
+    "style-loader": "0.21.0",
     "stylelint": "9.2.0",
     "stylelint-config-recommended-scss": "3.2.0",
     "stylelint-scss": "3.0.0",
