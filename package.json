@@ -18,7 +18,7 @@
     "preinstall": "node tools/pre-install",
     "postinstall": "node tools/post-install",
     "start": "nodemon index.js --config nodemon.json",
-    "build": "webpack --config app/config/webpack.config.js",
+    "build": "webpack --config app/config/webpack.production.js",
     "dev": "grunt dev & pm2 start test-process.json",
     "prod": "yarn run build && pm2 start process.json",
     "access": "node tools/show-access-code",
