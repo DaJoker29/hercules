@@ -17,7 +17,7 @@
     "postversion": "git push && git push --tags && git checkout develop && git merge --no-ff master -m 'Sync Develop branch' && git push",
     "preinstall": "node tools/pre-install",
     "postinstall": "node tools/post-install",
-    "start": "grunt & nodemon index.js --config nodemon.json",
+    "start": "nodemon index.js --config nodemon.json",
     "build": "webpack --config app/config/webpack.config.js",
     "dev": "grunt dev & pm2 start test-process.json",
     "prod": "grunt prod & pm2 start process.json",

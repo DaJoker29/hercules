@@ -6,10 +6,6 @@ const { NamedModulesPlugin, HotModuleReplacementPlugin } = require('webpack');
 
 module.exports = {
   entry: './app/client/index.js',
-  watch: true,
-  watchOptions: {
-    poll: 1000,
-  },
   devServer: {
     contentBase: '../dist',
     hot: true,
@@ -45,10 +41,10 @@ module.exports = {
     ],
   },
   plugins: [
-    new CleanWebpackPlugin(['dist'], { root: path.resolve(__dirname, '..')}),
     new HtmlWebpackPlugin({
       title: 'Testing',
     }),
+    new CleanWebpackPlugin(['dist'], { root: path.resolve(__dirname, '..')}),
     // new VueLoaderPlugin(),
     new NamedModulesPlugin(),
     new HotModuleReplacementPlugin(),

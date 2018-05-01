@@ -9,17 +9,19 @@ const session = require('express-session');
 const RedisStore = require('connect-redis')(session);
 const moment = require('moment');
 const numeral = require('numeral');
-const VError = require('verror');
+// const VError = require('verror');
 const csrf = require('csurf');
 const marked = require('marked');
+const webpack = require('webpack');
+const webpackDevMiddleware = require('webpack-dev-middleware');
 
-const log = require('@tools/log')();
-const errLog = require('@tools/log')('error');
+// const log = require('@tools/log')();
+// const errLog = require('@tools/log')('error');
 
 const config = require('@app/config');
-const Routes = require('@app/server/routes');
-const Strategies = require('@app/server/strategies');
-const { User, Post } = require('@app/server/models');
+// const Routes = require('@app/server/routes');
+// const Strategies = require('@app/server/strategies');
+// const { User, Post } = require('@app/server/models');
 
 /**
  * Variables and Constants
@@ -27,6 +29,7 @@ const { User, Post } = require('@app/server/models');
 
 const isProd = config.env === 'production';
 const app = (module.exports = express());
+const compiler = webpack(config.webpack);
 const sessionSettings = {
   resave: false,
   secret: process.env.SESSION_SECRET || 'howsekritisit',
@@ -64,130 +67,134 @@ app.locals = {
   marked,
 };
 
-passport.use(Strategies.Local);
-passport.serializeUser(serializeUser);
-passport.deserializeUser(deserializeUser);
+// passport.use(Strategies.Local);
+// passport.serializeUser(serializeUser);
+// passport.deserializeUser(deserializeUser);
 
-app.use(passUserToLocal);
-app.use(csrfToken);
+// app.use(passUserToLocal);
+// app.use(csrfToken);
 
 /**
  * Load required routes
  */
 
-log('Loading Auth/Admin modules');
-app.use(Routes.Admin);
-app.use(Routes.Auth);
-app.get('/', renderIndex);
+// log('Loading Auth/Admin modules');
+// app.use(Routes.Admin);
+// app.use(Routes.Auth);
+// app.get('/', renderIndex);
 
 /**
  * Configure Modules
  */
-if (config.modules.blog) {
-  log('Loading Blog module');
-  app.use(Routes.Search);
-  app.use(Routes.Blog);
-  app.use(Routes.Editor);
-}
+// if (config.modules.blog) {
+//   log('Loading Blog module');
+//   app.use(Routes.Search);
+//   app.use(Routes.Blog);
+//   app.use(Routes.Editor);
+// }
 
-if (config.modules.podcast) {
-  log('Loading Podcast module');
-  app.use(Routes.Podcast);
-}
+// if (config.modules.podcast) {
+//   log('Loading Podcast module');
+//   app.use(Routes.Podcast);
+// }
+
+app.use(webpackDevMiddleware(compiler, {
+  publicPath: config.webpack.output.publicPath
+}));
 
 /**
  * Error Handling Routes
  */
 
-// For Testing Purposes
-app.use('/fail', forceFailure);
-app.use('*', pageNotFound);
-app.use(serverError);
+// // For Testing Purposes
+// app.use('/fail', forceFailure);
+// app.use('*', pageNotFound);
+// app.use(serverError);
 
-function serializeUser(user, done) {
-  return done(null, user.id);
-}
+// function serializeUser(user, done) {
+//   return done(null, user.id);
+// }
 
-function deserializeUser(id, done) {
-  User.findById(id)
-    .then(user => {
-      done(null, user);
-    })
-    .catch(e => done(e));
-}
+// function deserializeUser(id, done) {
+//   User.findById(id)
+//     .then(user => {
+//       done(null, user);
+//     })
+//     .catch(e => done(e));
+// }
 
-function passUserToLocal(req, res, next) {
-  res.locals.user = req.user;
-  next();
-}
+// function passUserToLocal(req, res, next) {
+//   res.locals.user = req.user;
+//   next();
+// }
 
-function forceFailure(req, res, next) {
-  const error = new VError('Intentionally Triggered Error');
-  next(error);
-}
+// function forceFailure(req, res, next) {
+//   const error = new VError('Intentionally Triggered Error');
+//   next(error);
+// }
 
-/* eslint-disable no-unused-vars */
+// /* eslint-disable no-unused-vars */
 
-function pageNotFound(req, res, next) {
-  return res.status(404).render('error', {
-    title: 'Page Not Found',
-    message: 'Can not find that page',
-  });
-}
+// function pageNotFound(req, res, next) {
+//   return res.status(404).render('error', {
+//     title: 'Page Not Found',
+//     message: 'Can not find that page',
+//   });
+// }
 
-function serverError(err, req, res, next) {
-  const error = new VError(err, 'Unhandled Server Error');
-  errLog(error.stack);
-  return res.status(500).render('error', {
-    title: 'Server Error',
-    message: 'Looks like something broke.',
-    error: isProd ? null : error,
-  });
-}
-/* eslint-enable no-unused-vars */
+// function serverError(err, req, res, next) {
+//   const error = new VError(err, 'Unhandled Server Error');
+//   errLog(error.stack);
+//   return res.status(500).render('error', {
+//     title: 'Server Error',
+//     message: 'Looks like something broke.',
+//     error: isProd ? null : error,
+//   });
+// }
+// /* eslint-enable no-unused-vars */
 
-function csrfToken(req, res, next) {
-  res.locals.csrfToken = req.csrfToken();
-  next();
-}
+// function csrfToken(req, res, next) {
+//   res.locals.csrfToken = req.csrfToken();
+//   next();
+// }
 
-function renderIndex(req, res, next) {
-  if (config.modules.blog) {
-    return Post.find({})
-      .sort({ created: -1 })
-      .populate('author')
-      .then(posts => {
-        // Filtering Keywords
-        let result = [];
-        posts.forEach(post => (result = [...result, ...fetchKeywords(post)]));
-        return res.render('blog', {
-          posts,
-          keywords: Array.from(new Set(result)),
-        });
-      })
-      .catch(e => next(new VError(e, 'Problem rendering blog')));
-  } else {
-    return res.render('error', {
-      title: 'Uhhh...',
-      message: "These are not the droids you're looking for.",
-      error: 'Error: No modules loaded, genius!',
-    });
-  }
-}
+// function renderIndex(req, res, next) {
+//   if (config.modules.blog) {
+//     return Post.find({})
+//       .sort({ created: -1 })
+//       .populate('author')
+//       .then(posts => {
+//         // Filtering Keywords
+//         let result = [];
+//         posts.forEach(post => (result = [...result, ...fetchKeywords(post)]));
+//         return res.render('blog', {
+//           posts,
+//           keywords: Array.from(new Set(result)),
+//         });
+//       })
+//       .catch(e => next(new VError(e, 'Problem rendering blog')));
+//   } else {
+//     return res.render('error', {
+//       title: 'Uhhh...',
+//       message: "These are not the droids you're looking for.",
+//       error: 'Error: No modules loaded, genius!',
+//     });
+//   }
+// }
 
-function fetchKeywords(post) {
-  const { title, excerpt, tags } = post;
-  return [
-    ...sanitize(title.split(' ')),
-    ...sanitize(excerpt.split(' ')),
-    ...sanitize(tags),
-  ];
-}
+// function fetchKeywords(post) {
+//   const { title, excerpt, tags } = post;
+//   return [
+//     ...sanitize(title.split(' ')),
+//     ...sanitize(excerpt.split(' ')),
+//     ...sanitize(tags),
+//   ];
+// }
 
-function sanitize(arr) {
-  return arr.map(filtered);
-}
+// function sanitize(arr) {
+//   return arr.map(filtered);
+// }
 
-function filtered(str) {
-  return str.toLowerCase().replace(/[^A-Za-z0-9 ]/g, '');
-}
+// function filtered(str) {
+//   return str.toLowerCase().replace(/[^A-Za-z0-9 ]/g, '');
+// }
