@@ -27,7 +27,7 @@
     "test-coverage": "NODE_ENV=test istanbul cover _mocha -- -R spec"
   },
   "lint-staged": {
-    "*.js": [
+    "*.js,*.vue": [
       "eslint --fix",
       "git add"
     ],
@@ -40,7 +40,12 @@
     "autoprefixer": "8.2.0",
     "babel-core": "6.26.3",
     "babel-eslint": "8.2.2",
+    "babel-helper-vue-jsx-merge-props": "2.0.3",
     "babel-loader": "7.1.4",
+    "babel-plugin-transform-vue-jsx": "3.7.0",
+    "babel-preset-env": "1.6.1",
+    "babel-preset-stage-2": "6.24.1",
+    "babel-preset-vue": "2.0.2",
     "body-parser": "1.18.2",
     "callsite": "1.0.0",
     "chai": "4.1.2",

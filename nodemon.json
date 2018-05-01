@@ -5,9 +5,9 @@
   },
   "ext": "js json",
   "watch": [
-    "app/**/*.js",
+    "app/server/**/*.js",
+    "app/index.js",
     "index.js",
     ".env"
-  ],
-  "ignore": ["app/public"]
+  ]
 }
