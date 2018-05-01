@@ -10,8 +10,8 @@ module.exports = {
     'eslint:recommended',
     'plugin:import/errors',
     'plugin:import/warnings',
-    'prettier/react',
-    'plugin:vue/recommended'
+    'plugin:vue/recommended',
+    'plugin:prettier/recommended'
   ],
   rules: {
     'no-console': 0,
@@ -21,8 +21,8 @@ module.exports = {
     'import-order-autofix/order': 1,
     'prefer-destructuring': 1,
     'import/no-extraneous-dependencies': 0,
-    'import/no-dynamic-require': 0
+    'import/no-dynamic-require': 0,
   },
   parser: 'vue-eslint-parser',
-  plugins: ['vue', 'json', 'import', 'prettier', 'import-order-autofix'],
+  plugins: ['vue', 'json', 'import', 'import-order-autofix'],
 };
