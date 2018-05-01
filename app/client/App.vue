@@ -9,8 +9,7 @@
         <SiteFooter />
       </div>
       <div class="main-feed">
-        <Post />
-        <Post />
+        <PostList :posts="posts"/>
       </div>
     </main>
   </body>
@@ -22,7 +21,42 @@ import CategoryCloud from './components/CategoryCloud';
 import SearchBox from './components/SearchBox';
 import AuthorList from './components/AuthorList';
 import SiteFooter from './components/SiteFooter';
-import Post from './components/Post';
+import PostList from './components/PostList';
+
+const posts = [
+  {
+    id: 1,
+    title: 'Title One',
+    content:
+      'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Odit voluptatibus similique placeat, asperiores nobis accusamus obcaecati ab consectetur rerum, sequi modi, delectus minus reiciendis velit illo sint in. Beatae, quaerat?',
+    createdAt: Date.now(),
+    author: 'John Smith'
+  },
+  {
+    id: 2,
+    title: 'Title One',
+    content:
+      'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Odit voluptatibus similique placeat, asperiores nobis accusamus obcaecati ab consectetur rerum, sequi modi, delectus minus reiciendis velit illo sint in. Beatae, quaerat?',
+    createdAt: Date.now(),
+    author: 'John Smith'
+  },
+  {
+    id: 3,
+    title: 'Title One',
+    content:
+      'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Odit voluptatibus similique placeat, asperiores nobis accusamus obcaecati ab consectetur rerum, sequi modi, delectus minus reiciendis velit illo sint in. Beatae, quaerat?',
+    createdAt: Date.now(),
+    author: 'John Smith'
+  },
+  {
+    id: 4,
+    title: 'Title One',
+    content:
+      'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Odit voluptatibus similique placeat, asperiores nobis accusamus obcaecati ab consectetur rerum, sequi modi, delectus minus reiciendis velit illo sint in. Beatae, quaerat?',
+    createdAt: Date.now(),
+    author: 'John Smith'
+  }
+];
 
 export default {
   components: {
@@ -31,10 +65,11 @@ export default {
     SearchBox,
     AuthorList,
     SiteFooter,
-    Post
+    PostList
   },
   data() {
     return {
+      posts,
       msg: 'Howdy',
       config: process.env.SITE_CONFIG
     };
