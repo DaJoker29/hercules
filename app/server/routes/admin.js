@@ -23,6 +23,6 @@ function renderAdmin(req, res, next) {
       res.render('admin', { podcasts, posts });
     })
     .catch(e =>
-      next(new VError(e, 'There was a problem creating main admin page.')),
+      next(new VError(e, 'There was a problem creating main admin page.'))
     );
 }

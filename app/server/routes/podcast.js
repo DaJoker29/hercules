@@ -19,7 +19,7 @@ router.post(
   '/podcast/:slug',
   ENSURE_AUTH,
   upload.single('media'),
-  createEpisode,
+  createEpisode
 );
 
 // router.get('/podcast/:slug', handlePodcast);

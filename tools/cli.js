@@ -18,7 +18,7 @@ program
   .option('-u, --username <username>', 'Username')
   .option('-e, --email <email>', 'Email Address')
   .option('-n, --displayName [displayName]', 'Display Name')
-  .action(async (cmd, options) => {
+  .action(async function userCb(cmd, options) {
     /////////////////////////
     // Connect to database //
     /////////////////////////
