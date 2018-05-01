@@ -10,6 +10,10 @@ const VError = require('verror');
 const errLog = require('@tools/log')('error');
 
 const config = require('@app/config');
+const Routes = require('@app/server/routes');
+
+const webpackConfig = require(`@app/config/webpack.${config.env ||
+  'development'}`);
 
 /**
  * Variables and Constants
@@ -23,29 +27,36 @@ const app = (module.exports = express());
  */
 
 app.use(express.static(path.join(__dirname, 'dist')));
-app.use('/.well-known', express.static(path.join(__dirname, '.well-known'), { dotfiles: 'allow' }));
+app.use(
+  '/.well-known',
+  express.static(path.join(__dirname, '.well-known'), { dotfiles: 'allow' })
+);
 app.use(morganDebug(`${config.pkg.name}-morgan`, isProd ? 'combined' : 'dev'));
 app.use(bodyParser.urlencoded({ extended: 'true' }));
 app.use(bodyParser.json());
 app.use(methodOverride());
 app.use(helmet());
 
-
 // Load Dev Middleware if in dev mode, serve compiled assets otherwise
 if (!isProd) {
   const webpack = require('webpack');
   const webpackDevMiddleware = require('webpack-dev-middleware');
   const webpackHotMiddleware = require('webpack-hot-middleware');
-  const compiler = webpack(config.webpack);
+  const compiler = webpack(webpackConfig);
 
-  app.use(webpackDevMiddleware(compiler, {
-    noInfo: true,
-    publicPath: config.webpack.output.publicPath
-  }));
+  app.use(
+    webpackDevMiddleware(compiler, {
+      noInfo: true,
+      publicPath: webpackConfig.output.publicPath
+    })
+  );
   app.use(webpackHotMiddleware(compiler));
 } else {
   app.get('/', landing);
 }
+
+// Load API Routes
+app.use('/api', Routes.Posts);
 
 /**
  * Error Handling Routes
