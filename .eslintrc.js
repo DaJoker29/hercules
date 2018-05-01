@@ -22,6 +22,17 @@ module.exports = {
     'prefer-destructuring': 1,
     'import/no-extraneous-dependencies': 0,
     'import/no-dynamic-require': 0,
+    'import/extensions': [2, { vue: 'never' }]
+  },
+  settings: {
+    'import/resolver': {
+      node: {
+        extensions: [
+          '.js',
+          '.vue'
+        ]
+      }
+    }
   },
   parser: 'vue-eslint-parser',
   plugins: ['vue', 'json', 'import', 'import-order-autofix'],

@@ -2,6 +2,8 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const { VueLoaderPlugin } = require('vue-loader');
+const { DefinePlugin } = require('webpack');
+const config = require('@app/config');
 
 module.exports = {
   entry: './app/client/index.js',
@@ -38,6 +40,11 @@ module.exports = {
       title: 'hercules'
     }),
     new CleanWebpackPlugin(['dist'], { root: path.resolve(__dirname, '..') }),
-    new VueLoaderPlugin()
+    new VueLoaderPlugin(),
+    new DefinePlugin({
+      'process.env': {
+        SITE_CONFIG: JSON.stringify(config)
+      }
+    })
   ]
 };
