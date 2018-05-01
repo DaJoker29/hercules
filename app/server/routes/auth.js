@@ -15,7 +15,7 @@ router.post(
   passport.authenticate('local', {
     successRedirect: '/',
     failureRedirect: '/login',
-  }),
+  })
 );
 
 module.exports = router;

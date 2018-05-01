@@ -27,7 +27,7 @@ const config = module.exports = Object.assign({}, { pkg, webpack }, configuratio
 
 log(`Configuring ${config.name.toTitleCase()} (${config.env.toTitleCase()} mode)`);
 log(
-  `Built using ${config.pkg.name.toTitleCase()}`,
+  `Built using ${config.pkg.name.toTitleCase()}`
 );
 log(`Version ${config.pkg.version}`);
 log(`Crafted by ${config.pkg.author}`);

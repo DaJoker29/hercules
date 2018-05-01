@@ -14,6 +14,7 @@ const csrf = require('csurf');
 const marked = require('marked');
 const webpack = require('webpack');
 const webpackDevMiddleware = require('webpack-dev-middleware');
+const webpackHotMiddleware = require('webpack-hot-middleware');
 
 // const log = require('@tools/log')();
 // const errLog = require('@tools/log')('error');
@@ -67,6 +68,19 @@ app.locals = {
   marked,
 };
 
+// Use Webpack Dev Middleware if in dev mode
+if (!isProd) {
+  app.use(webpackDevMiddleware(compiler, {
+    noInfo: true,
+    publicPath: config.webpack.output.publicPath
+  }));
+
+  app.use(webpackHotMiddleware(compiler));
+} else {
+  
+}
+
+
 // passport.use(Strategies.Local);
 // passport.serializeUser(serializeUser);
 // passport.deserializeUser(deserializeUser);
@@ -98,9 +112,6 @@ app.locals = {
 //   app.use(Routes.Podcast);
 // }
 
-app.use(webpackDevMiddleware(compiler, {
-  publicPath: config.webpack.output.publicPath
-}));
 
 /**
  * Error Handling Routes

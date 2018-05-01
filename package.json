@@ -11,8 +11,8 @@
     "node": "~8.9.4"
   },
   "scripts": {
-    "lint": "yarn eslint . && yarn stylelint app/**/*.scss",
-    "fix": "yarn eslint --fix . && yarn stylelint --fix app/**/*.scss",
+    "lint": "eslint --ext .js --ext .vue ./app/client && yarn stylelint app/**/*.scss",
+    "fix": "eslint --fix --ext .js --ext .vue ./app/client && yarn stylelint --fix app/**/*.scss",
     "preversion": "git checkout master && git merge --no-ff develop -m 'Pull changes for release bump'",
     "postversion": "git push && git push --tags && git checkout develop && git merge --no-ff master -m 'Sync Develop branch' && git push",
     "preinstall": "node tools/pre-install",
@@ -38,6 +38,7 @@
   },
   "dependencies": {
     "autoprefixer": "8.2.0",
+    "babel-core": "6.26.3",
     "babel-eslint": "8.2.2",
     "babel-loader": "7.1.4",
     "body-parser": "1.18.2",
@@ -48,6 +49,7 @@
     "commander": "2.15.1",
     "concurrently": "3.5.1",
     "connect-redis": "3.3.3",
+    "css-loader": "0.28.11",
     "cssnano": "3.10.0",
     "csurf": "1.9.0",
     "debug": "3.1.0",
@@ -63,6 +65,7 @@
     "eslint-plugin-jsx-a11y": "6.0.3",
     "eslint-plugin-prettier": "2.6.0",
     "eslint-plugin-react": "7.7.0",
+    "eslint-plugin-vue": "4.5.0",
     "express": "4.16.3",
     "express-session": "1.15.6",
     "fs-extra": "5.0.0",
@@ -109,8 +112,12 @@
     "supports-color": "5.3.0",
     "thirty-two": "1.0.2",
     "verror": "1.10.0",
+    "vue": "2.5.16",
+    "vue-loader": "15.0.5",
+    "vue-template-compiler": "2.5.16",
     "webpack": "4.6.0",
     "webpack-cli": "2.1.2",
-    "webpack-dev-middleware": "3.1.3"
+    "webpack-dev-middleware": "3.1.3",
+    "webpack-hot-middleware": "2.22.1"
   }
 }
