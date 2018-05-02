@@ -57,6 +57,7 @@ if (!isProd) {
 
 // Load API Routes
 app.use('/api', Routes.Posts);
+app.use('/api', Routes.Users);
 
 /**
  * Error Handling Routes

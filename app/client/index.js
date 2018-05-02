@@ -1,7 +1,10 @@
 import Vue from 'vue';
-import App from './App'; // eslint-disable-line
+import App from '@app/client/App';
+import router from './router';
+
+Vue.config.productionTip = false;
 
 new Vue({
-  el: 'body',
+  router,
   render: h => h(App)
-});
+}).$mount('body');

@@ -2,12 +2,25 @@
   <div class="authors">
     <h4>Authors</h4>
     <ul>
-      <li><a href="">John Smith</a></li>
-      <li><a href="">Jane Doe</a></li>
-      <li><a href="">Phil Collins</a></li>
+      <li 
+        v-for="author in authors" 
+        :key="author._id">
+        <router-link :to="{ name: 'author', params: { username: author.username}}">{{ author.displayName || author.username }}</router-link>
+      </li>
     </ul>
   </div>
 </template>
+
+<script>
+export default {
+  props: {
+    authors: {
+      type: Array,
+      required: true
+    }
+  }
+};
+</script>
 
 <style scoped>
 .authors li {
