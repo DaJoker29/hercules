@@ -9,14 +9,14 @@ const postSchema = new Schema({
     type: String,
     required: true,
     default: shortid.generate,
-    unique: true,
+    unique: true
   },
   created: { type: Date, required: true, default: Date.now },
   title: { type: String, required: true },
   content: { type: String, required: true },
   tags: [{ type: String }],
   excerpt: { type: String },
-  author: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+  author: { type: Schema.Types.ObjectId, ref: 'User', required: true }
 });
 
 postSchema.plugin(uniqueValidator);

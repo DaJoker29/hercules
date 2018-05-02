@@ -9,7 +9,7 @@ const userSchema = new Schema({
   email: { type: String, required: true },
   displayName: { type: String, default: this.username },
   token: { type: String, default: token(128) },
-  created: { type: Date, default: Date.now() },
+  created: { type: Date, default: Date.now() }
 });
 
 userSchema.plugin(uniqueValidator);

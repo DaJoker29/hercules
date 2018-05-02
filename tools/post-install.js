@@ -9,8 +9,8 @@ const symlinks = [
   [resolve(__dirname), resolve(__dirname, '../node_modules/@tools')],
   [
     resolve(__dirname, 'pre-commit.sh'),
-    resolve(__dirname, '../.git/hooks/pre-commit'),
-  ],
+    resolve(__dirname, '../.git/hooks/pre-commit')
+  ]
 ];
 
 console.log(`-Creating ${symlinks.length} symlinks...`);

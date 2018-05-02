@@ -4,9 +4,9 @@ module.exports = {
   description: 'Description',
   modules: {
     blog: true,
-    podcast: false,
+    podcast: false
   },
   blog: {
-    wordTarget: 1000,
-  },
+    wordTarget: 1000
+  }
 };
