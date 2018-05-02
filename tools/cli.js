@@ -48,7 +48,7 @@ program
             .replace(/=/g, '')}`;
 
           console.log(
-            `QR Code: https://chart.googleapis.com/chart?chs=166x166&chld=L|0&cht=qr&chl=${uri}`,
+            `QR Code: https://chart.googleapis.com/chart?chs=166x166&chld=L|0&cht=qr&chl=${uri}`
           );
         })
         .catch(e => console.error(e.message));
@@ -62,7 +62,7 @@ program
         .then(user => {
           const notp = require('notp');
           console.log(
-            `Access Code (valid for 30sec): ${notp.totp.gen(user.token)}`,
+            `Access Code (valid for 30sec): ${notp.totp.gen(user.token)}`
           );
         })
         .catch(e => console.error(e.message));
@@ -75,8 +75,8 @@ program
           users.forEach(user => {
             console.log(
               `${user.username} - ${user.email}\n Access Code: ${notp.totp.gen(
-                user.token,
-              )}\n`,
+                user.token
+              )}\n`
             );
           });
         })
