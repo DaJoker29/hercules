@@ -6,63 +6,22 @@
       class="loading">
       Loading...
     </div>
-    <main class="main-container">
-      <div class="sidebar">
-        <CategoryCloud />
-        <SearchBox />
-        <AuthorList :authors="users"/>
-        <SiteFooter />
-      </div>
-      <div class="main-feed">
-        <PostList :posts="posts"/>
-      </div>
-    </main>
+    <router-view/>
   </body>
 </template>
 
 <script>
-import 'babel-polyfill';
-import axios from 'axios';
 import SiteHeader from './components/SiteHeader';
-import CategoryCloud from './components/CategoryCloud';
-import SearchBox from './components/SearchBox';
-import AuthorList from './components/AuthorList';
-import SiteFooter from './components/SiteFooter';
-import PostList from './components/PostList';
 
 export default {
   components: {
-    SiteHeader,
-    CategoryCloud,
-    SearchBox,
-    AuthorList,
-    SiteFooter,
-    PostList
+    SiteHeader
   },
   data() {
     return {
       loading: false,
-      posts: [],
-      users: [],
-      msg: 'Howdy',
       config: process.env.SITE_CONFIG
     };
-  },
-  mounted: async function() {
-    this.loading = true;
-    this.posts = await this.fetchPosts();
-    this.users = await this.fetchAuthors();
-    this.loading = false;
-  },
-  methods: {
-    fetchPosts: async function() {
-      const response = await axios.get('/api/posts');
-      return response.data;
-    },
-    fetchAuthors: async function() {
-      const response = await axios.get('/api/users');
-      return response.data;
-    }
   }
 };
 </script>
