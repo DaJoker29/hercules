@@ -6,7 +6,7 @@ console.log('\nStart of PREINSTALL\n');
 
 const symlinks = [
   resolve(__dirname, '../node_modules/@app'),
-  resolve(__dirname, '../node_modules/@tools'),
+  resolve(__dirname, '../node_modules/@tools')
 ];
 
 console.log(`-Removing ${symlinks.length} symlinks from node_modules...`);

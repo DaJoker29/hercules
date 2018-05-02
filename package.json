@@ -11,8 +11,8 @@
     "node": "~8.9.4"
   },
   "scripts": {
-    "lint": "eslint --ext .js --ext .vue ./app/client && yarn stylelint app/**/*.scss",
-    "fix": "eslint --fix --ext .js --ext .vue ./app/client && yarn stylelint --fix app/**/*.scss",
+    "lint": "eslint --ext .js --ext .vue .",
+    "fix": "eslint --fix --ext .js --ext .vue .",
     "preversion": "git checkout master && git merge --no-ff develop -m 'Pull changes for release bump'",
     "postversion": "git push && git push --tags && git checkout develop && git merge --no-ff master -m 'Sync Develop branch' && git push",
     "preinstall": "node tools/pre-install",
@@ -20,11 +20,12 @@
     "start": "nodemon index.js --config nodemon.json",
     "build": "webpack --config app/config/webpack.production.js",
     "dev": "grunt dev & pm2 start test-process.json",
-    "prod": "yarn run build && pm2 start process.json",
+    "prod": "npm run build && pm2 start process.json",
     "access": "node tools/show-access-code",
     "cli": "node tools/cli",
     "test": "NODE_ENV=test mocha",
-    "test-coverage": "NODE_ENV=test istanbul cover _mocha -- -R spec"
+    "test-coverage": "NODE_ENV=test istanbul cover _mocha -- -R spec",
+    "precommit": "lint-staged"
   },
   "lint-staged": {
     "*.js": [
@@ -33,10 +34,6 @@
     ],
     "*.vue": [
       "eslint --fix",
-      "git add"
-    ],
-    "*.scss": [
-      "stylelint --fix",
       "git add"
     ]
   },
@@ -89,6 +86,7 @@
     "grunt-sass": "2.1.0",
     "helmet": "3.12.0",
     "html-webpack-plugin": "3.2.0",
+    "husky": "0.14.3",
     "istanbul": "0.4.5",
     "keyword-extractor": "0.0.15",
     "lint-staged": "7.0.4",
