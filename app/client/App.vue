@@ -10,7 +10,7 @@
       <div class="sidebar">
         <CategoryCloud />
         <SearchBox />
-        <AuthorList />
+        <AuthorList :authors="users"/>
         <SiteFooter />
       </div>
       <div class="main-feed">
@@ -21,6 +21,7 @@
 </template>
 
 <script>
+import 'babel-polyfill';
 import axios from 'axios';
 import SiteHeader from './components/SiteHeader';
 import CategoryCloud from './components/CategoryCloud';
@@ -42,25 +43,25 @@ export default {
     return {
       loading: false,
       posts: [],
+      users: [],
       msg: 'Howdy',
       config: process.env.SITE_CONFIG
     };
   },
-  mounted() {
-    this.fetchPosts();
+  mounted: async function() {
+    this.loading = true;
+    this.posts = await this.fetchPosts();
+    this.users = await this.fetchAuthors();
+    this.loading = false;
   },
   methods: {
-    fetchPosts() {
-      this.loading = true;
-      axios
-        .get('/api/posts')
-        .then(response => {
-          this.posts = response.data;
-          this.loading = false;
-        })
-        .catch(e => {
-          console.log(e);
-        });
+    fetchPosts: async function() {
+      const response = await axios.get('/api/posts');
+      return response.data;
+    },
+    fetchAuthors: async function() {
+      const response = await axios.get('/api/users');
+      return response.data;
     }
   }
 };
