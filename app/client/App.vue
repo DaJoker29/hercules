@@ -1,67 +1,29 @@
 <template>
   <body>
     <SiteHeader :title="config.name" />
-    <div 
-      v-if="loading" 
-      class="loading">
-      Loading...
+    <div class="app-container">
+      <div 
+        v-if="loading" 
+        class="loading">
+        Loading...
+      </div>
+      <router-view/>
     </div>
-    <main class="main-container">
-      <div class="sidebar">
-        <CategoryCloud />
-        <SearchBox />
-        <AuthorList />
-        <SiteFooter />
-      </div>
-      <div class="main-feed">
-        <PostList :posts="posts"/>
-      </div>
-    </main>
   </body>
 </template>
 
 <script>
-import axios from 'axios';
 import SiteHeader from './components/SiteHeader';
-import CategoryCloud from './components/CategoryCloud';
-import SearchBox from './components/SearchBox';
-import AuthorList from './components/AuthorList';
-import SiteFooter from './components/SiteFooter';
-import PostList from './components/PostList';
 
 export default {
   components: {
-    SiteHeader,
-    CategoryCloud,
-    SearchBox,
-    AuthorList,
-    SiteFooter,
-    PostList
+    SiteHeader
   },
   data() {
     return {
       loading: false,
-      posts: [],
-      msg: 'Howdy',
       config: process.env.SITE_CONFIG
     };
-  },
-  mounted() {
-    this.fetchPosts();
-  },
-  methods: {
-    fetchPosts() {
-      this.loading = true;
-      axios
-        .get('/api/posts')
-        .then(response => {
-          this.posts = response.data;
-          this.loading = false;
-        })
-        .catch(e => {
-          console.log(e);
-        });
-    }
   }
 };
 </script>
@@ -128,30 +90,7 @@ input {
   font-weight: bold;
 }
 
-.main-container {
-  display: flex;
-  flex-flow: row wrap;
-  padding: 0;
-}
-
-.main-container > * {
-  flex: 1 100%;
-}
-
-.main-feed,
-.sidebar {
-  margin: 2rem 0;
-  padding: 0 2rem;
-}
-
-@media (min-width: 480px) {
-  .main-container > .main-feed {
-    flex: 4;
-  }
-
-  .main-container > .sidebar {
-    flex: 1;
-    border-right: 2px solid var(--gray-l);
-  }
+.app-container > * {
+  margin: 2rem;
 }
 </style>
