@@ -5,7 +5,7 @@
       <li 
         v-for="author in authors" 
         :key="author._id">
-        <a>{{ author.displayName || author.username }}</a>
+        <router-link :to="{ name: 'author', params: { username: author.username}}">{{ author.displayName || author.username }}</router-link>
       </li>
     </ul>
   </div>

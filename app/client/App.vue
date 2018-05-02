@@ -1,12 +1,14 @@
 <template>
   <body>
     <SiteHeader :title="config.name" />
-    <div 
-      v-if="loading" 
-      class="loading">
-      Loading...
+    <div class="app-container">
+      <div 
+        v-if="loading" 
+        class="loading">
+        Loading...
+      </div>
+      <router-view/>
     </div>
-    <router-view/>
   </body>
 </template>
 
@@ -88,30 +90,7 @@ input {
   font-weight: bold;
 }
 
-.main-container {
-  display: flex;
-  flex-flow: row wrap;
-  padding: 0;
-}
-
-.main-container > * {
-  flex: 1 100%;
-}
-
-.main-feed,
-.sidebar {
-  margin: 2rem 0;
-  padding: 0 2rem;
-}
-
-@media (min-width: 480px) {
-  .main-container > .main-feed {
-    flex: 4;
-  }
-
-  .main-container > .sidebar {
-    flex: 1;
-    border-right: 2px solid var(--gray-l);
-  }
+.app-container > * {
+  margin: 2rem;
 }
 </style>

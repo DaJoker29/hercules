@@ -1,7 +1,9 @@
 <template>
   <header class="site-header">
-    <h1 class="site-title">{{ title }}</h1>
-    <a class="login">Log In</a>
+    <h1 class="site-title"><router-link to="/">{{ title }}</router-link></h1>
+    <router-link 
+      to="login" 
+      class="login">Log In</router-link>
   </header>
 </template>
 
@@ -30,7 +32,7 @@ export default {
   align-self: center;
 }
 
-.site-header > .site-title {
+.site-header > .site-title > a {
   font-style: 2rem;
   font-family: var(--font-cursive);
 }

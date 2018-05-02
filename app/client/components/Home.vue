@@ -1,5 +1,5 @@
 <template>
-  <main class="main-container">
+  <main class="home-container">
     <div class="sidebar">
       <CategoryCloud />
       <SearchBox />
@@ -54,3 +54,27 @@ export default {
   }
 };
 </script>
+
+<style>
+.home-container {
+  display: flex;
+  flex-flow: row wrap;
+  padding: 0;
+}
+
+.home-container > * {
+  flex: 1 100%;
+  margin-right: 2rem;
+}
+
+@media (min-width: 480px) {
+  .home-container > .main-feed {
+    flex: 4;
+  }
+
+  .home-container > .sidebar {
+    flex: 1;
+    border-right: 2px solid var(--gray-l);
+  }
+}
+</style>
