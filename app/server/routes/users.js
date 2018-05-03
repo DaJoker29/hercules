@@ -1,10 +1,15 @@
 const { Router } = require('express');
+const passport = require('passport');
 const { User, Post } = require('../models');
 
 const router = new Router();
 
 router.get('/users', fetchUsers);
-router.get('/user/:username', fetchSingleUser);
+router.get(
+  '/user/:username',
+  passport.authenticate('jwt', { session: false }),
+  fetchSingleUser
+);
 
 module.exports = router;
 

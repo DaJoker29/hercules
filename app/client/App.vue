@@ -1,9 +1,9 @@
 <template>
   <body>
-    <SiteHeader :title="config.name" />
+    <SiteHeader :title="getSiteName" />
     <div class="app-container">
       <div 
-        v-if="loading" 
+        v-if="isLoading" 
         class="loading">
         Loading...
       </div>
@@ -13,17 +13,22 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+import axios from 'axios';
 import SiteHeader from './components/SiteHeader';
 
 export default {
   components: {
     SiteHeader
   },
-  data() {
-    return {
-      loading: false,
-      config: process.env.SITE_CONFIG
-    };
+  computed: {
+    ...mapGetters(['isLoading', 'getSiteName'])
+  },
+  created() {
+    const savedToken = localStorage.getItem('token');
+    if (savedToken) {
+      axios.defaults.headers.common['Authorization'] = `bearer ${savedToken}`;
+    }
   }
 };
 </script>
