@@ -3,6 +3,7 @@ const express = require('express');
 const morganDebug = require('morgan-debug');
 const bodyParser = require('body-parser');
 const methodOverride = require('method-override');
+const passport = require('passport');
 const helmet = require('helmet');
 const VError = require('verror');
 
@@ -36,7 +37,9 @@ app.use(bodyParser.urlencoded({ extended: 'true' }));
 app.use(bodyParser.json());
 app.use(methodOverride());
 app.use(helmet());
+app.use(passport.initialize());
 
+require('./passport');
 // Load Dev Middleware if in dev mode, serve compiled assets otherwise
 if (!isProd) {
   const webpack = require('webpack');
@@ -46,7 +49,8 @@ if (!isProd) {
 
   app.use(
     webpackDevMiddleware(compiler, {
-      noInfo: true,
+      reload: true,
+      stats: 'errors-only',
       publicPath: webpackConfig.output.publicPath
     })
   );
@@ -56,8 +60,13 @@ if (!isProd) {
 }
 
 // Load API Routes
+app.use('/auth', Routes.Auth);
 app.use('/api', Routes.Posts);
 app.use('/api', Routes.Users);
+
+/**
+ * app.use('/protected-endpoint', passport.authenticate('jwt', { session: false }, Routes))
+ */
 
 /**
  * Error Handling Routes

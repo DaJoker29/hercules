@@ -2,18 +2,28 @@
   <header class="site-header">
     <h1 class="site-title"><router-link to="/">{{ title }}</router-link></h1>
     <router-link 
-      to="login" 
+      v-if="token.length === 0"
+      to="/login" 
       class="login">Log In</router-link>
+    <router-link 
+      v-else 
+      to="/logout" 
+      class="logout">Log out</router-link>
   </header>
 </template>
 
 <script>
+import { mapState } from 'vuex';
+
 export default {
   props: {
     title: {
       type: String,
       default: 'Default Title'
     }
+  },
+  computed: {
+    ...mapState(['token'])
   }
 };
 </script>
@@ -37,7 +47,8 @@ export default {
   font-family: var(--font-cursive);
 }
 
-.site-header > .login {
+.site-header > .login,
+.site-header > .logout {
   text-align: right;
 }
 </style>

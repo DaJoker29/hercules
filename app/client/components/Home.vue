@@ -15,6 +15,7 @@
 <script>
 import 'babel-polyfill';
 import axios from 'axios';
+import { mapActions } from 'vuex';
 import CategoryCloud from './CategoryCloud';
 import SearchBox from './SearchBox';
 import AuthorList from './AuthorList';
@@ -37,18 +38,21 @@ export default {
     };
   },
   mounted: async function() {
-    this.loading = true;
     this.posts = await this.fetchPosts();
     this.users = await this.fetchAuthors();
-    this.loading = false;
   },
   methods: {
+    ...mapActions(['addPending', 'removePending', 'clearPending']),
     fetchPosts: async function() {
+      this.addPending();
       const response = await axios.get('/api/posts');
+      this.removePending();
       return response.data;
     },
     fetchAuthors: async function() {
+      this.addPending();
       const response = await axios.get('/api/users');
+      this.removePending();
       return response.data;
     }
   }

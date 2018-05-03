@@ -30,8 +30,12 @@ export default {
   },
   methods: {
     fetchAuthor: async function(username) {
-      const response = await axios.get(`/api/user/${username}`);
-      return response.data;
+      try {
+        const response = await axios.get(`/api/user/${username}`);
+        return response.data;
+      } catch (e) {
+        console.log(e);
+      }
     }
   }
 };
