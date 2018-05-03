@@ -1,9 +1,9 @@
 <template>
   <body>
-    <SiteHeader :title="config.name" />
+    <SiteHeader :title="getSiteName" />
     <div class="app-container">
       <div 
-        v-if="loading" 
+        v-if="isLoading" 
         class="loading">
         Loading...
       </div>
@@ -13,17 +13,15 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import SiteHeader from './components/SiteHeader';
 
 export default {
   components: {
     SiteHeader
   },
-  data() {
-    return {
-      loading: false,
-      config: process.env.SITE_CONFIG
-    };
+  computed: {
+    ...mapGetters(['isLoading', 'getSiteName'])
   }
 };
 </script>
