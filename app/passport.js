@@ -29,8 +29,7 @@ passport.use(
 
     async function(payload, cb) {
       try {
-        const { id } = payload;
-        const user = await User.findOne({ id });
+        const user = await User.findOne({ _id: payload.id });
         return cb(null, user);
       } catch (e) {
         return cb(e);

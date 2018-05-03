@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import axios from 'axios';
 
 Vue.use(Vuex);
 
@@ -7,8 +8,8 @@ export default new Vuex.Store({
   state: {
     config: process.env.SITE_CONFIG,
     pending: 0,
-    username: '',
-    token: ''
+    username: localStorage.getItem('username') || '',
+    token: localStorage.getItem('token') || ''
   },
   getters: {
     isLoading: state => {
@@ -33,9 +34,11 @@ export default new Vuex.Store({
     },
     setUsername(state, payload) {
       state.username = payload;
+      localStorage.setItem('username', payload);
     },
     setToken(state, payload) {
       state.token = payload;
+      localStorage.setItem('token', payload);
     }
   },
   actions: {
@@ -52,6 +55,7 @@ export default new Vuex.Store({
       commit('setUsername', username);
     },
     setToken({ commit }, token) {
+      axios.defaults.headers.common['Authorization'] = `bearer ${token}`;
       commit('setToken', token);
     }
   }

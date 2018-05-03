@@ -7,7 +7,8 @@ const router = new Router();
 router.get('/users', fetchUsers);
 router.get(
   '/user/:username',
-  passport.authenticate('jwt', { sessions: false }, fetchSingleUser)
+  passport.authenticate('jwt', { session: false }),
+  fetchSingleUser
 );
 
 module.exports = router;

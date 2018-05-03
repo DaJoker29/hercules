@@ -14,6 +14,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import axios from 'axios';
 import SiteHeader from './components/SiteHeader';
 
 export default {
@@ -22,6 +23,12 @@ export default {
   },
   computed: {
     ...mapGetters(['isLoading', 'getSiteName'])
+  },
+  created() {
+    const savedToken = localStorage.getItem('token');
+    if (savedToken) {
+      axios.defaults.headers.common['Authorization'] = `bearer ${savedToken}`;
+    }
   }
 };
 </script>
