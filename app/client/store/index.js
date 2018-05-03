@@ -16,6 +16,9 @@ export default new Vuex.Store({
     },
     getSiteName: state => {
       return state.config.name;
+    },
+    getUsername: state => {
+      return state.username;
     }
   },
   mutations: {
@@ -27,6 +30,9 @@ export default new Vuex.Store({
     },
     clear(state) {
       state.pending = 0;
+    },
+    setUsername(state, payload) {
+      state.username = payload;
     }
   },
   actions: {
@@ -38,6 +44,9 @@ export default new Vuex.Store({
     },
     clearPending({ commit }) {
       commit('clear');
+    },
+    setUsername({ commit }, username) {
+      commit('setUsername', username);
     }
   }
 });

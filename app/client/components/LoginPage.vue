@@ -6,29 +6,34 @@
       v-model="input" 
       type="text"
       placeholder="Enter Username..."
-      @keyup.enter="setUsername">
+      @keyup.enter="submitUsername">
 
     <input 
-      v-if="username.length" 
+      v-if="username.length"
+      v-model="input"
       type="text" 
-      placeholder="Enter Access code...">
+      placeholder="Enter Access code..."
+      @keyup.enter="submitAccessCode">
   </main>
 </template>
 
 <script>
+import { mapState, mapActions } from 'vuex';
+
 export default {
   data() {
     return {
-      username: '',
-      input: '',
-      password: ''
+      input: ''
     };
   },
+  computed: mapState(['username']),
   methods: {
-    setUsername: function() {
-      this.username = this.input;
+    ...mapActions(['setUsername']),
+    submitUsername() {
+      this.setUsername(this.input);
       this.input = '';
-    }
+    },
+    submitAccessCode() {}
   }
 };
 </script>
