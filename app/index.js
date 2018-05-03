@@ -15,6 +15,8 @@ const Routes = require('@app/server/routes');
 const webpackConfig = require(`@app/config/webpack.${config.env ||
   'development'}`);
 
+require('./passport');
+
 /**
  * Variables and Constants
  */
@@ -56,8 +58,13 @@ if (!isProd) {
 }
 
 // Load API Routes
+app.use('/auth', Routes.Auth);
 app.use('/api', Routes.Posts);
 app.use('/api', Routes.Users);
+
+/**
+ * app.use('/protected-endpoint', passport.authenticate('jwt', { session: false }, Routes))
+ */
 
 /**
  * Error Handling Routes

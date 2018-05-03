@@ -33,6 +33,9 @@ export default new Vuex.Store({
     },
     setUsername(state, payload) {
       state.username = payload;
+    },
+    setToken(state, payload) {
+      state.token = payload;
     }
   },
   actions: {
@@ -47,6 +50,9 @@ export default new Vuex.Store({
     },
     setUsername({ commit }, username) {
       commit('setUsername', username);
+    },
+    setToken({ commit }, token) {
+      commit('setToken', token);
     }
   }
 });
