@@ -1,28 +1,24 @@
 <template>
   <body>
-    <SiteHeader :title="getSiteName" />
+    <SiteHeader/>
     <div class="app-container">
-      <div 
-        v-if="isLoading" 
-        class="loading">
-        Loading...
-      </div>
-      <router-view/>
+      <transition 
+        enter-active-class="animated fadeIn" 
+        leave-active-class="animated fadeOut"
+        mode="out-in">
+        <router-view/>
+      </transition>
     </div>
   </body>
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
 import axios from 'axios';
 import SiteHeader from './components/SiteHeader';
 
 export default {
   components: {
     SiteHeader
-  },
-  computed: {
-    ...mapGetters(['isLoading', 'getSiteName'])
   },
   created() {
     const savedToken = localStorage.getItem('token');
@@ -34,6 +30,7 @@ export default {
 </script>
 
 <style>
+@import url('https://unpkg.com/nprogress@0.2.0/nprogress.css');
 @import url('https://fonts.googleapis.com/css?family=Crimson+Text|Noto+Sans:400,700|Permanent+Marker');
 :root {
   --white: #dedede;
