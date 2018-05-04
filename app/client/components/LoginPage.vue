@@ -3,18 +3,21 @@
     <h3>Log In Here{{ username.length ? ': ' + username : '' }}</h3>
     <h4 v-if="message.length">{{ message }} </h4>
     <input 
-      v-if="!username.length"
-      v-model="input" 
+      v-model="userInput" 
       type="text"
-      placeholder="Enter Username..."
-      @keyup.enter="submitUsername">
+      placeholder="Enter Username...">
 
-    <input 
-      v-if="username.length"
-      v-model="input"
-      type="text" 
-      placeholder="Enter Access code..."
-      @keyup.enter="authenticate">
+    <transition 
+      name="fade" 
+      enter-active-class="animated fadeInUp" 
+      leave-active-class="animated fadeOutDown">
+      <input 
+        v-if="userInput.length > 3"
+        v-model="passInput"
+        type="text" 
+        placeholder="Enter Access code..."
+        @keyup.enter="authenticate">
+    </transition>
   </main>
 </template>
 
@@ -25,30 +28,33 @@ import axios from 'axios';
 export default {
   data() {
     return {
-      input: '',
+      userInput: '',
+      passInput: '',
       message: ''
     };
   },
   computed: mapState(['username']),
   methods: {
-    ...mapActions(['setUsername', 'setToken']),
-    submitUsername() {
-      this.setUsername(this.input);
-      this.input = '';
-    },
+    ...mapActions(['login']),
     authenticate: async function() {
       try {
         const response = await axios.post('/auth/login', {
-          username: this.username,
-          password: this.input
+          username: this.userInput,
+          password: this.passInput
         });
-        this.setToken(response.data.token);
+        const { token } = response.data;
+        this.login({ token, username: this.userInput });
         this.$router.push('/');
       } catch (e) {
-        this.input = '';
+        this.passInput = '';
+        this.userInput = '';
         this.message = 'Incorrect username or passcode';
       }
     }
   }
 };
 </script>
+
+<style>
+@import 'https://cdn.jsdelivr.net/npm/animate.css@3.5.2/animate.min.css';
+</style>

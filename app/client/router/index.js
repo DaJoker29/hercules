@@ -3,10 +3,11 @@ import Router from 'vue-router';
 import Home from '@app/client/components/Home';
 import AuthorPage from '@app/client/components/AuthorPage';
 import LoginPage from '@app/client/components/LoginPage';
+import NProgress from 'nprogress';
 
 Vue.use(Router);
 
-export default new Router({
+const router = new Router({
   routes: [
     {
       path: '/',
@@ -25,3 +26,16 @@ export default new Router({
     }
   ]
 });
+
+router.beforeEach((to, from, next) => {
+  if (to.name) {
+    NProgress.start();
+  }
+  next();
+});
+
+router.afterEach(() => {
+  NProgress.done();
+});
+
+export default router;

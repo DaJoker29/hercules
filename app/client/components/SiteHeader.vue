@@ -1,29 +1,31 @@
 <template>
   <header class="site-header">
-    <h1 class="site-title"><router-link to="/">{{ title }}</router-link></h1>
+    <h1 class="site-title"><router-link to="/">{{ getSiteName }}</router-link></h1>
     <router-link 
       v-if="token.length === 0"
       to="/login" 
       class="login">Log In</router-link>
-    <router-link 
-      v-else 
-      to="/logout" 
-      class="logout">Log out</router-link>
+    <a 
+      v-else
+      class="logout" 
+      @click="signOut">Log Out</a>
   </header>
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapActions, mapGetters } from 'vuex';
 
 export default {
-  props: {
-    title: {
-      type: String,
-      default: 'Default Title'
-    }
-  },
   computed: {
-    ...mapState(['token'])
+    ...mapState(['token']),
+    ...mapGetters(['getSiteName'])
+  },
+  methods: {
+    ...mapActions(['logout']),
+    signOut() {
+      this.logout();
+      this.$router.push('/login');
+    }
   }
 };
 </script>
@@ -50,5 +52,6 @@ export default {
 .site-header > .login,
 .site-header > .logout {
   text-align: right;
+  cursor: pointer;
 }
 </style>
