@@ -84,12 +84,14 @@ li {
   list-style-type: none;
 }
 
-input {
+input,
+textarea {
   margin: 1rem 0;
   border: 0;
   background: none;
   font-size: 1.3rem;
   font-weight: bold;
+  font-family: var(--font-sans);
 }
 
 .app-container > * {
