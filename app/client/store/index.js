@@ -16,6 +16,9 @@ export default new Vuex.Store({
     },
     getUsername: state => {
       return state.username;
+    },
+    getWordTarget: state => {
+      return state.config.settings.wordTarget;
     }
   },
   mutations: {

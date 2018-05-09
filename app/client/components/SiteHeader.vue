@@ -1,14 +1,21 @@
 <template>
   <header class="site-header">
     <h1 class="site-title"><router-link to="/">{{ getSiteName }}</router-link></h1>
-    <router-link 
-      v-if="token.length === 0"
-      to="/login" 
-      class="login">Log In</router-link>
-    <a 
-      v-else
-      class="logout" 
-      @click="signOut">Log Out</a>
+    <div 
+      v-if="token.length === 0" 
+      class="loggedOut">
+      <router-link 
+        to="/login">Log In</router-link>
+    </div>
+    <div 
+      v-else 
+      class="loggedIn"
+    >
+      <router-link 
+        to="/post/new">Create Post</router-link>
+      <a 
+        @click="signOut">Log Out</a>
+    </div>
   </header>
 </template>
 
@@ -49,9 +56,18 @@ export default {
   font-family: var(--font-cursive);
 }
 
-.site-header > .login,
-.site-header > .logout {
+.site-header > .loggedIn,
+.site-header > .loggedOut {
   text-align: right;
+}
+
+.loggedIn a,
+.loggedOut a {
   cursor: pointer;
+  margin-right: 1rem;
+}
+
+.router-link-exact-active {
+  color: var(--gray-l);
 }
 </style>
