@@ -4,6 +4,7 @@ import Home from '@app/client/components/Home';
 import AuthorPage from '@app/client/components/AuthorPage';
 import LoginPage from '@app/client/components/LoginPage';
 import CreatePostPage from '@app/client/components/CreatePostPage';
+import CategoryPage from '@app/client/components/CategoryPage';
 import NProgress from 'nprogress';
 
 Vue.use(Router);
@@ -29,6 +30,11 @@ const router = new Router({
       path: '/post/new',
       name: 'createPost',
       component: CreatePostPage
+    },
+    {
+      path: '/category/:slug',
+      name: 'category',
+      component: CategoryPage
     }
   ]
 });

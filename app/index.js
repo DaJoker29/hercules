@@ -63,6 +63,7 @@ if (!isProd) {
 app.use('/auth', Routes.Auth);
 app.use('/api', Routes.Posts);
 app.use('/api', Routes.Users);
+app.use('/api', Routes.Categories);
 
 /**
  * app.use('/protected-endpoint', passport.authenticate('jwt', { session: false }, Routes))

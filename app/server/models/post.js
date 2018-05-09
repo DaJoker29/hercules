@@ -16,7 +16,8 @@ const postSchema = new Schema({
   content: { type: String, required: true },
   tags: [{ type: String }],
   excerpt: { type: String },
-  author: { type: Schema.Types.ObjectId, ref: 'User', required: true }
+  author: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+  categories: [{ type: Schema.Types.ObjectId, ref: 'Category' }]
 });
 
 postSchema.plugin(uniqueValidator);
