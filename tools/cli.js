@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 const program = require('commander');
-const { User } = require('@app/server/models');
+const { User, Category } = require('@app/server/models');
 const base32 = require('thirty-two');
 require('@app/utils');
 const config = require('@app/config');
@@ -10,6 +10,27 @@ const db = require('@app/db_connect');
 program
   .description(`CLI tool for the ${config.pkg.name.toUpperCase()} app`)
   .version(config.pkg.version);
+
+program
+  .command('cat [cmd]')
+  .description('Handle Category Data')
+  .alias('c')
+  .option('-s, --slug <slug>', 'Slug')
+  .option('-l, --label <label>', 'Label')
+  .action(async function categoryCb(cmd, options) {
+    if ('create' === cmd) {
+      const { label, slug } = options;
+      console.log(label, slug);
+      try {
+        const doc = await Category.create({ label, slug });
+        console.log(doc);
+        db.close();
+      } catch (e) {
+        console.error(e.message);
+        db.close();
+      }
+    }
+  });
 
 program
   .command('user [cmd]')
