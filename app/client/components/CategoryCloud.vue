@@ -1,17 +1,25 @@
 <template>
   <div class="category-cloud">
     <ul>
-      <li><a href="">Essays</a></li>
-      <li><a href="">Poetry</a></li>
-      <li><a href="">Sci-Fi</a></li>
-      <li><a href="">Non-Fiction</a></li>
-      <li><a href="">Short Stories</a></li>
-      <li><a href="">Fantasy</a></li>
-      <li><a href="">Comedy</a></li>
-      <li><a href="">Screenwriting</a></li>
+      <li 
+        v-for="category in categories" 
+        :key="category.slug">
+        <router-link :to="{ name: 'category', params: { category: category.slug }}">{{ category.label }}</router-link>
+      </li>
     </ul>
   </div>
 </template>
+
+<script>
+export default {
+  props: {
+    categories: {
+      type: Array,
+      required: true
+    }
+  }
+};
+</script>
 
 <style scoped>
 .category-cloud > ul {
@@ -36,5 +44,9 @@
 
 .category-cloud li:hover a {
   color: var(--white);
+}
+
+.category-cloud a {
+  cursor: pointer;
 }
 </style>

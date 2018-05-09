@@ -1,7 +1,7 @@
 <template>
   <main class="home-container">
     <div class="sidebar">
-      <CategoryCloud />
+      <CategoryCloud :categories="categories"/>
       <SearchBox />
       <AuthorList :authors="users"/>
       <SiteFooter />
@@ -33,12 +33,14 @@ export default {
     return {
       posts: [],
       users: [],
+      categories: [],
       msg: 'Howdy'
     };
   },
   mounted: async function() {
     this.posts = await this.fetchPosts();
     this.users = await this.fetchAuthors();
+    this.categories = await this.fetchCategories();
   },
   methods: {
     fetchPosts: async function() {
@@ -47,6 +49,10 @@ export default {
     },
     fetchAuthors: async function() {
       const response = await axios.get('/api/users');
+      return response.data;
+    },
+    fetchCategories: async function() {
+      const response = await axios.get('/api/categories');
       return response.data;
     }
   }
