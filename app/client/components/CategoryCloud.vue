@@ -4,7 +4,7 @@
       <li 
         v-for="category in categories" 
         :key="category.slug">
-        <router-link :to="{ name: 'category', params: { category: category.slug }}">{{ category.label }}</router-link>
+        <router-link :to="{ name: 'category', params: { slug: category.slug }}">{{ category.label }}</router-link>
       </li>
     </ul>
   </div>
