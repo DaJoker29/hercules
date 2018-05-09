@@ -38,6 +38,7 @@ export default {
   --gray-d: #595959;
   --gray-l: #b0b0b0;
   --red: #481b1b;
+  --green: #498f36;
   --font-serif: 'Crimson Text', serif;
   --font-sans: 'Noto Sans', sans-serif;
   --font-cursive: 'Permanent Marker', cursive;
