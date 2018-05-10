@@ -12,11 +12,11 @@ const authorSchema = new Schema({
     default: shortid.generate,
     unique: true
   },
-  username: { type: String, required: true, unique: true },
-  email: { type: String, required: true },
+  username: { type: String, required: true, unique: true, select: false },
+  email: { type: String, required: true, select: false },
   displayName: { type: String, default: this.username },
-  token: { type: String, default: token(128) },
-  createdDate: { type: Date, default: Date.now() }
+  token: { type: String, default: token(128), select: false },
+  createdDate: { type: Date, default: Date.now(), select: false }
 });
 
 authorSchema.plugin(uniqueValidator);

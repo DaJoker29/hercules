@@ -48,7 +48,7 @@ export default {
       return response.data;
     },
     fetchAuthors: async function() {
-      const response = await axios.get('/api/users');
+      const response = await axios.get('/api/authors');
       return response.data;
     },
     fetchCategories: async function() {

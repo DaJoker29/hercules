@@ -22,10 +22,10 @@ A simple CMS designed to streamline the process of creating and publishing conte
 ```javascript
 {
   uid,
-  username,
-  email,
+  username, // not returned
+  email, // not returned
   displayName,
-  createdDate,
+  createdDate, // not returned
   postsURL // URL to fetch this author's posts
 }
 ```
