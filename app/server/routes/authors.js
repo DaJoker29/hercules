@@ -7,21 +7,32 @@ router.get('/authors', fetchAllAuthors);
 router.get('/author/:id', fetchSingleAuthor);
 router.post('/authors', createNewAuthor); // Add Authentication
 router.put('/author/:id', updateAuthor); // Add Authentication
+router.delete('/author/:id', deleteAuthor);
 
 module.exports = router;
+
+async function deleteAuthor(req, res, next) {
+  const { id } = req.params;
+  try {
+    const author = await Author.findOneAndRemove({ uid: id });
+    res.json(author);
+  } catch (e) {
+    next(e);
+  }
+}
 
 async function updateAuthor(req, res, next) {
   const { id } = req.params;
   const update = {};
-  if (req.body.email) {
-    update.email = req.body.email;
-  }
-
-  if (req.body.displayName) {
-    update.displayName = req.body.displayName;
-  }
 
   try {
+    if (req.body.email) {
+      update.email = req.body.email;
+    }
+
+    if (req.body.displayName) {
+      update.displayName = req.body.displayName;
+    }
     const updated = await Author.findOneAndUpdate({ uid: id }, update, {
       new: true
     });
