@@ -14,7 +14,7 @@ const authorSchema = new Schema({
   },
   username: { type: String, required: true, unique: true, select: false },
   email: { type: String, required: true, select: false },
-  displayName: { type: String, default: this.username },
+  displayName: { type: String, default: 'Keyser Soze' },
   token: { type: String, default: token(128), select: false },
   createdDate: { type: Date, default: Date.now(), select: false }
 });
