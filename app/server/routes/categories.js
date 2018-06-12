@@ -7,8 +7,19 @@ router.get('/categories', fetchCategories);
 router.get('/category/:slug', fetchCategory);
 router.post('/categories', createCategory); // Add Auth
 router.put('/category/:slug', updateCategory); // Add Auth
+router.delete('/category/:slug', deleteCategory); // Add Auth
 
 module.exports = router;
+
+async function deleteCategory(req, res, next) {
+  const { slug } = req.params;
+  try {
+    const category = await Category.findOneAndRemove({ slug });
+    res.json(category);
+  } catch (e) {
+    next(e);
+  }
+}
 
 async function updateCategory(req, res, next) {
   const { slug } = req.params;
