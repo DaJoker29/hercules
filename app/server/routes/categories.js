@@ -28,7 +28,11 @@ async function fetchCategories(req, res, next) {
   let categories = [];
   try {
     categories = await Category.find();
-    res.json(categories);
+    const result = categories.map(category => {
+      const postURL = `/api/posts?category=${category.slug}`;
+      return Object.assign({ postURL }, JSON.parse(JSON.stringify(category)));
+    });
+    res.json(result);
   } catch (e) {
     next(e);
   }
