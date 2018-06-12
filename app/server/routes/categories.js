@@ -6,8 +6,35 @@ const router = new Router();
 router.get('/categories', fetchCategories);
 router.get('/category/:slug', fetchCategory);
 router.post('/categories', createCategory); // Add Auth
+router.put('/category/:slug', updateCategory); // Add Auth
 
 module.exports = router;
+
+async function updateCategory(req, res, next) {
+  const { slug } = req.params;
+  const update = {};
+
+  try {
+    if (req.body.slug) {
+      update.slug = req.body.slug;
+    }
+
+    if (req.body.label) {
+      update.label = req.body.label;
+    }
+    const updated = await Category.findOneAndUpdate({ slug }, update, {
+      new: true
+    });
+    const category = await Category.findOne({ slug: updated.slug });
+    const result = Object.assign(
+      { postURL: `/api/posts?category=${category.slug}` },
+      JSON.parse(JSON.stringify(category))
+    );
+    res.json(result);
+  } catch (e) {
+    next(e);
+  }
+}
 
 async function createCategory(req, res, next) {
   const { slug, label } = req.body;
