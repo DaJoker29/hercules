@@ -5,8 +5,25 @@ const router = new Router();
 
 router.get('/categories', fetchCategories);
 router.get('/category/:slug', fetchCategory);
+router.post('/categories', createCategory); // Add Auth
 
 module.exports = router;
+
+async function createCategory(req, res, next) {
+  const { slug, label } = req.body;
+
+  try {
+    const created = await Category.create({ slug, label });
+    const category = await Category.findOne({ slug: created.slug });
+    const result = Object.assign(
+      { postURL: `/api/posts?category=${category.slug}` },
+      JSON.parse(JSON.stringify(category))
+    );
+    res.json(result);
+  } catch (e) {
+    next(e);
+  }
+}
 
 async function fetchCategory(req, res, next) {
   const { slug } = req.params;
