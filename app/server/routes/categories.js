@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const { Post, Category } = require('../models');
+const { Category } = require('../models');
 
 const router = new Router();
 
@@ -9,13 +9,16 @@ router.get('/category/:slug', fetchCategory);
 module.exports = router;
 
 async function fetchCategory(req, res, next) {
-  let posts = [];
   const { slug } = req.params;
 
   try {
-    const cat = await Category.findOne({ slug });
-    posts = await Post.find({ categories: cat._id });
-    res.json(posts);
+    const category = await Category.findOne({ slug });
+    const postURL = `/api/posts?category=${category.slug}`;
+    const result = Object.assign(
+      { postURL },
+      JSON.parse(JSON.stringify(category))
+    );
+    res.json(result);
   } catch (e) {
     next(e);
   }
