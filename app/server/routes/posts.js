@@ -7,8 +7,53 @@ const router = new Router();
 router.get('/posts', fetchPosts);
 router.get('/post/:pid', fetchSinglePost);
 router.post('/posts', createPost); // Add Auth
+router.put('/post/:pid', editPost); //Add Auth
 
 module.exports = router;
+
+async function editPost(req, res, next) {
+  try {
+    const { pid } = req.params;
+    const { title, content, description, categories } = req.body;
+    const update = {};
+
+    if (title) update.title = title;
+    if (description) update.description = description;
+    if (categories) update.categories = categories;
+    if (content) {
+      const tags = extractor.extract(content.replace(/[^A-Za-z0-9 ]/g, ' '), {
+        language: 'english',
+        remove_digits: true,
+        return_changed_case: true,
+        remove_duplicates: true
+      });
+
+      update.content = content;
+      update.tags = tags;
+    }
+
+    const updated = await Post.findOneAndUpdate({ pid }, update, { new: true })
+      .populate('author')
+      .populate('categories');
+
+    const authorURL = `/api/author/${updated.author.uid}`;
+    const categoriesURL = updated.categories.map(
+      category => `/api/category/${category.slug}`
+    );
+
+    updated.author = undefined;
+    updated.categories = undefined;
+
+    const result = Object.assign(
+      { authorURL, categoriesURL },
+      JSON.parse(JSON.stringify(updated))
+    );
+
+    res.json(result);
+  } catch (e) {
+    next(e);
+  }
+}
 
 async function fetchSinglePost(req, res, next) {
   try {
