@@ -5,9 +5,36 @@ const { Post } = require('../models');
 const router = new Router();
 
 router.get('/posts', fetchPosts);
+router.get('/post/:pid', fetchSinglePost);
 router.post('/posts', createPost); // Add Auth
 
 module.exports = router;
+
+async function fetchSinglePost(req, res, next) {
+  try {
+    const { pid } = req.params;
+    const post = await Post.findOne({ pid })
+      .populate('author', 'uid')
+      .populate('categories', 'slug');
+
+    const authorURL = `/api/author/${post.author.uid}`;
+    const categoriesURL = post.categories.map(
+      category => `/api/category/${category.slug}`
+    );
+
+    post.author = undefined;
+    post.categories = undefined;
+
+    const result = Object.assign(
+      { authorURL, categoriesURL },
+      JSON.parse(JSON.stringify(post))
+    );
+
+    res.json(result);
+  } catch (e) {
+    next(e);
+  }
+}
 
 async function createPost(req, res, next) {
   const { title, content, description, author, categories } = req.body;
