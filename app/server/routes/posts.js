@@ -8,8 +8,20 @@ router.get('/posts', fetchPosts);
 router.get('/post/:pid', fetchSinglePost);
 router.post('/posts', createPost); // Add Auth
 router.put('/post/:pid', editPost); //Add Auth
+router.delete('/post/:pid', deletePost); // Add Auth
 
 module.exports = router;
+
+async function deletePost(req, res, next) {
+  try {
+    const { pid } = req.params;
+
+    const deleted = await Post.findOneAndRemove({ pid });
+    res.json(deleted);
+  } catch (e) {
+    next(e);
+  }
+}
 
 async function editPost(req, res, next) {
   try {
