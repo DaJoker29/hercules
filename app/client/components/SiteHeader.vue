@@ -1,29 +1,38 @@
 <template>
   <header class="site-header">
-    <h1 class="site-title"><router-link to="/">{{ title }}</router-link></h1>
-    <router-link 
-      v-if="token.length === 0"
-      to="/login" 
-      class="login">Log In</router-link>
-    <router-link 
+    <h1 class="site-title"><router-link to="/">{{ getSiteName }}</router-link></h1>
+    <div 
+      v-if="token.length === 0" 
+      class="loggedOut">
+      <router-link 
+        to="/login">Log In</router-link>
+    </div>
+    <div 
       v-else 
-      to="/logout" 
-      class="logout">Log out</router-link>
+      class="loggedIn"
+    >
+      <router-link 
+        to="/post/new">Create Post</router-link>
+      <a 
+        @click="signOut">Log Out</a>
+    </div>
   </header>
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapActions, mapGetters } from 'vuex';
 
 export default {
-  props: {
-    title: {
-      type: String,
-      default: 'Default Title'
-    }
-  },
   computed: {
-    ...mapState(['token'])
+    ...mapState(['token']),
+    ...mapGetters(['getSiteName'])
+  },
+  methods: {
+    ...mapActions(['logout']),
+    signOut() {
+      this.logout();
+      this.$router.push('/login');
+    }
   }
 };
 </script>
@@ -47,8 +56,18 @@ export default {
   font-family: var(--font-cursive);
 }
 
-.site-header > .login,
-.site-header > .logout {
+.site-header > .loggedIn,
+.site-header > .loggedOut {
   text-align: right;
+}
+
+.loggedIn a,
+.loggedOut a {
+  cursor: pointer;
+  margin-right: 1rem;
+}
+
+.router-link-exact-active {
+  color: var(--gray-l);
 }
 </style>

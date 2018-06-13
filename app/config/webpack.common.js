@@ -37,7 +37,12 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      title: 'hercules'
+      title: `${config.name.toTitleCase()} - ${config.tagline}`,
+      meta: {
+        description: config.description,
+        viewport: 'width=device-width, initial-scale=1',
+        'theme-color': '#481b1b'
+      }
     }),
     new CleanWebpackPlugin(['dist'], { root: path.resolve(__dirname, '..') }),
     new VueLoaderPlugin(),

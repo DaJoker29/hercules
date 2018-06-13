@@ -1,28 +1,24 @@
 <template>
   <body>
-    <SiteHeader :title="getSiteName" />
+    <SiteHeader/>
     <div class="app-container">
-      <div 
-        v-if="isLoading" 
-        class="loading">
-        Loading...
-      </div>
-      <router-view/>
+      <transition 
+        enter-active-class="animated fadeIn" 
+        leave-active-class="animated fadeOut"
+        mode="out-in">
+        <router-view/>
+      </transition>
     </div>
   </body>
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
 import axios from 'axios';
 import SiteHeader from './components/SiteHeader';
 
 export default {
   components: {
     SiteHeader
-  },
-  computed: {
-    ...mapGetters(['isLoading', 'getSiteName'])
   },
   created() {
     const savedToken = localStorage.getItem('token');
@@ -34,6 +30,7 @@ export default {
 </script>
 
 <style>
+@import url('https://unpkg.com/nprogress@0.2.0/nprogress.css');
 @import url('https://fonts.googleapis.com/css?family=Crimson+Text|Noto+Sans:400,700|Permanent+Marker');
 :root {
   --white: #dedede;
@@ -41,6 +38,7 @@ export default {
   --gray-d: #595959;
   --gray-l: #b0b0b0;
   --red: #481b1b;
+  --green: #498f36;
   --font-serif: 'Crimson Text', serif;
   --font-sans: 'Noto Sans', sans-serif;
   --font-cursive: 'Permanent Marker', cursive;
@@ -87,12 +85,14 @@ li {
   list-style-type: none;
 }
 
-input {
+input,
+textarea {
   margin: 1rem 0;
   border: 0;
   background: none;
   font-size: 1.3rem;
   font-weight: bold;
+  font-family: var(--font-sans);
 }
 
 .app-container > * {

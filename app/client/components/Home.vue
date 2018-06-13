@@ -1,7 +1,7 @@
 <template>
   <main class="home-container">
     <div class="sidebar">
-      <CategoryCloud />
+      <CategoryCloud :categories="categories"/>
       <SearchBox />
       <AuthorList :authors="users"/>
       <SiteFooter />
@@ -15,7 +15,6 @@
 <script>
 import 'babel-polyfill';
 import axios from 'axios';
-import { mapActions } from 'vuex';
 import CategoryCloud from './CategoryCloud';
 import SearchBox from './SearchBox';
 import AuthorList from './AuthorList';
@@ -34,25 +33,26 @@ export default {
     return {
       posts: [],
       users: [],
+      categories: [],
       msg: 'Howdy'
     };
   },
   mounted: async function() {
     this.posts = await this.fetchPosts();
     this.users = await this.fetchAuthors();
+    this.categories = await this.fetchCategories();
   },
   methods: {
-    ...mapActions(['addPending', 'removePending', 'clearPending']),
     fetchPosts: async function() {
-      this.addPending();
       const response = await axios.get('/api/posts');
-      this.removePending();
       return response.data;
     },
     fetchAuthors: async function() {
-      this.addPending();
-      const response = await axios.get('/api/users');
-      this.removePending();
+      const response = await axios.get('/api/authors');
+      return response.data;
+    },
+    fetchCategories: async function() {
+      const response = await axios.get('/api/categories');
       return response.data;
     }
   }

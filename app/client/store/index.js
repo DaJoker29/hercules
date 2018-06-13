@@ -7,31 +7,21 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     config: process.env.SITE_CONFIG,
-    pending: 0,
     username: localStorage.getItem('username') || '',
     token: localStorage.getItem('token') || ''
   },
   getters: {
-    isLoading: state => {
-      return state.pending > 0;
-    },
     getSiteName: state => {
       return state.config.name;
     },
     getUsername: state => {
       return state.username;
+    },
+    getWordTarget: state => {
+      return state.config.settings.wordTarget;
     }
   },
   mutations: {
-    increment(state) {
-      ++state.pending;
-    },
-    decrement(state) {
-      --state.pending;
-    },
-    clear(state) {
-      state.pending = 0;
-    },
     setUsername(state, payload) {
       state.username = payload;
       localStorage.setItem('username', payload);
@@ -39,24 +29,23 @@ export default new Vuex.Store({
     setToken(state, payload) {
       state.token = payload;
       localStorage.setItem('token', payload);
+    },
+    logout(state) {
+      state.token = '';
+      state.username = '';
+      localStorage.removeItem('token');
+      localStorage.removeItem('username');
     }
   },
   actions: {
-    addPending({ commit }) {
-      commit('increment');
-    },
-    removePending({ commit }) {
-      commit('decrement');
-    },
-    clearPending({ commit }) {
-      commit('clear');
-    },
-    setUsername({ commit }, username) {
-      commit('setUsername', username);
-    },
-    setToken({ commit }, token) {
+    login({ commit }, { token, username }) {
       axios.defaults.headers.common['Authorization'] = `bearer ${token}`;
       commit('setToken', token);
+      commit('setUsername', username);
+    },
+    logout({ commit }) {
+      delete axios.defaults.headers.common['Authorization'];
+      commit('logout');
     }
   }
 });

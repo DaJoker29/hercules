@@ -5,18 +5,19 @@ const uniqueValidator = require('mongoose-unique-validator');
 const { Schema } = mongoose;
 
 const postSchema = new Schema({
-  postID: {
+  pid: {
     type: String,
     required: true,
     default: shortid.generate,
     unique: true
   },
-  created: { type: Date, required: true, default: Date.now },
+  createdDate: { type: Date, required: true, default: Date.now },
   title: { type: String, required: true },
   content: { type: String, required: true },
   tags: [{ type: String }],
-  excerpt: { type: String },
-  author: { type: Schema.Types.ObjectId, ref: 'User', required: true }
+  description: { type: String },
+  author: { type: Schema.Types.ObjectId, ref: 'Author', required: true },
+  categories: [{ type: Schema.Types.ObjectId, ref: 'Category' }]
 });
 
 postSchema.plugin(uniqueValidator);
