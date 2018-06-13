@@ -4,7 +4,7 @@ const { Post } = require('../models');
 
 const router = new Router();
 
-router.get('/posts', returnPosts);
+router.get('/posts', fetchPosts);
 router.post('/posts', createPost); // Add Auth
 
 module.exports = router;
@@ -35,7 +35,7 @@ async function createPost(req, res, next) {
   }
 }
 
-async function returnPosts(req, res, next) {
+async function fetchPosts(req, res, next) {
   const { author, category } = req.query;
   try {
     let posts = await Post.find()
