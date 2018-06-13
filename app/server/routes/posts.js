@@ -36,10 +36,27 @@ async function createPost(req, res, next) {
 }
 
 async function returnPosts(req, res, next) {
+  const { author, category } = req.query;
   try {
-    const posts = await Post.find()
+    let posts = await Post.find()
       .populate('author', 'uid')
       .populate('categories', 'slug');
+
+    if (author || category) {
+      posts = posts.filter(post => {
+        if (author && category) {
+          return (
+            post.author.uid === author &&
+            post.categories.findIndex(cat => cat.slug === category) > -1
+          );
+        } else {
+          return (
+            post.author.uid === author ||
+            post.categories.findIndex(cat => cat.slug === category) > -1
+          );
+        }
+      });
+    }
 
     const result = posts.map(post => {
       const authorURL = `/api/author/${post.author.uid}`;
