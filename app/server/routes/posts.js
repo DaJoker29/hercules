@@ -1,4 +1,5 @@
 const { Router } = require('express');
+const extractor = require('keyword-extractor');
 const { Post } = require('../models');
 
 const router = new Router();
@@ -12,13 +13,20 @@ async function createPost(req, res, next) {
   const { title, content, description, author, categories } = req.body;
 
   try {
-    // TODO: Generate tags here
+    const tags = extractor.extract(content.replace(/[^A-Za-z0-9 ]/g, ' '), {
+      language: 'english',
+      remove_digits: true,
+      return_changed_case: true,
+      remove_duplicates: true
+    });
+
     const created = await Post.create({
       title,
       content,
       description,
       author,
-      categories
+      categories,
+      tags
     });
     const result = created;
     res.json(result);
