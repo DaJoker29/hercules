@@ -16,7 +16,7 @@ const postSchema = new Schema({
   content: { type: String, required: true },
   tags: [{ type: String }],
   description: { type: String },
-  author: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+  author: { type: Schema.Types.ObjectId, ref: 'Author', required: true },
   categories: [{ type: Schema.Types.ObjectId, ref: 'Category' }]
 });
 
