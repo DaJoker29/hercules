@@ -36,12 +36,27 @@ async function createPost(req, res, next) {
 }
 
 async function returnPosts(req, res, next) {
-  let posts = [];
   try {
-    posts = await Post.find()
-      .populate('author')
-      .populate('categories');
-    res.json(posts);
+    const posts = await Post.find()
+      .populate('author', 'uid')
+      .populate('categories', 'slug');
+
+    const result = posts.map(post => {
+      const authorURL = `/api/author/${post.author.uid}`;
+      const categoriesURL = post.categories.map(
+        category => `/api/category/${category.slug}`
+      );
+
+      post.author = undefined;
+      post.categories = undefined;
+
+      return Object.assign(
+        { authorURL, categoriesURL },
+        JSON.parse(JSON.stringify(post))
+      );
+    });
+
+    res.json(result);
   } catch (e) {
     next(e);
   }
