@@ -23,16 +23,12 @@ async function deleteAuthor(req, res, next) {
 
 async function updateAuthor(req, res, next) {
   const { id } = req.params;
+  const { displayName } = req.body;
   const update = {};
 
   try {
-    if (req.body.email) {
-      update.email = req.body.email;
-    }
+    if (displayName) update.displayName = displayName;
 
-    if (req.body.displayName) {
-      update.displayName = req.body.displayName;
-    }
     const updated = await Author.findOneAndUpdate({ uid: id }, update, {
       new: true
     });
@@ -49,6 +45,11 @@ async function updateAuthor(req, res, next) {
 
 async function createNewAuthor(req, res, next) {
   const { email, username, displayName } = req.body;
+
+  if (!email || !username) {
+    return next('No email or username provided');
+  }
+
   try {
     const created = await Author.create({ email, username, displayName });
     const author = await Author.findOne({ uid: created.uid });
@@ -65,7 +66,7 @@ async function createNewAuthor(req, res, next) {
 async function fetchSingleAuthor(req, res, next) {
   const { id } = req.params;
   try {
-    const author = await Author.findOne({ uid: id });
+    const author = await Author.findOne({ uid: id }).select('-_id -__v');
     const result = Object.assign(
       { postURL: `/api/posts?author=${author.uid}` },
       JSON.parse(JSON.stringify(author))
@@ -78,10 +79,13 @@ async function fetchSingleAuthor(req, res, next) {
 
 async function fetchAllAuthors(req, res, next) {
   try {
-    const authors = await Author.find();
+    const authors = await Author.find().select('-_id -__v');
     const result = authors.map(author => {
       return Object.assign(
-        { postURL: `/api/posts?author=${author.uid}` },
+        {
+          postsURL: `/api/posts?author=${author.uid}`,
+          authorURL: `/api/author/${author.uid}`
+        },
         JSON.parse(JSON.stringify(author))
       );
     });
