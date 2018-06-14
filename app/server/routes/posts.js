@@ -1,6 +1,6 @@
 const { Router } = require('express');
 const extractor = require('keyword-extractor');
-const { Post } = require('../models');
+const { Post, Author, Category } = require('../models');
 
 const router = new Router();
 
@@ -72,7 +72,8 @@ async function fetchSinglePost(req, res, next) {
     const { pid } = req.params;
     const post = await Post.findOne({ pid })
       .populate('author', 'uid')
-      .populate('categories', 'slug');
+      .populate('categories', 'slug')
+      .select('-_id -__v');
 
     const authorURL = `/api/author/${post.author.uid}`;
     const categoriesURL = post.categories.map(
@@ -104,14 +105,23 @@ async function createPost(req, res, next) {
       remove_duplicates: true
     });
 
+    const authorDoc = await Author.findOne({ uid: author });
+    const categoriesDocs = await Promise.all(
+      categories.map(async category => {
+        const doc = await Category.findOne({ slug: category });
+        return doc._id;
+      })
+    );
+
     const created = await Post.create({
       title,
       content,
       description,
-      author,
-      categories,
+      author: authorDoc._id,
+      categories: categoriesDocs,
       tags
     });
+
     const result = created;
     res.json(result);
   } catch (e) {
@@ -120,29 +130,31 @@ async function createPost(req, res, next) {
 }
 
 async function fetchPosts(req, res, next) {
-  const { author, category } = req.query;
+  const { author, cat } = req.query;
   try {
     let posts = await Post.find()
       .populate('author', 'uid')
-      .populate('categories', 'slug');
+      .populate('categories', 'slug')
+      .select('-_id -__v -tags -content');
 
-    if (author || category) {
+    if (author || cat) {
       posts = posts.filter(post => {
-        if (author && category) {
+        if (author && cat) {
           return (
             post.author.uid === author &&
-            post.categories.findIndex(cat => cat.slug === category) > -1
+            post.categories.findIndex(category => category.slug === cat) > -1
           );
         } else {
           return (
             post.author.uid === author ||
-            post.categories.findIndex(cat => cat.slug === category) > -1
+            post.categories.findIndex(category => category.slug === cat) > -1
           );
         }
       });
     }
 
     const result = posts.map(post => {
+      const postURL = `/api/post/${post.pid}`;
       const authorURL = `/api/author/${post.author.uid}`;
       const categoriesURL = post.categories.map(
         category => `/api/category/${category.slug}`
@@ -152,7 +164,7 @@ async function fetchPosts(req, res, next) {
       post.categories = undefined;
 
       return Object.assign(
-        { authorURL, categoriesURL },
+        { authorURL, categoriesURL, postURL },
         JSON.parse(JSON.stringify(post))
       );
     });

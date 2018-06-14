@@ -22,20 +22,19 @@ async function deleteCategory(req, res, next) {
 }
 
 async function updateCategory(req, res, next) {
-  const { slug } = req.params;
+  const { slug: originalSlug } = req.params;
+  const { slug, label } = req.body;
   const update = {};
 
   try {
-    if (req.body.slug) {
-      update.slug = req.body.slug;
-    }
+    if (slug) update.slug = slug;
+    if (label) update.label = label;
 
-    if (req.body.label) {
-      update.label = req.body.label;
-    }
-    const updated = await Category.findOneAndUpdate({ slug }, update, {
-      new: true
-    });
+    const updated = await Category.findOneAndUpdate(
+      { slug: originalSlug },
+      update,
+      { new: true }
+    );
     const category = await Category.findOne({ slug: updated.slug });
     const result = Object.assign(
       { postURL: `/api/posts?category=${category.slug}` },
@@ -67,7 +66,7 @@ async function fetchCategory(req, res, next) {
   const { slug } = req.params;
 
   try {
-    const category = await Category.findOne({ slug });
+    const category = await Category.findOne({ slug }).select('-_id -__v');
     const postURL = `/api/posts?category=${category.slug}`;
     const result = Object.assign(
       { postURL },
@@ -82,10 +81,14 @@ async function fetchCategory(req, res, next) {
 async function fetchCategories(req, res, next) {
   let categories = [];
   try {
-    categories = await Category.find();
+    categories = await Category.find().select('-_id -__v');
     const result = categories.map(category => {
-      const postURL = `/api/posts?category=${category.slug}`;
-      return Object.assign({ postURL }, JSON.parse(JSON.stringify(category)));
+      const postsURL = `/api/posts?category=${category.slug}`;
+      const categoryURL = `/api/category/${category.slug}`;
+      return Object.assign(
+        { postsURL, categoryURL },
+        JSON.parse(JSON.stringify(category))
+      );
     });
     res.json(result);
   } catch (e) {
