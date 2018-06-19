@@ -1,9 +1,30 @@
-*Last Updated: 4/23/18*
+*Last Updated: 6/19/18*
 # Milestones
 
+# Current
 ## REST API/Client-Side Rendering
-- Migrate to REST API with Client-Side Rendering
+### REST API
+- ~~Write out REST API~~
+- ~~Build Category, Post, and Author Routes~~
+- ~~Update API Docs~~
+- Add Authentication to API Routes
 
+### Redesign UI
+- Redesign Login Flow
+- Redesign Feed
+- Redesign Post
+- Redesign Editor Flow
+- Redesign Admin Interface
+
+### Client-Side Rendering
+- Mockup UI
+- Implement Login Flow
+- Implement Feed
+- Implement Post
+- Implement Editor Flow
+- Implement Admin Interface
+
+#  Future
 ## E2E/Unit Testing
 - Setup Test Framework
 - Add Continuous Deployment
@@ -42,15 +63,3 @@
 
 ## Portfolio
 - Custom Portfolio Templates
-
-# Past Milestones
-## ~~Basic Blogging~~
-- ~~Markdown Editor => HTML Output~~
-- ~~Basic SEO (Meta Descriptions/Title)~~
-- ~~Auto-Generated Tags for SEO~~
-- ~~Basic Search~~
-
-## ~~Basic Podcast~~
-- ~~Multiple Podcasts~~
-- ~~Auto-Generated RSS Feed~~
-- ~~Media Validation/Organization~~
